@@ -1,0 +1,2043 @@
+<!--
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║           PBI MOCKUP CREATOR — v2026                          ║
+  ║                                                               ║
+  ║  © 2024–2026 Borja Mora Méndez. Todos los derechos reservados.║
+  ║  linkedin.com/in/borjamoramendez                              ║
+  ║                                                               ║
+  ║  Este software es propiedad intelectual de su autor.          ║
+  ║  Queda prohibida su reproducción, distribución o venta        ║
+  ║  sin autorización expresa y por escrito del autor.            ║
+  ║  Uso personal y profesional permitido bajo licencia.          ║
+  ║                                                               ║
+  ║  Desarrollado para la comunidad de Power BI en español.       ║
+  ╚═══════════════════════════════════════════════════════════════╝
+-->
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power BI Mockup Creator · Borja Mora</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p:#7a7bff;--pl:#ededff;--g:#3c8a37;--r:#a3223e;
+  --theme-bg:#C8C8D0;
+  --theme-sb:#ffffff;
+  --theme-ptb:#ffffff;
+  --theme-cr:#111111;
+  --theme-ink:#111111;
+  --theme-mu:#888888;
+  --theme-bd:#e5e5e5;
+  --theme-ow:#fbfbfb;
+  --theme-hover:#f5f5fa;
+  --theme-chart-grid:#f0f0f0;
+  --theme-chart-axis:#e0e0e0;
+  --theme-chart-txt:#aaaaaa;
+  --theme-tag-bg:#e8e8e8;
+  --sb:296px;--fn:'Segoe UI',sans-serif;--tr:0.15s ease;
+}
+[data-theme="dark"]{
+  --theme-bg:#0c0c14;--theme-sb:#13131f;--theme-ptb:#10101a;
+  --theme-cr:#080810;--theme-ink:#e2e2f2;--theme-mu:#6868a0;
+  --theme-bd:#252538;--theme-ow:#1c1c2c;--theme-hover:#21212f;
+  --theme-chart-grid:#1e1e30;--theme-chart-axis:#2a2a42;--theme-chart-txt:#505078;
+  --theme-tag-bg:#222236;
+}
+[data-theme="warm"]{
+  --theme-bg:#cec8be;--theme-sb:#faf7f3;--theme-ptb:#faf7f3;
+  --theme-cr:#221c12;--theme-ink:#221c12;--theme-mu:#8c7a62;
+  --theme-bd:#d9d0be;--theme-ow:#f4f0e8;--theme-hover:#ede7dc;
+  --theme-chart-grid:#ece5d8;--theme-chart-axis:#d4cabb;--theme-chart-txt:#a89070;
+  --theme-tag-bg:#ece5d8;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--fn);background:var(--theme-bg);color:var(--theme-ink);display:flex;flex-direction:column;transition:background var(--tr),color var(--tr)}
+
+/* ── LAYOUT ── */
+#app{display:flex;flex:1;overflow:hidden;height:calc(100vh - 32px)}
+
+/* ── SIDEBAR ── */
+#sb{width:var(--sb);background:var(--theme-sb);border-right:.5px solid var(--theme-bd);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;transition:transform .35s cubic-bezier(.4,0,.2,1),background var(--tr),border-color var(--tr)}
+body.pres #sb{transform:translateX(calc(-1 * var(--sb) - 2px))}
+#sb-hd{padding:12px 16px 10px;border-bottom:.5px solid var(--theme-bd);flex-shrink:0}
+.logo-r{display:flex;align-items:center;gap:7px}
+.logo-d{width:6px;height:6px;background:var(--p);border-radius:50%}
+.sb-title{font-size:13px;font-weight:700;color:var(--theme-ink);letter-spacing:-0.2px}
+#sb-sc{flex:1;overflow-y:auto;padding:0}
+#sb-sc::-webkit-scrollbar{width:3px}
+#sb-sc::-webkit-scrollbar-thumb{background:var(--theme-bd);border-radius:3px}
+
+/* ── SECTIONS ── */
+.cs{border-bottom:.5px solid var(--theme-bd)}
+.cs-hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;cursor:pointer;user-select:none;transition:background var(--tr)}
+.cs-hd:hover{background:var(--theme-hover)}
+.cs-label{font-size:9px;font-weight:700;color:var(--theme-mu);text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:6px}
+.cs-label span.tag{width:4px;height:4px;border-radius:50%;background:var(--p);display:inline-block;flex-shrink:0}
+.cs-chevron{font-size:9px;color:var(--theme-mu);transition:transform var(--tr)}
+.cs-chevron.open{transform:rotate(180deg)}
+.cs-body{padding:10px 14px 12px;display:none}
+.cs-body.open{display:block}
+
+/* ── CONTROLS ── */
+.cr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px}
+.cr:last-child{margin-bottom:0}
+.cl{font-size:11px;color:var(--theme-ink);font-weight:500;display:flex;align-items:center;gap:4px;min-width:72px;flex-shrink:0;text-transform:none;letter-spacing:normal}
+.stp{display:flex;align-items:center;border:.5px solid var(--theme-bd);border-radius:5px;overflow:hidden;flex-shrink:0;background:transparent}
+.stp-b{width:26px;height:26px;display:flex;align-items:center;justify-content:center;background:var(--theme-ow);border:none;cursor:pointer;font-size:15px;color:var(--theme-ink);transition:background var(--tr);user-select:none;flex-shrink:0}
+.stp-b:hover{background:var(--pl);color:var(--p)}
+.stp-b:active{background:var(--p);color:#fff}
+.stp-v{min-width:30px;text-align:center;font-size:11px;font-weight:600;color:var(--theme-ink);border-left:.5px solid var(--theme-bd);border-right:.5px solid var(--theme-bd);line-height:26px;padding:0 3px}
+.ti{width:100%;padding:5px 8px;border:.5px solid var(--theme-bd);border-radius:5px;font-size:11px;font-family:var(--fn);color:var(--theme-ink);background:var(--theme-sb);outline:none;transition:border-color var(--tr)}
+.ti:focus{border-color:var(--p)}
+.rp-g{display:flex;gap:3px;flex-wrap:wrap}
+.rp{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:500;cursor:pointer;border:.5px solid var(--theme-bd);background:var(--theme-sb);color:var(--theme-mu);transition:all var(--tr);white-space:nowrap}
+.rp.on{background:var(--p);color:#fff;border-color:var(--p);font-weight:600}
+.rp:hover:not(.on){border-color:var(--p);color:var(--p)}
+.trow{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.trow:last-child{margin-bottom:0}
+.tg{position:relative;width:30px;height:16px;flex-shrink:0}
+.tg input{opacity:0;width:0;height:0}
+.tg-sl{position:absolute;inset:0;background:var(--theme-bd);border-radius:16px;cursor:pointer;transition:background var(--tr)}
+.tg-sl::before{content:'';position:absolute;width:10px;height:10px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform var(--tr);box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.tg input:checked+.tg-sl{background:var(--p)}
+.tg input:checked+.tg-sl::before{transform:translateX(14px)}
+.swts{display:flex;gap:4px;flex-wrap:wrap}
+.sw2{width:22px;height:22px;border-radius:4px;cursor:pointer;border:1.5px solid transparent;transition:all var(--tr);position:relative;flex-shrink:0}
+.sw2.on{border-color:var(--p);transform:scale(1.1)}
+.sw2.on::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--p)}
+.pg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:8px}
+.pb{padding:5px 3px;border-radius:5px;font-size:9.5px;cursor:pointer;border:.5px solid var(--theme-bd);background:var(--theme-sb);color:var(--theme-mu);transition:all var(--tr);text-align:center;line-height:1.3}
+.pb .pn{color:var(--theme-ink);font-weight:600;font-size:10px;display:block}
+.pb .ps{font-size:8.5px;color:var(--theme-mu)}
+.pb.on{background:var(--pl);border-color:var(--p)}
+.pb.on .pn{color:var(--p)}
+.pb:hover:not(.on){border-color:var(--p);background:var(--theme-hover)}
+.custom-size{display:flex;gap:5px;align-items:center;margin-top:4px}
+.custom-size input[type=number]{width:64px;padding:4px 6px;border:.5px solid var(--theme-bd);border-radius:4px;font-size:11px;font-family:var(--fn);color:var(--theme-ink);background:var(--theme-sb);outline:none;text-align:center;-moz-appearance:textfield}
+.custom-size input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+.custom-size span{font-size:10px;color:var(--theme-mu)}
+
+/* ── BOTTOM BTNS ── */
+.dl-group{display:flex;gap:6px;margin:10px 14px}
+#dl-btn{flex:1;padding:8px 0;background:var(--theme-ink);color:var(--theme-sb);border:none;border-radius:6px;font-family:var(--fn);font-size:12px;font-weight:600;cursor:pointer;transition:all var(--tr);display:flex;align-items:center;justify-content:center;gap:6px}
+#dl-btn:hover{background:var(--p)}
+#dl-btn.ld{background:var(--theme-mu);cursor:wait;pointer-events:none}
+#pdf-btn{padding:8px 10px;background:var(--theme-ow);color:var(--theme-ink);border:.5px solid var(--theme-bd);border-radius:6px;font-family:var(--fn);font-size:11px;font-weight:600;cursor:pointer;transition:all var(--tr);display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0}
+#pdf-btn:hover{border-color:var(--p);color:var(--p)}
+
+/* ── MAIN ── */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;transition:all .35s cubic-bezier(.4,0,.2,1)}
+body.pres #main{width:100%}
+
+/* ── TOP BAR ── */
+#ptb{display:flex;align-items:center;padding:7px 16px;background:var(--theme-ptb);border-bottom:.5px solid var(--theme-bd);gap:8px;flex-shrink:0;transition:background var(--tr),border-color var(--tr)}
+body.pres #ptb{display:none}
+.dp{background:var(--theme-ow);border:.5px solid var(--theme-bd);border-radius:4px;padding:3px 8px;font-size:10px;color:var(--theme-mu);font-weight:500}
+.dp strong{color:var(--theme-ink);font-weight:700}
+.ht{font-size:9.5px;color:var(--theme-mu);margin-left:auto;display:flex;align-items:center;gap:4px}
+
+/* ── CANVAS TOOLBAR ── */
+#canvas-tb{display:flex;align-items:center;padding:6px 16px;background:var(--theme-ptb);border-bottom:.5px solid var(--theme-bd);gap:8px;flex-shrink:0;transition:background var(--tr)}
+body.pres #canvas-tb{display:none}
+.ctb-sep{width:.5px;height:18px;background:var(--theme-bd);flex-shrink:0;margin:0 2px}
+.ctb-btn{display:flex;align-items:center;gap:4px;padding:4px 8px;border-radius:5px;border:.5px solid transparent;cursor:pointer;font-size:10px;font-weight:600;color:var(--theme-mu);background:transparent;font-family:var(--fn);transition:all var(--tr);white-space:nowrap;user-select:none}
+.ctb-btn:hover{background:var(--theme-hover);color:var(--theme-ink);border-color:var(--theme-bd)}
+.ctb-btn.on{background:var(--pl);color:var(--p);border-color:var(--p)}
+.ctb-btn svg{flex-shrink:0}
+.th-pills{display:flex;gap:5px}
+.th-pill{height:26px;padding:0 10px;border-radius:20px;cursor:pointer;border:1.5px solid transparent;transition:all .2s ease;position:relative;overflow:hidden;display:flex;align-items:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:.3px;white-space:nowrap;min-width:72px;justify-content:center}
+.th-pill .tp-swatch{width:22px;height:12px;border-radius:6px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.th-pill .tp-name{font-size:9px;font-weight:700;letter-spacing:.2px}
+.th-pill.on{border-color:var(--p);box-shadow:0 0 0 3px rgba(122,123,255,.15)}
+.th-pill:hover:not(.on){border-color:var(--theme-mu);transform:translateY(-1px)}
+.zoom-grp{display:flex;align-items:center;gap:0;border:.5px solid var(--theme-bd);border-radius:5px;overflow:hidden}
+.zoom-btn{width:24px;height:24px;display:flex;align-items:center;justify-content:center;background:var(--theme-ow);border:none;cursor:pointer;font-size:13px;color:var(--theme-ink);transition:background var(--tr);user-select:none}
+.zoom-btn:hover{background:var(--pl);color:var(--p)}
+.zoom-val{font-size:10px;font-weight:700;color:var(--theme-ink);padding:0 6px;line-height:24px;min-width:42px;text-align:center;border-left:.5px solid var(--theme-bd);border-right:.5px solid var(--theme-bd)}
+
+/* ── CANVAS ── */
+#pco{flex:1;overflow:hidden;position:relative;background:var(--theme-bg);background-image:linear-gradient(rgba(127,127,160,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(127,127,160,0.06) 1px,transparent 1px);background-size:20px 20px;transition:background var(--tr)}
+#psc{position:absolute;transform-origin:top left}
+#dp2{position:relative;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,.28),0 2px 8px rgba(0,0,0,.14);transition:box-shadow var(--tr)}
+#pat-overlay{position:absolute;top:0;left:0;pointer-events:none;z-index:30;overflow:visible}
+
+/* ── PRINCIPLES BAR ── */
+#pbar{background:var(--theme-ptb);border-top:.5px solid var(--theme-bd);padding:5px 16px;display:flex;gap:12px;align-items:center;flex-shrink:0;overflow-x:auto;transition:background var(--tr)}
+#pbar::-webkit-scrollbar{display:none}
+body.pres #pbar{display:none}
+.ptag{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--theme-mu);white-space:nowrap}
+.pdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;box-shadow:0 0 4px currentColor}
+
+/* ── CREDIT ── */
+#credit{height:32px;background:var(--theme-cr);display:flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0;transition:background var(--tr)}
+body.pres #credit{display:none}
+.credit-name{font-size:11px;font-weight:600;color:#fff;letter-spacing:-.1px}
+.credit-sep{width:.5px;height:12px;background:rgba(255,255,255,.2)}
+.credit-link{display:flex;align-items:center;gap:5px;text-decoration:none;font-size:10.5px;color:rgba(255,255,255,.55);transition:color var(--tr)}
+.credit-link:hover{color:var(--p)}
+.credit-tag{font-size:9px;color:rgba(255,255,255,.28);letter-spacing:.5px}
+
+/* ── VISUAL SLOTS ── */
+.vsl{position:absolute;cursor:pointer;overflow:hidden;transition:box-shadow var(--tr)}
+.vsl:hover{box-shadow:0 0 0 2px var(--p) inset}
+.vsl:hover .vsl-badge{opacity:1}
+.vsl-badge{position:absolute;top:5px;right:6px;background:var(--p);color:#fff;font-size:7px;font-weight:700;padding:1px 5px;border-radius:3px;opacity:0;transition:opacity var(--tr);pointer-events:none;z-index:5;text-transform:uppercase;letter-spacing:.5px}
+
+/* ── MISC CONTROLS ── */
+.sp-chip{display:inline-flex;align-items:center;gap:4px;background:var(--theme-tag-bg);border:.5px solid var(--theme-bd);border-radius:4px;padding:2px 7px;font-size:9px;color:var(--theme-mu);font-weight:500}
+.sp-chip strong{color:var(--theme-ink);font-weight:700}
+.sdiv{font-size:9px;font-weight:700;color:var(--theme-mu);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;margin-top:2px;display:flex;align-items:center;gap:4px}
+.info-chip{display:flex;align-items:center;gap:5px;background:var(--pl);border-radius:4px;padding:5px 8px;font-size:9.5px;color:#4a4bcc;font-weight:500;margin-top:6px;line-height:1.45}
+
+/* ── TOOLTIP ── */
+.tip-btn{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;border:.5px solid var(--theme-bd);background:var(--theme-ow);color:var(--theme-mu);font-size:8.5px;cursor:default;flex-shrink:0;position:relative;text-transform:none;letter-spacing:normal;font-weight:400}
+.tip-btn:hover .tip-box{display:block}
+.tip-box{display:none;position:absolute;left:18px;top:-4px;width:210px;background:#1a1a1a;color:#f0f0f0;font-size:10.5px;line-height:1.5;padding:8px 10px;border-radius:6px;z-index:9999;font-weight:400;text-transform:none;letter-spacing:normal;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.4);white-space:normal}
+.tip-box::before{content:'';position:absolute;left:-4px;top:8px;border-top:4px solid transparent;border-bottom:4px solid transparent;border-right:4px solid #1a1a1a}
+
+/* ── PATTERN ── */
+.pattern-panel{margin-top:8px;border:.5px solid var(--theme-bd);border-radius:7px;overflow:hidden;background:var(--theme-sb)}
+.pattern-tab-bar{display:flex;border-bottom:.5px solid var(--theme-bd)}
+.pattern-tab{flex:1;padding:7px 4px;font-size:9px;font-weight:700;text-align:center;cursor:pointer;color:var(--theme-mu);border:none;background:transparent;transition:all var(--tr);font-family:var(--fn);text-transform:uppercase;letter-spacing:.6px}
+.pattern-tab.on{background:var(--theme-ink);color:var(--theme-sb)}
+.pattern-tab:hover:not(.on){background:var(--theme-hover);color:var(--theme-ink)}
+.pattern-body{padding:10px 12px 12px}
+.pattern-desc{font-size:10px;color:var(--theme-mu);line-height:1.5;margin-bottom:8px}
+.pattern-preview-vis{width:100%;height:80px;display:block;background:var(--theme-ow);border-radius:4px;border:.5px solid var(--theme-bd)}
+.pattern-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.pattern-leg-item{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--theme-mu)}
+.pattern-leg-dot{width:8px;height:2px;border-radius:1px;flex-shrink:0}
+
+/* ── TEMPLATES SECTION ── */
+.tpl-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:10px}
+.tpl-btn{padding:7px 6px;border-radius:5px;border:.5px solid var(--theme-bd);background:var(--theme-ow);cursor:pointer;transition:all var(--tr);text-align:center}
+.tpl-btn:hover{border-color:var(--p);background:var(--pl)}
+.tpl-btn .tpl-n{font-size:10px;font-weight:700;color:var(--theme-ink);display:block;margin-bottom:2px}
+.tpl-btn .tpl-d{font-size:8.5px;color:var(--theme-mu);display:block;line-height:1.3}
+.tpl-actions{display:flex;gap:5px}
+.tpl-act{flex:1;padding:6px 8px;border-radius:5px;border:.5px solid var(--theme-bd);background:var(--theme-ow);cursor:pointer;font-family:var(--fn);font-size:10.5px;font-weight:600;color:var(--theme-ink);transition:all var(--tr);display:flex;align-items:center;justify-content:center;gap:4px}
+.tpl-act:hover{border-color:var(--p);color:var(--p)}
+.tpl-act.primary{background:var(--theme-ink);color:var(--theme-sb);border-color:var(--theme-ink)}
+.tpl-act.primary:hover{background:var(--p);border-color:var(--p)}
+
+/* ── PRESENTATION MODE ── */
+#pres-bar{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(20,20,30,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,.1);border-radius:30px;padding:8px 16px;gap:12px;align-items:center;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+body.pres #pres-bar{display:flex}
+.pres-item{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:rgba(255,255,255,.7);cursor:pointer;padding:4px 10px;border-radius:20px;transition:all var(--tr)}
+.pres-item:hover{background:rgba(255,255,255,.1);color:#fff}
+.pres-item svg{flex-shrink:0}
+.pres-key{font-size:8.5px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);padding:1px 5px;border-radius:3px;font-weight:700;letter-spacing:.5px}
+
+/* ── TOAST ── */
+#toast-zone{position:fixed;bottom:80px;right:24px;z-index:9998;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:rgba(20,20,30,.92);backdrop-filter:blur(10px);color:#fff;padding:8px 14px;border-radius:8px;font-size:11px;font-weight:600;border-left:3px solid var(--p);pointer-events:none;opacity:0;transform:translateX(20px);transition:all .25s ease-out;box-shadow:0 4px 20px rgba(0,0,0,.35)}
+.toast.in{opacity:1;transform:translateX(0)}
+.toast.err{border-left-color:#e88080}
+.toast.ok{border-left-color:#6bc98c}
+
+/* ── PATTERN ANIMATION ── */
+@keyframes drawPat{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
+@keyframes fadePat{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.pat-line{animation:drawPat var(--dur,.5s) cubic-bezier(.4,0,.2,1) var(--delay,0s) forwards}
+.pat-dot{opacity:0;animation:fadePat .25s ease-out var(--delay,0s) forwards}
+.pat-lbl{opacity:0;animation:fadePat .3s ease-out var(--delay,0s) forwards}
+
+/* ── FILE INPUT HIDDEN ── */
+#tpl-file-input{display:none}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- SIDEBAR -->
+  <div id="sb">
+    <div id="sb-hd">
+      <div class="logo-r">
+        <div class="logo-d"></div>
+        <span class="sb-title">PBI Mockup Creator</span>
+        <span style="margin-left:auto;background:var(--pl);color:var(--p);font-size:8.5px;font-weight:700;padding:2px 6px;border-radius:3px">v2026</span>
+      </div>
+    </div>
+    <div id="sb-sc">
+<!-- 1. Canvas -->
+<div class="cs">
+  <div class="cs-hd" onclick="toggleSection('canvas')">
+    <span class="cs-label">
+      <span class="tag"></span>Canvas
+    </span>
+    <span class="cs-chevron open" id="chev-canvas">▾</span>
+  </div>
+
+  <div class="cs-body open" id="body-canvas">
+
+    <!-- Canvas preview -->
+    <div class="pg" id="pg"></div>
+
+    <!-- Custom size -->
+    <div id="custom-size-row" class="hidden">
+      <div class="sdiv">Dimensiones</div>
+      <div class="custom-size">
+        <input type="number" id="cw-input" placeholder="1280" min="200" max="3840">
+        <span>×</span>
+        <input type="number" id="ch-input" placeholder="720" min="200" max="2160">
+        <span>px</span>
+      </div>
+    </div>
+
+    <div class="spacer-8"></div>
+
+    <!-- 🔹 TÍTULO -->
+    <div class="sdiv">Título del dashboard</div>
+    <div class="block">
+      <input 
+        type="text" 
+        class="ti" 
+        id="dash-title" 
+        value="Análisis Comercial · 2026"
+      >
+
+      <div class="cr">
+        <span class="cl">Tamaño título</span>
+        <div id="dash-title-stp"></div>
+      </div>
+    </div>
+
+    <!-- 🔹 SUBTÍTULO -->
+    <div class="sdiv">Subtítulo del dashboard</div>
+    <div class="block">
+      <input 
+        type="text" 
+        class="ti" 
+        id="dash-subtitle" 
+        value="Análisis de ventas por canal y región"
+      >
+
+      <div class="cr">
+        <span class="cl">Tamaño</span>
+        <div id="dash-subtitle-stp"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+      <!-- 2. Márgenes -->
+      <div class="cs"><div class="cs-hd" onclick="toggleSection('margins')"><span class="cs-label"><span class="tag"></span>Márgenes &amp; Spacing</span><span class="cs-chevron open" id="chev-margins">▾</span></div>
+        <div class="cs-body open" id="body-margins"><div id="mc"></div></div>
+      </div>
+      <!-- 3. Zonas -->
+      <div class="cs"><div class="cs-hd" onclick="toggleSection('zones')"><span class="cs-label"><span class="tag"></span>Zonas del Dashboard</span><span class="cs-chevron open" id="chev-zones">▾</span></div>
+        <div class="cs-body open" id="body-zones"><div id="zc"></div></div>
+      </div>
+      <!-- 4. Estilo -->
+      <div class="cs"><div class="cs-hd" onclick="toggleSection('style')"><span class="cs-label"><span class="tag"></span>Estilo Visual</span><span class="cs-chevron" id="chev-style">▾</span></div>
+        <div class="cs-body" id="body-style"><div id="stc"></div></div>
+      </div>
+      <!-- 5. Guías -->
+      <div class="cs"><div class="cs-hd" onclick="toggleSection('guides')"><span class="cs-label"><span class="tag"></span>Guías de Diseño</span><span class="cs-chevron" id="chev-guides">▾</span></div>
+        <div class="cs-body" id="body-guides"><div id="gc"></div></div>
+      </div>
+      <!-- 6. Visuales -->
+      <div class="cs"><div class="cs-hd" onclick="toggleSection('vtypes')"><span class="cs-label"><span class="tag"></span>Tipo de Visuales</span><span class="cs-chevron" id="chev-vtypes">▾</span></div>
+        <div class="cs-body" id="body-vtypes"><div id="vtc"></div></div>
+      </div>
+      <!-- 7. Plantillas -->
+      <div class="cs"><div class="cs-hd" onclick="toggleSection('templates')"><span class="cs-label"><span class="tag"></span>Plantillas</span><span class="cs-chevron" id="chev-templates">▾</span></div>
+        <div class="cs-body" id="body-templates"><div id="tplc"></div></div>
+      </div>
+    </div>
+    <div class="dl-group">
+      <button id="dl-btn" onclick="doDownload()">
+        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7.5M3.5 6l3 3 3-3M1.5 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Exportar PNG
+      </button>
+      <button id="pdf-btn" onclick="doExportPDF()" title="Exportar PDF">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 5h6M4 7.5h4M4 10h3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+        PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+    <div id="ptb">
+      <div class="dp"><strong id="dt">1280 × 720</strong> px</div>
+      <div class="dp">Escala: <strong id="sc">100%</strong></div>
+      <div class="dp" id="layout-info" style="display:none"><strong id="lt"></strong></div>
+      <div class="ht">
+        <svg width="10" height="10" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="currentColor" stroke-width=".9"/><path d="M5.5 5v3M5.5 3.8h.01" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+        Clic en visual para cambiar · <kbd style="background:var(--theme-tag-bg);border:.5px solid var(--theme-bd);border-radius:3px;padding:1px 4px;font-size:8px">P</kbd> presentación
+      </div>
+    </div>
+    <!-- Canvas toolbar -->
+    <div id="canvas-tb">
+      <span style="font-size:9px;font-weight:700;color:var(--theme-mu);text-transform:uppercase;letter-spacing:.8px;margin-right:2px">Tema</span>
+      <div class="th-pills" id="th-pills"></div>
+      <div class="ctb-sep"></div>
+      <div class="zoom-grp">
+        <button class="zoom-btn" onclick="changeZoom(-0.1)" title="Alejar (Ctrl -)">−</button>
+        <span class="zoom-val" id="zoom-val">100%</span>
+        <button class="zoom-btn" onclick="changeZoom(0.1)" title="Acercar (Ctrl +)">+</button>
+        <button class="zoom-btn" onclick="fitZoom()" title="Ajustar" style="font-size:9px;width:28px;border-left:.5px solid var(--theme-bd)">⊡</button>
+      </div>
+      <div class="ctb-sep"></div>
+      <button class="ctb-btn" onclick="togglePresentation()" id="pres-btn">
+        <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 11h4M7 11v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Presentar
+      </button>
+      <div style="margin-left:auto;font-size:9px;color:var(--theme-mu)">
+        <kbd style="background:var(--theme-tag-bg);border:.5px solid var(--theme-bd);border-radius:3px;padding:1px 4px">⌘S</kbd> guardar
+        <kbd style="background:var(--theme-tag-bg);border:.5px solid var(--theme-bd);border-radius:3px;padding:1px 4px;margin-left:4px">⌘E</kbd> exportar
+      </div>
+    </div>
+    <div id="pco">
+      <div id="psc">
+        <div id="dp2"></div>
+        <div id="pat-overlay"></div>
+      </div>
+    </div>
+    <div id="pbar"></div>
+  </div>
+</div>
+
+<!-- CREDIT -->
+<div id="credit">
+  <span class="credit-tag">CREADO POR</span>
+  <span class="credit-name">Borja Mora Méndez</span>
+  <div class="credit-sep"></div>
+  <a class="credit-link" href="https://www.linkedin.com/in/borjamoramendez/?locale=cha" target="_blank" rel="noopener">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    linkedin.com/in/borjamoramendez
+  </a>
+  <div class="credit-sep"></div>
+  <span class="credit-tag">PBI MOCKUP CREATOR v4</span>
+</div>
+
+<!-- PRESENTATION BAR -->
+<div id="pres-bar">
+  <div class="pres-item" onclick="togglePresentation()">
+    <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M3 3l8 4-8 4V3z" fill="currentColor" opacity=".7"/></svg>
+    Presentación activa
+    <span class="pres-key">ESC</span>
+  </div>
+  <div class="ctb-sep" style="background:rgba(255,255,255,.15)"></div>
+  <div class="pres-item" onclick="doDownload()">
+    <svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7.5M3.5 6l3 3 3-3M1.5 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    Exportar
+  </div>
+</div>
+
+<!-- TOAST ZONE -->
+<div id="toast-zone"></div>
+<input type="file" id="tpl-file-input" accept=".json" onchange="loadTemplateFile(event)">
+
+<script>
+// ═══════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════
+const SIZES=[
+  {n:'16:9',w:1280,h:720,d:'1280×720'},
+  {n:'4:3',w:1024,h:768,d:'1024×768'},
+  {n:'Carta',w:816,h:1056,d:'816×1056'},
+  {n:'Tooltip',w:320,h:240,d:'320×240'},
+  {n:'Móvil',w:400,h:640,d:'400×640'},
+  {n:'Custom',w:1280,h:720,d:'Custom',custom:true},
+];
+const VTYPES=['bar','line','table','waterfall','funnel','area','matrix','column','lollypop','dumbbell','slope'];
+const VLABELS={bar:'Barras',line:'Líneas',table:'Tabla',waterfall:'Cascada',funnel:'Funnel',area:'Área',matrix:'Matrix',column:'Columnas',lollypop:'Lollipop',dumbbell:'Dumbbell',slope:'Slope'};
+const CBGS=[{h:'#FFFFFF',n:'Blanco'},{h:'#F8F8F8',n:'Snow'},{h:'#F2F2F2',n:'Humo'},{h:'#EAEAEA',n:'Plata'},{h:'#E0E0E0',n:'Gris'},{h:'#D5D5D5',n:'Plomo'}];
+const CBGS_D=[{h:'#0f0f14',n:'Negro'},{h:'#141420',n:'Noche'},{h:'#1a1a28',n:'Dark'},{h:'#22222e',n:'Carbón'},{h:'#2a2a38',n:'Pizarra'}];
+const CCARD=[{h:'#FFFFFF',n:'Blanco'},{h:'#FAFAFA',n:'Nieve'},{h:'#F6F6F6',n:'Lino'},{h:'#EFEFEF',n:'Perla'}];
+const CCARD_D=[{h:'#111118',n:'Negro'},{h:'#181825',n:'Noche'},{h:'#1e1e2e',n:'Dark'},{h:'#252535',n:'Carbón'}];
+const CBORD=[{h:'#EBEBEB',n:'S-suave'},{h:'#DCDCDC',n:'Suave'},{h:'#CCCCCC',n:'Medio'},{h:'#BBBBBB',n:'Fuerte'}];
+const CBORD_D=[{h:'#222230',n:'S-suave'},{h:'#2e2e42',n:'Suave'},{h:'#3a3a55',n:'Medio'},{h:'#484860',n:'Fuerte'}];
+const KD=[
+  {l:'Ingresos',v:'€ 2,84M',d:'+12,4%',p:true},
+  {l:'Unidades',v:'48.236',d:'+8,1%',p:true},
+  {l:'Ticket Medio',v:'€ 58,90',d:'-2,3%',p:false},
+  {l:'Margen',v:'34,7%',d:'+1,2%',p:true},
+  {l:'Clientes',v:'12.412',d:'+5,7%',p:true},
+  {l:'Retención',v:'78,3%',d:'-0,8%',p:false},
+];
+const THEMES={
+  light:{n:'Gris–Morado',sb:[230,230,235],card:[255,255,255]},
+  dark:{n:'Negro–Morado',sb:[19,19,31],card:[28,28,44]},
+  warm:{n:'Cálido',sb:[250,247,243],card:[255,255,255]},
+};
+const THEME_PILLS={
+  light:{top:'#ededf5',bot:'#7a7bff'},
+  dark:{top:'#13131f',bot:'#7a7bff'},
+  warm:{top:'#f4f0e8',bot:'#8c6840'},
+};
+const TIPS={
+  margins:'Distancia entre el borde del canvas y el primer elemento. Power BI: 20–32 px.',
+  gap:'Gestalt: proximidad — los elementos cercanos se perciben como un grupo.',
+  header:'Barra superior con título, subtítulo y acciones globales.',
+  filter:'Posición de los controles de filtro interactivos.',
+  filterW:'Ancho de la columna lateral de filtros en píxeles.',
+  kpi:'Fila de tarjetas KPI. Máx. 6 para no sobrecargar cognitivamente.',
+  mainV:'Zona A: gráficos principales (mayor jerarquía visual).',
+  secV:'Zona B: gráficos secundarios (menor jerarquía visual).',
+  br:'Radio de esquinas de tarjetas. 0 = angular corporativo. 8–12 = moderno.',
+  cbg:'Color de fondo del canvas.',ccard:'Fondo de tarjetas.',cbord:'Borde de tarjetas.',
+  gridGuide:'Guías de alineación estilo Figma. Color salmón para diferenciarlo del contenido.',
+  gridDir:'Dirección de las guías: columnas, filas, o ambas.',
+  gridCols:'Número de divisiones de la guía.',
+  gridGutter:'Espacio entre columnas/filas de la guía.',
+  gridMargin:'Margen interno adicional de la guía.',
+  pattern:'Z = lectura occidental izquierda→derecha. F = escáner digital en pantalla.',
+  kpiSize:'Tamaño del valor numérico principal en las tarjetas KPI.',
+  kpiSparkline:'Mini gráfico decorativo en la tarjeta KPI (en gris neutro, sin competir con el valor).',
+  tooltip:'Zona de tooltip personalizado: previsualiza el diseño de la página de tooltip de Power BI.',
+  drillthrough:'Zona de drill-through: simula la pantalla de destino al hacer drill.',
+  canvasRadius:'Radio de las esquinas del canvas completo.',
+};
+// FIX: Plantillas sin opción Tooltip — índice si:3 eliminado
+const BUILT_IN_TPLS=[
+  {
+    n:'C-Suite',icon:'◈',
+    d:'KPIs + Tendencia + Tabla Pro · Máx. impacto ejecutivo',
+    hint:'Para presentaciones a dirección. Jerarquía clara: número → tendencia → detalle.',
+    s:{z:{header:true,filter:'none',filterW:160,kpi:4,main:2,sec:1},m:{t:24,b:24,l:24,r:24},gap:12,st:{br:8,cbg:1,ccard:0,cbord:0,canvasRadius:3},vt:{'main-0':7,'main-1':1,'sec-0':2}}
+  },
+  {
+    n:'Comercial',icon:'◉',
+    d:'Filtros + Barras H + Cascada + Lollipop · Seguimiento de ventas',
+    hint:'Ideal para seguimiento comercial diario/semanal. Filtros arriba para agilidad.',
+    s:{z:{header:true,filter:'top',filterW:160,kpi:3,main:2,sec:2},m:{t:20,b:20,l:20,r:20},gap:10,st:{br:6,cbg:0,ccard:0,cbord:0,canvasRadius:3},vt:{'main-0':0,'main-1':3,'sec-0':8,'sec-1':2}}
+  },
+  {
+    n:'Analítico',icon:'⬡',
+    d:'Sidebar + Slope + Dumbbell + Matrix · Deep-dive de datos',
+    hint:'Para analistas. Sidebar de filtros permanente + visuales de comparación avanzados.',
+    s:{z:{header:true,filter:'left',filterW:160,kpi:3,main:2,sec:2},m:{t:24,b:24,l:24,r:24},gap:12,st:{br:10,cbg:1,ccard:0,cbord:0,canvasRadius:3},vt:{'main-0':10,'main-1':9,'sec-0':6,'sec-1':1}}
+  },
+  {
+    n:'Storytelling',icon:'▲',
+    d:'Área prominente + Funnel + Slope · Narrativa de datos',
+    hint:'Diseñado para comunicar una historia con los datos. Visual A domina la jerarquía.',
+    s:{z:{header:true,filter:'none',filterW:160,kpi:4,main:1,sec:3},m:{t:28,b:28,l:28,r:28},gap:14,st:{br:12,cbg:0,ccard:0,cbord:0,canvasRadius:6},vt:{'main-0':5,'sec-0':4,'sec-1':10,'sec-2':8}}
+  },
+  {
+    n:'Operacional',icon:'⊞',
+    d:'KPIs + 3 visuales A + 2 secundarios · Operaciones diarias',
+    hint:'Para dashboards de operaciones con alta densidad de información.',
+    s:{z:{header:true,filter:'none',filterW:160,kpi:2,main:3,sec:2},m:{t:18,b:18,l:18,r:18},gap:8,st:{br:4,cbg:0,ccard:0,cbord:1,canvasRadius:2},vt:{'main-0':7,'main-1':3,'main-2':5,'sec-0':2,'sec-1':8}}
+  },
+];
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let S={
+  si:0,customW:1280,customH:720,
+  titleSize:18,subSize:11,subtitleSize:13,kpiValueSize:28,kpiSparkline:'sparkline',
+  m:{t:24,b:24,l:24,r:24},gap:12,
+  z:{header:true,filter:'none',filterW:160,kpi:4,main:2,sec:2,tooltip:false,drillthrough:false},
+  st:{br:8,cbg:1,ccard:0,cbord:0,canvasRadius:3},
+  grid:{show:false,dir:'both',cols:3,gutter:16,margin:0},
+  pattern:'Z',theme:'light',zoom:1,vt:{},
+  vDrill:{},
+  vTooltip:{},
+};
+
+function gvt(k,fb){return VTYPES[(S.vt[k]!==undefined?S.vt[k]:(fb||0))%VTYPES.length]}
+
+// ═══════════════════════════════════════════
+// PRESS & HOLD
+// ═══════════════════════════════════════════
+let _pt=null,_pi=null;
+function startPress(id,d,mn,mx,path){
+  if(['titleSize','subSize','kpiValueSize'].includes(id)){
+    const nv=Math.max(mn,Math.min(mx,(S[id]||12)+d));
+    if(nv===S[id])return;S[id]=nv;
+    const el=document.getElementById(id+'-v');if(el)el.textContent=nv;renderPreview();
+    _pt=setTimeout(()=>{_pi=setInterval(()=>{const n2=Math.max(mn,Math.min(mx,(S[id]||12)+d));if(n2===S[id])return;S[id]=n2;const e2=document.getElementById(id+'-v');if(e2)e2.textContent=n2;renderPreview()},80)},350);return;
+  }
+  hspx(id,d,mn,mx,path);
+  _pt=setTimeout(()=>{_pi=setInterval(()=>hspx(id,d,mn,mx,path),80)},350);
+}
+function endPress(){clearTimeout(_pt);clearInterval(_pi);_pt=null;_pi=null}
+document.addEventListener('mouseup',endPress);document.addEventListener('touchend',endPress);
+
+// ═══════════════════════════════════════════
+// SECTION TOGGLE
+// ═══════════════════════════════════════════
+function toggleSection(id){
+  const body=document.getElementById('body-'+id),chev=document.getElementById('chev-'+id);
+  const open=body.classList.toggle('open');
+  if(open)chev.classList.add('open');else chev.classList.remove('open');
+}
+
+function tip(key){return`<span class="tip-btn">?<span class="tip-box">${TIPS[key]||''}</span></span>`}
+
+// ═══════════════════════════════════════════
+// STEPPERS
+// ═══════════════════════════════════════════
+function spxHtml(id,val,mn,mx,step){
+  return`<div class="stp">
+    <button class="stp-b" onmousedown="startPress('${id}',${-step},${mn},${mx},'${id}')" onmouseup="endPress()" onmouseleave="endPress()" ontouchstart="startPress('${id}',${-step},${mn},${mx},'${id}')" ontouchend="endPress()">−</button>
+    <span class="stp-v" id="${id}-v">${val}</span>
+    <button class="stp-b" onmousedown="startPress('${id}',${step},${mn},${mx},'${id}')" onmouseup="endPress()" onmouseleave="endPress()" ontouchstart="startPress('${id}',${step},${mn},${mx},'${id}')" ontouchend="endPress()">+</button>
+  </div>`;
+}
+function spx(id,lbl,mn,mx,val,step,path,tipKey=''){
+  return`<div class="cr"><span class="cl">${lbl}${tipKey?tip(tipKey):''}</span>
+    <div class="stp">
+      <button class="stp-b" onmousedown="startPress('${id}',${-step},${mn},${mx},'${path}')" onmouseup="endPress()" onmouseleave="endPress()" ontouchstart="startPress('${id}',${-step},${mn},${mx},'${path}')" ontouchend="endPress()">−</button>
+      <span class="stp-v" id="${id}-v">${val}</span>
+      <button class="stp-b" onmousedown="startPress('${id}',${step},${mn},${mx},'${path}')" onmouseup="endPress()" onmouseleave="endPress()" ontouchstart="startPress('${id}',${step},${mn},${mx},'${path}')" ontouchend="endPress()">+</button>
+    </div></div>`;
+}
+function sp(id,lbl,mn,mx,val,path,tipKey=''){
+  return`<div class="cr"><span class="cl">${lbl}${tipKey?tip(tipKey):''}</span>
+    <div class="stp">
+      <button class="stp-b" onclick="hsp('${id}',-1,${mn},${mx},'${path}')">−</button>
+      <span class="stp-v" id="${id}-v">${val}</span>
+      <button class="stp-b" onclick="hsp('${id}',1,${mn},${mx},'${path}')">+</button>
+    </div></div>`;
+}
+function hspx(id,d,mn,mx,path){
+  const parts=path.split('.');let obj=S;
+  for(let i=0;i<parts.length-1;i++)obj=obj[parts[i]];
+  const k=parts[parts.length-1];
+  const nv=Math.max(mn,Math.min(mx,(obj[k]||0)+d));
+  if(nv===obj[k])return;obj[k]=nv;
+  const el=document.getElementById(id+'-v');if(el)el.textContent=nv;
+  afterChange(path);
+}
+function hsp(id,d,mn,mx,path){
+  const parts=path.split('.');let obj=S;
+  for(let i=0;i<parts.length-1;i++)obj=obj[parts[i]];
+  const k=parts[parts.length-1];
+  const nv=Math.max(mn,Math.min(mx,obj[k]+d));
+  if(nv===obj[k])return;obj[k]=nv;
+  const el=document.getElementById(id+'-v');if(el)el.textContent=nv;
+  if(path.startsWith('z.')){renderZones();renderVTypes();}renderPreview();
+}
+function afterChange(path){
+  if(path.startsWith('grid.'))renderGuides();
+  else if(path==='z.filterW')renderZones();
+  else if(path.startsWith('st.'))renderStyle();
+  else if(path.startsWith('m.')||path==='gap')renderMargins();
+  renderPreview();
+}
+function ss(path,val){sp2(path,val);renderControls();renderPreview()}
+function sp2(path,val){
+  const parts=path.split('.');let obj=S;
+  for(let i=0;i<parts.length-1;i++)obj=obj[parts[i]];
+  obj[parts[parts.length-1]]=val;
+}
+
+// ═══════════════════════════════════════════
+// THEME SYSTEM
+// ═══════════════════════════════════════════
+function applyTheme(id){
+  S.theme=id;
+  document.documentElement.setAttribute('data-theme',id);
+  const isDark=id==='dark';
+  if(isDark){S.st.cbg=1;S.st.ccard=1;S.st.cbord=1;}
+  else{S.st.cbg=1;S.st.ccard=0;S.st.cbord=0;}
+  renderThemePills();renderStyle();renderPreview();
+}
+// Theme pill config with gradient swatches
+const THEME_PILL_CFG={
+  light:{n:'Claro',g1:'#e8e8f0',g2:'#7a7bff',txtC:'var(--theme-ink)'},
+  dark:{n:'Oscuro',g1:'#13131f',g2:'#7a7bff',txtC:'var(--theme-ink)'},
+  warm:{n:'Cálido',g1:'#f4ede0',g2:'#c08040',txtC:'var(--theme-ink)'},
+};
+function renderThemePills(){
+  const el=document.getElementById('th-pills');
+  if(!el)return;
+  el.innerHTML=Object.entries(THEME_PILL_CFG).map(([id,c])=>{
+    const on=S.theme===id;
+    const bgStyle=on
+      ?`background:linear-gradient(135deg,${c.g1} 45%,${c.g2} 100%);border-color:${c.g2};`
+      :`background:var(--theme-ow);border-color:var(--theme-bd);`;
+    const nameColor=on?`color:${id==='dark'?'#fff':c.g2}`:';color:var(--theme-mu)';
+    return`<div class="th-pill ${on?'on':''}" style="${bgStyle}" title="${THEMES[id]?.n||id}" onclick="applyTheme('${id}')">
+      <div class="tp-swatch" style="background:linear-gradient(135deg,${c.g1} 40%,${c.g2} 100%);border:.5px solid rgba(0,0,0,.1)"></div>
+      <span class="tp-name" style="${nameColor}">${c.n}</span>
+    </div>`;
+  }).join('');
+}
+
+function getCbg(){
+  const isDark=S.theme==='dark';
+  const arr=isDark?CBGS_D:CBGS;
+  return arr[Math.min(S.st.cbg,arr.length-1)].h;
+}
+function getCcard(){
+  const isDark=S.theme==='dark';
+  const arr=isDark?CCARD_D:CCARD;
+  return arr[Math.min(S.st.ccard,arr.length-1)].h;
+}
+function getCbord(){
+  const isDark=S.theme==='dark';
+  const arr=isDark?CBORD_D:CBORD;
+  return arr[Math.min(S.st.cbord,arr.length-1)].h;
+}
+
+// ═══════════════════════════════════════════
+// CONTROLS RENDERING
+// ═══════════════════════════════════════════
+function renderControls(){
+  renderSizes();renderTitleSteppers();renderMargins();renderZones();renderStyle();renderGuides();renderVTypes();renderTemplates();renderThemePills();
+}
+function renderTitleSteppers(){
+  const e1=document.getElementById('dash-title-stp'),e2=document.getElementById('dash-sub-stp'),e3=document.getElementById('dash-subtitle-stp');
+  if(e1)e1.innerHTML=spxHtml('titleSize',S.titleSize,8,48,1);
+  if(e2)e2.innerHTML=spxHtml('subSize',S.subSize,6,24,1);
+  if(e3)e3.innerHTML=spxHtml('subtitleSize',S.subtitleSize,8,36,1);
+}
+function renderSizes(){
+  document.getElementById('pg').innerHTML=SIZES.map((s,i)=>
+    `<button class="pb ${i===S.si?'on':''}" onclick="selSize(${i})"><span class="pn">${s.n}</span><span class="ps">${s.d}</span></button>`).join('');
+  const cr=document.getElementById('custom-size-row');
+  if(cr)cr.style.display=SIZES[S.si].custom?'block':'none';
+}
+function selSize(i){
+  S.si=i;renderSizes();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{renderPreview();_lpk='';updatePatternOverlay(S.pattern,calcLayout())}));
+}
+function applyCustomSize(){
+  S.customW=Math.max(200,Math.min(3840,parseInt(document.getElementById('cw-input').value)||1280));
+  S.customH=Math.max(200,Math.min(2160,parseInt(document.getElementById('ch-input').value)||720));
+  requestAnimationFrame(renderPreview);
+}
+function getCanvasSize(){const sz=SIZES[S.si];return sz.custom?{w:S.customW,h:S.customH}:sz}
+
+function renderMargins(){
+  const m=S.m;
+  document.getElementById('mc').innerHTML=`
+    <div class="sdiv">Márgenes del canvas ${tip('margins')}</div>
+    ${spx('m.t','Superior',0,64,m.t,1,'m.t')}
+    ${spx('m.b','Inferior',0,64,m.b,1,'m.b')}
+    ${spx('m.l','Izquierda',0,64,m.l,1,'m.l')}
+    ${spx('m.r','Derecha',0,64,m.r,1,'m.r')}
+    <div style="height:6px"></div>
+    <div class="sdiv">Separación entre bloques ${tip('gap')}</div>
+    ${spx('gap','Gap',1,40,S.gap,1,'gap')}
+    <div style="margin-top:7px" class="sp-chip">m ${m.t}/${m.b}/${m.l}/${m.r} &nbsp;·&nbsp; gap <strong>${S.gap}</strong>px</div>`;
+}
+
+// FIX: Zonas sin "Zonas especiales" — Tooltip y Drill solo en Tipo de Visuales
+function renderZones(){
+  const z=S.z;
+  document.getElementById('zc').innerHTML=`
+    <div class="sdiv">Elementos del layout</div>
+    <div class="trow"><span class="cl">Header ${tip('header')}</span>
+      <label class="tg"><input type="checkbox" ${z.header?'checked':''} onchange="ss('z.header',this.checked)"><span class="tg-sl"></span></label>
+    </div>
+    <div style="height:4px"></div>
+    <div class="sdiv">Zona de filtros ${tip('filter')}</div>
+    <div class="rp-g" style="margin-bottom:8px">
+      ${[['none','Sin filtros'],['top','Arriba'],['left','Lateral']].map(([v,l])=>
+        `<button class="rp ${z.filter===v?'on':''}" onclick="ss('z.filter','${v}')">${l}</button>`).join('')}
+    </div>
+    ${z.filter==='left'?spx('filterW','Ancho lateral',120,280,z.filterW,8,'z.filterW','filterW'):''}
+    <div style="height:4px"></div>
+    <div class="sdiv">Bloques de datos</div>
+    ${sp('kpi','KPIs',0,6,z.kpi,'z.kpi','kpi')}
+    ${sp('main','Zona A',1,4,z.main,'z.main','mainV')}
+    ${sp('sec','Zona B',0,4,z.sec,'z.sec','secV')}`;
+}
+
+function renderStyle(){
+  const st=S.st;
+  const isDark=S.theme==='dark';
+  const bgArr=isDark?CBGS_D:CBGS, cardArr=isDark?CCARD_D:CCARD, bordArr=isDark?CBORD_D:CBORD;
+  const swt=(arr,path,idx)=>arr.map((s,i)=>
+    `<div class="sw2 ${i===idx?'on':''}" style="background:${s.h};${(!isDark&&(s.h==='#FFFFFF'||s.h==='#FAFAFA'))?'box-shadow:0 0 0 .5px #ddd inset':''}" title="${s.n}" onclick="ss('${path}',${i})"></div>`).join('');
+  document.getElementById('stc').innerHTML=`
+    <div class="sdiv">Radio bordes tarjetas ${tip('br')}</div>
+    ${spx('br','Radio',0,20,st.br,1,'st.br')}
+    <div style="height:4px"></div>
+    <div class="sdiv">Radio canvas ${tip('canvasRadius')}</div>
+    ${spx('canvasR','Radio canvas',0,24,st.canvasRadius,1,'st.canvasRadius')}
+    <div style="height:6px"></div>
+    <div class="sdiv">Fondo canvas ${tip('cbg')}</div>
+    <div class="swts" style="margin-bottom:8px">${swt(bgArr,'st.cbg',st.cbg)}</div>
+    <div class="sdiv">Fondo tarjetas ${tip('ccard')}</div>
+    <div class="swts" style="margin-bottom:8px">${swt(cardArr,'st.ccard',st.ccard)}</div>
+    <div class="sdiv">Borde tarjetas ${tip('cbord')}</div>
+    <div class="swts">${swt(bordArr,'st.cbord',st.cbord)}</div>`;
+}
+
+function renderGuides(){
+  const g=S.grid,pt=S.pattern;
+  // FIX: Pattern colors theme-aware — dark uses white/purple, light uses dark
+  const isDark=S.theme==='dark';
+  const patInk=isDark?'rgba(220,220,255,0.88)':'#111111';
+  const patAcc='#7a7bff';
+  document.getElementById('gc').innerHTML=`
+    <div class="sdiv">Guía de cuadrícula ${tip('gridGuide')}</div>
+    <div class="trow"><span class="cl">Mostrar guías</span>
+      <label class="tg"><input type="checkbox" ${g.show?'checked':''} onchange="ss('grid.show',this.checked)"><span class="tg-sl"></span></label>
+    </div>
+    ${g.show?`
+    <div class="cr" style="flex-direction:column;align-items:flex-start;gap:4px;margin-bottom:8px">
+      <span class="cl">Dirección ${tip('gridDir')}</span>
+      <div class="rp-g">${[['both','Ambas'],['vertical','Columnas'],['horizontal','Filas']].map(([v,l])=>
+        `<button class="rp ${g.dir===v?'on':''}" onclick="ss('grid.dir','${v}')">${l}</button>`).join('')}</div>
+    </div>
+    ${spx('gcols',g.dir==='horizontal'?'Filas':'Columnas',1,12,g.cols,1,'grid.cols','gridCols')}
+    ${spx('ggutter','Gutter',0,48,g.gutter,4,'grid.gutter','gridGutter')}
+    ${spx('gmargin','Margen guía',0,80,g.margin,4,'grid.margin','gridMargin')}
+    `:''}
+    <div style="height:6px"></div>
+    <div class="sdiv">Patrón de lectura ${tip('pattern')}</div>
+    <div class="pattern-panel">
+      <div class="pattern-tab-bar">
+        ${[['Z','Patrón Z'],['F','Patrón F'],['none','Libre']].map(([v,l])=>
+          `<button class="pattern-tab ${pt===v?'on':''}" onclick="setPattern('${v}')">${l}</button>`).join('')}
+      </div>
+      ${pt!=='none'?`
+      <div class="pattern-body">
+        <div class="pattern-desc">${pt==='Z'
+          ?'El ojo recorre en Z: izquierda→derecha arriba, diagonal, izquierda→derecha abajo. KPIs en la barra top, CTA abajo derecha.'
+          :'El ojo escanea en F: fila superior completa, segunda línea más corta, descenso por la izquierda. Potencia la jerarquía de la primera fila.'
+        }</div>
+        <svg class="pattern-preview-vis" viewBox="0 0 220 80" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="212" height="16" rx="2" fill="#e5e5e5" opacity=".5"/>
+          <rect x="4" y="24" width="49" height="16" rx="2" fill="#e5e5e5" opacity=".4"/>
+          <rect x="57" y="24" width="49" height="16" rx="2" fill="#e5e5e5" opacity=".4"/>
+          <rect x="110" y="24" width="49" height="16" rx="2" fill="#e5e5e5" opacity=".4"/>
+          <rect x="163" y="24" width="49" height="16" rx="2" fill="#e5e5e5" opacity=".4"/>
+          <rect x="4" y="44" width="104" height="30" rx="2" fill="#e5e5e5" opacity=".35"/>
+          <rect x="112" y="44" width="100" height="30" rx="2" fill="#e5e5e5" opacity=".35"/>
+          ${pt==='Z'?`
+            <defs><marker id="pz2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 Z" fill="#111" opacity=".8"/></marker></defs>
+            <circle cx="12" cy="12" r="3.5" fill="#111" opacity=".7"/>
+            <line x1="15" y1="12" x2="207" y2="12" stroke="#111" stroke-width="1.4" stroke-dasharray="4,2" marker-end="url(#pz2)" opacity=".7"/>
+            <line x1="207" y1="12" x2="12" y2="59" stroke="#111" stroke-width="1.1" stroke-dasharray="3,2" opacity=".35"/>
+            <line x1="12" y1="59" x2="207" y2="59" stroke="#7a7bff" stroke-width="1.4" stroke-dasharray="4,2" marker-end="url(#pz2)" opacity=".65"/>
+            <text x="8" y="9" font-size="7" font-weight="700" fill="#111" font-family="Segoe UI">①</text>
+            <text x="200" y="9" font-size="7" font-weight="700" fill="#111" font-family="Segoe UI">②</text>
+            <text x="8" y="74" font-size="7" font-weight="700" fill="#111" font-family="Segoe UI">③</text>
+            <text x="196" y="74" font-size="7" font-weight="700" fill="#7a7bff" font-family="Segoe UI">④</text>
+          `:`
+            <defs><marker id="pf2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 Z" fill="#111" opacity=".8"/></marker></defs>
+            <circle cx="12" cy="12" r="3.5" fill="#111" opacity=".7"/>
+            <line x1="12" y1="12" x2="12" y2="70" stroke="#111" stroke-width="1" stroke-dasharray="3,2" opacity=".2"/>
+            <line x1="15" y1="12" x2="207" y2="12" stroke="#111" stroke-width="1.4" stroke-dasharray="4,2" marker-end="url(#pf2)" opacity=".7"/>
+            <line x1="12" y1="36" x2="140" y2="36" stroke="#7a7bff" stroke-width="1.3" stroke-dasharray="4,2" marker-end="url(#pf2)" opacity=".65"/>
+            <line x1="12" y1="59" x2="90" y2="59" stroke="#111" stroke-width="1.1" stroke-dasharray="3,2" marker-end="url(#pf2)" opacity=".4"/>
+            <text x="8" y="9" font-size="7" font-weight="700" fill="#111" font-family="Segoe UI">①</text>
+            <text x="8" y="33" font-size="7" font-weight="700" fill="#7a7bff" font-family="Segoe UI">②</text>
+            <text x="8" y="74" font-size="7" font-weight="700" fill="#111" font-family="Segoe UI">③</text>
+          `}
+        </svg>
+        <div class="pattern-legend">
+          <div class="pattern-leg-item"><div class="pattern-leg-dot" style="background:#111;height:2px"></div>Flujo primario</div>
+          <div class="pattern-leg-item"><div class="pattern-leg-dot" style="background:#7a7bff"></div>${pt==='Z'?'CTA / acción':'Lectura sec.'}</div>
+        </div>
+      </div>`:`<div class="pattern-body"><div class="pattern-desc">Sin patrón. Flujo visual libre.</div></div>`}
+    </div>`;
+}
+
+function setPattern(v){S.pattern=v;renderGuides();renderPreview();_lpk='';requestAnimationFrame(()=>updatePatternOverlay(v,calcLayout()))}
+
+// FIX: renderVTypes — única fuente de verdad para Tooltip y Drill-through
+function renderVTypes(){
+  const z=S.z;let html='';
+  html+=`<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:.5px solid var(--theme-bd)">
+    <div class="sdiv">KPI — Valor principal ${tip('kpiSize')}</div>
+    <div class="cr" style="margin-bottom:8px"><span class="cl">Tamaño</span>${spxHtml('kpiValueSize',S.kpiValueSize,10,48,1)}</div>
+    <div class="sdiv" style="margin-top:6px">Mini gráfico ${tip('kpiSparkline')}</div>
+    <div class="rp-g">${[['none','Sin gráfico'],['sparkline','Sparkline'],['bars','Columnas']].map(([v,l])=>
+      `<button class="rp ${S.kpiSparkline===v?'on':''}" onclick="setKpiSparkline('${v}')">${l}</button>`).join('')}
+    </div></div>`;
+
+  function vBadges(k){
+    const dt=S.vDrill[k]||false;const tt=S.vTooltip[k]||false;
+    return `<div style="display:flex;gap:4px;margin-top:5px">
+      <button style="padding:2px 7px;border-radius:20px;font-size:9px;font-weight:600;cursor:pointer;border:.5px solid ${dt?'#7a7bff':'var(--theme-bd)'};background:${dt?'var(--pl)':'transparent'};color:${dt?'#5a5bcc':'var(--theme-mu)'};font-family:var(--fn)" onclick="S.vDrill['${k}']=!S.vDrill['${k}'];renderVTypes();renderPreview()">Drill-through</button>
+      <button style="padding:2px 7px;border-radius:20px;font-size:9px;font-weight:600;cursor:pointer;border:.5px solid ${tt?'#7a7bff':'var(--theme-bd)'};background:${tt?'var(--pl)':'transparent'};color:${tt?'#5a5bcc':'var(--theme-mu)'};font-family:var(--fn)" onclick="S.vTooltip['${k}']=!S.vTooltip['${k}'];renderVTypes();renderPreview()">Tooltip</button>
+    </div>`;
+  }
+  for(let i=0;i<z.main;i++){
+    const k=`main-${i}`;const t=gvt(k,i);
+    html+=`<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:.5px solid var(--theme-bd)">
+      <div class="sdiv">Zona A · Visual ${i+1}${i===0?' — principal':''}</div>
+      <div class="rp-g">${VTYPES.map((v,vi)=>`<button class="rp ${t===v?'on':''}" onclick="setVT('${k}',${vi})">${VLABELS[v]}</button>`).join('')}</div>
+      ${vBadges(k)}
+    </div>`;
+  }
+  for(let i=0;i<z.sec;i++){
+    const k=`sec-${i}`;const t=gvt(k,i+2);
+    html+=`<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:.5px solid var(--theme-bd)">
+      <div class="sdiv">Zona B · Visual ${i+1}</div>
+      <div class="rp-g">${VTYPES.map((v,vi)=>`<button class="rp ${t===v?'on':''}" onclick="setVT('${k}',${vi})">${VLABELS[v]}</button>`).join('')}</div>
+      ${vBadges(k)}
+    </div>`;
+  }
+  document.getElementById('vtc').innerHTML=html;
+}
+function setVT(k,vi){S.vt[k]=vi;renderControls();renderPreview()}
+function setKpiSparkline(v){S.kpiSparkline=v;renderControls();renderPreview()}
+
+function renderTemplates(){
+  const el=document.getElementById('tplc');if(!el)return;
+  el.innerHTML=`
+    <div class="sdiv">Plantillas rápidas</div>
+    <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:10px">
+      ${BUILT_IN_TPLS.map((t,i)=>`
+      <div class="tpl-btn" onclick="applyBuiltInTpl(${i})" style="display:flex;align-items:center;gap:8px;padding:7px 9px;text-align:left">
+        <span style="width:22px;height:22px;background:var(--pl);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;color:var(--p)">${t.icon||'◉'}</span>
+        <div style="flex:1;min-width:0">
+          <span class="tpl-n" style="display:block">${t.n}</span>
+          <span class="tpl-d">${t.d}</span>
+        </div>
+        <span style="font-size:8px;color:var(--p);font-weight:700;flex-shrink:0">Aplicar →</span>
+      </div>`).join('')}
+    </div>
+    <div class="sdiv">Guardar &amp; Cargar (JSON)</div>
+    <div style="padding:7px 9px;background:var(--theme-tag-bg);border-radius:6px;font-size:9px;color:var(--theme-mu);line-height:1.5;margin-bottom:8px">
+      Guarda toda la configuración del mockup como archivo <strong style="color:var(--theme-ink)">.json</strong>. 
+      Puedes cargarlo en otro momento o compartirlo con tu equipo directamente.
+    </div>
+    <div class="tpl-actions">
+      <button class="tpl-act primary" onclick="saveTemplateJSON()">
+        <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M2 11V7h10v4M5 7V2h4v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Guardar JSON
+      </button>
+      <button class="tpl-act" onclick="document.getElementById('tpl-file-input').click()">
+        <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M4 9l3-3 3 3M7 6v6M2 3h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Cargar JSON
+      </button>
+    </div>
+    <div style="margin-top:8px;display:flex;align-items:flex-start;gap:6px;padding:7px 9px;background:var(--pl);border-radius:6px;border:.5px solid rgba(122,123,255,.25)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="#5a5bcc" style="flex-shrink:0;margin-top:1px"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      <span style="font-size:9px;color:#4a4bcc;line-height:1.45">Comparte tu plantilla en <strong>LinkedIn</strong> — la comunidad PBI en español te lo agradecerá.</span>
+    </div>`;
+}
+
+function applyBuiltInTpl(i){
+  const t=BUILT_IN_TPLS[i];
+  if(t.si!=null)S.si=t.si;
+  Object.assign(S.z,t.s.z);Object.assign(S.m,t.s.m);
+  S.gap=t.s.gap;Object.assign(S.st,t.s.st);S.vt={...t.s.vt};
+  S.vDrill={};S.vTooltip={};
+  renderControls();renderPreview();
+  toast(`✓ Plantilla "${t.n}" aplicada`,true);
+}
+function saveTemplateJSON(){
+  const data=JSON.stringify(S,null,2);
+  const blob=new Blob([data],{type:'application/json'});
+  const a=document.createElement('a');
+  const title=(document.getElementById('dash-title')?.value||'mockup').replace(/[^a-z0-9\-_]/gi,'_').substring(0,30);
+  a.download=`pbi_mockup_${title}.json`;
+  a.href=URL.createObjectURL(blob);a.click();
+  toast('Plantilla guardada como JSON',true);
+}
+function loadTemplateFile(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const loaded=JSON.parse(ev.target.result);
+      if(loaded.m)Object.assign(S.m,loaded.m);
+      if(loaded.z)Object.assign(S.z,loaded.z);
+      if(loaded.st)Object.assign(S.st,loaded.st);
+      if(loaded.grid)Object.assign(S.grid,loaded.grid);
+      if(loaded.gap!=null)S.gap=loaded.gap;
+      if(loaded.vt)S.vt=loaded.vt;
+      if(loaded.pattern)S.pattern=loaded.pattern;
+      if(loaded.titleSize)S.titleSize=loaded.titleSize;
+      if(loaded.subSize)S.subSize=loaded.subSize;
+      if(loaded.si!=null)S.si=loaded.si;
+      if(loaded.theme){applyTheme(loaded.theme)}else{renderControls();renderPreview();}
+      toast('Plantilla cargada correctamente',true);
+    }catch(_){toast('Error al cargar el JSON',false)}
+  };
+  reader.readAsText(file);
+  e.target.value='';
+}
+
+// ═══════════════════════════════════════════
+// ZOOM
+// ═══════════════════════════════════════════
+function changeZoom(d){S.zoom=Math.max(0.25,Math.min(3,S.zoom+d));renderPreview()}
+function fitZoom(){S.zoom=1;renderPreview()}
+function updateZoomUI(){
+  const el=document.getElementById('zoom-val');
+  if(el)el.textContent=Math.round(S.zoom*100)+'%';
+}
+
+// ═══════════════════════════════════════════
+// PRESENTATION MODE
+// ═══════════════════════════════════════════
+function togglePresentation(){
+  document.body.classList.toggle('pres');
+  const on=document.body.classList.contains('pres');
+  const btn=document.getElementById('pres-btn');
+  if(btn)btn.classList.toggle('on',on);
+  if(on)requestAnimationFrame(renderPreview);
+  toast(on?'Modo presentación activo — ESC para salir':'Modo presentación desactivado');
+}
+function exitPresentation(){
+  if(document.body.classList.contains('pres'))togglePresentation();
+}
+
+// ═══════════════════════════════════════════
+// LAYOUT CALC
+// ═══════════════════════════════════════════
+function calcLayout(){
+  const sz=getCanvasSize();const m=S.m,gap=S.gap,z=S.z;
+  const uw=sz.w-m.l-m.r,uh=sz.h-m.t-m.b;
+  const fleft=z.filter==='left',ftop=z.filter==='top';
+  const fsw=fleft?z.filterW:0;
+  const cw=uw-fsw-(fleft?gap:0);
+  const cx=m.l+(fleft?fsw+gap:0);
+  const hdrH=z.header?Math.round(uh*.1):0;
+  const ftH=ftop?Math.round(uh*.075):0;
+  const kpiH=z.kpi>0?Math.round(uh*.165):0;
+  const fixedParts=[hdrH,ftH,kpiH].filter(h=>h>0);
+  const nGaps=Math.max(0,fixedParts.length+(z.main>0?1:0)+(z.sec>0?1:0)-1);
+  const fixedH=fixedParts.reduce((a,b)=>a+b,0);
+  const rem=Math.max(0,uh-fixedH-gap*nGaps);
+  const hasB=z.sec>0;
+  const mainH=hasB?Math.round(rem*.58):rem;
+  const secH=hasB?Math.max(0,rem-mainH):0;
+  let y=m.t,ys={};
+  if(z.header&&hdrH){ys.hdr=y;y+=hdrH+gap}
+  if(ftop&&ftH){ys.ftop=y;y+=ftH+gap}
+  if(z.kpi>0){ys.kpi=y;y+=kpiH+gap}
+  ys.main=y;if(hasB){y+=mainH+gap;ys.sec=y}
+  return{sz,uw,uh,cw,cx,fsw,hdrH,ftH,kpiH,mainH,secH,ys,fleft,ftop,gap,m};
+}
+function calcScale(sz){
+  const co=document.getElementById('pco');const rect=co.getBoundingClientRect();
+  if(!rect.width||!rect.height)return{scale:1,ox:20,oy:20};
+  const availW=rect.width-48,availH=rect.height-48;
+  const fitScale=Math.min(availW/sz.w,availH/sz.h,1);
+  const scale=fitScale*S.zoom;
+  const ox=Math.round(Math.max(24,(rect.width-sz.w*scale)/2));
+  const oy=Math.round(Math.max(24,(rect.height-sz.h*scale)/2));
+  return{scale,ox,oy};
+}
+
+// ═══════════════════════════════════════════
+// CHART COLOR CONTEXT (theme-aware)
+// ═══════════════════════════════════════════
+function cc(){
+  const dark=S.theme==='dark';
+  return{
+    acc:'#7a7bff',
+    ghost:dark?'#363648':'#d4d4e8',
+    grid:dark?'#252535':'#f0f0f8',
+    axis:dark?'#3a3a55':'#e8e8f4',
+    txt:dark?'#555580':'#aaaacc',
+    bg:'transparent',
+    pos:'#6bc98c',neg:'#e88080',
+    line2:dark?'#444466':'#c8c8e0',
+    line3:dark?'#333350':'#ddddef',
+    dark,
+  };
+}
+
+// ═══════════════════════════════════════════
+// ── CHART RENDERERS ──
+// ═══════════════════════════════════════════
+
+// FIX: BAR — padding consistente, no clipping
+function svgBar(w,h){
+  const {acc,ghost,grid,axis,txt,dark}=cc();
+  const data=[
+    {l:'Zona Norte',v:0.92},{l:'Zona Sur',v:0.78},{l:'Zona Este',v:0.85},
+    {l:'Zona Oeste',v:0.61},{l:'Nacional',v:0.97},{l:'Europa',v:0.54},
+  ];
+  const n=data.length;
+  const lblW=Math.max(48,Math.min(70,w*0.32));
+  const pL=lblW+4,pR=36,pT=8,pB=8;
+  const uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
+  const bh=Math.max(5,Math.floor((uH/n)*0.52));
+  const gap2=Math.max(2,Math.floor((uH-bh*n)/(n-1)));
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  [0.25,0.5,0.75,1].forEach(v=>{
+    const x=pL+Math.round(v*uw);
+    s+=`<line x1="${x}" y1="${pT}" x2="${x}" y2="${pT+uH}" stroke="${grid}" stroke-width="1"/>`;
+  });
+  data.forEach((d,i)=>{
+    const cy=pT+i*(bh+gap2)+bh/2;
+    const bw2=Math.max(2,Math.round(d.v*uw));
+    const hi=i===4;
+    s+=`<text x="${pL-5}" y="${cy+3.5}" text-anchor="end" font-size="${Math.max(7,Math.min(9,bh*.9))}" fill="${txt}" font-family="Segoe UI" font-weight="${hi?600:400}">${d.l}</text>`;
+    s+=`<rect x="${pL}" y="${cy-bh/2}" width="${bw2}" height="${bh}" rx="2" fill="${hi?acc:ghost}" opacity="${hi?1:.72}"/>`;
+    // FIX: valor siempre cabe — espacio reservado en pR
+    s+=`<text x="${pL+bw2+4}" y="${cy+3.5}" font-size="${Math.max(6,Math.min(8,bh*.82))}" font-weight="${hi?700:500}" fill="${hi?acc:txt}" font-family="Segoe UI">${Math.round(d.v*100)}%</text>`;
+  });
+  s+=`<line x1="${pL}" y1="${pT}" x2="${pL}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
+  return s+'</svg>';
+}
+
+// FIX: LINE — padding derecho para que el último punto no se corte
+function svgLine(w,h,uid){
+  const {acc,line2,line3,grid,axis,txt,dark}=cc();
+  const n=12,pL=12,pR=18,pT=16,pB=14;
+  const uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
+  const d1=[.28,.38,.32,.50,.44,.62,.55,.70,.62,.80,.73,.88];
+  const d2=[.50,.45,.58,.42,.65,.50,.72,.58,.78,.62,.70,.68];
+  const d3=[.68,.62,.70,.55,.74,.60,.78,.65,.80,.68,.76,.72];
+  const cv=d=>d.map((v,i)=>({x:pL+Math.round(i/(n-1)*uw),y:pT+Math.round((1-v)*uH*.88)}));
+  const c1=cv(d1),c2=cv(d2),c3=cv(d3);
+  const mk=c=>'M'+c.map(p=>`${p.x},${p.y}`).join('L');
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  [.25,.5,.75].forEach(v=>{const y=pT+Math.round((1-v)*uH*.88);s+=`<line x1="${pL}" y1="${y}" x2="${w-pR}" y2="${y}" stroke="${grid}" stroke-width="1"/>`;});
+  s+=`<path d="${mk(c3)}" fill="none" stroke="${dark?'#2e2e48':'#ddddf4'}" stroke-width="1.2" stroke-linejoin="round" stroke-dasharray="4,3"/>`;
+  s+=`<path d="${mk(c2)}" fill="none" stroke="${dark?'#3a3a5c':'#c0c0dc'}" stroke-width="1.8" stroke-linejoin="round"/>`;
+  s+=`<path d="${mk(c1)}" fill="none" stroke="${acc}" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>`;
+  // FIX: dot final bien dentro del viewport (pR=18 garantiza espacio)
+  s+=`<circle cx="${c1[n-1].x}" cy="${c1[n-1].y}" r="4" fill="${acc}"/>`;
+  s+=`<circle cx="${c1[n-1].x}" cy="${c1[n-1].y}" r="7" fill="${acc}" opacity=".16"/>`;
+  if(w>120){
+    const ly=pT-7;
+    s+=`<circle cx="${pL}" cy="${ly}" r="3" fill="${acc}"/>`;
+    s+=`<text x="${pL+6}" y="${ly+3.5}" font-size="7" fill="${txt}" font-family="Segoe UI" font-weight="600">Serie A</text>`;
+    s+=`<line x1="${pL+42}" y1="${ly}" x2="${pL+52}" y2="${ly}" stroke="${dark?'#3a3a5c':'#c0c0dc'}" stroke-width="2"/>`;
+    s+=`<text x="${pL+56}" y="${ly+3.5}" font-size="7" fill="${txt}" font-family="Segoe UI">Serie B</text>`;
+    s+=`<line x1="${pL+84}" y1="${ly}" x2="${pL+94}" y2="${ly}" stroke="${dark?'#2e2e48':'#ddddf4'}" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+    s+=`<text x="${pL+98}" y="${ly+3.5}" font-size="7" fill="${txt}" font-family="Segoe UI">Serie C</text>`;
+  }
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${w-pR}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
+  return s+'</svg>';
+}
+
+// FIX: TABLE PRO — alineación vertical corregida, headers y datos alineados
+function svgTable(w,h){
+  const {acc,dark}=cc();
+  const ink=dark?'#d8d8f0':'#111';
+  const mu=dark?'#5a5a88':'#999';
+  const hBg=dark?'rgba(122,123,255,.08)':'rgba(122,123,255,.06)';
+  const altBg=dark?'rgba(255,255,255,.02)':'rgba(240,240,248,.45)';
+  const bdC=dark?'#252538':'#e8e8f2';
+  const rows=[
+    {n:'Producto A',real:842,bud:800,pct:18.4,yoy:12.4,desv:42},
+    {n:'Producto B',real:634,bud:680,pct:13.8,yoy:-4.2,desv:-46},
+    {n:'Producto C',real:521,bud:500,pct:11.4,yoy:8.1,desv:21},
+    {n:'Producto D',real:380,bud:420,pct:8.3,yoy:-1.8,desv:-40},
+    {n:'Producto E',real:290,bud:270,pct:6.3,yoy:5.5,desv:20},
+  ];
+  const hdrH=18;
+  const totalRowH=h-hdrH-4;
+  const rowH=Math.max(14,Math.floor(totalRowH/rows.length));
+  const tableH=hdrH+rows.length*rowH+4;
+  // Anchuras de columnas
+  const cProd=Math.floor(w*.28);
+  const cReal=Math.floor(w*.14);
+  const cBud=Math.floor(w*.13);
+  const cPct=Math.floor(w*.11);
+  const cYoY=Math.floor(w*.15);
+  const cDesv=Math.max(20,w-cProd-cReal-cBud-cPct-cYoY);
+  const cols=[0,cProd,cProd+cReal,cProd+cReal+cBud,cProd+cReal+cBud+cPct,cProd+cReal+cBud+cPct+cYoY];
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  // Header background
+  s+=`<rect x="0" y="0" width="${w}" height="${hdrH}" fill="${hBg}" rx="2"/>`;
+  // FIX: headers centrados verticalmente con dominantBaseline
+  const hdrs=['PRODUCTO','VENTAS','PPTO','% TOT','YoY','Δ €'];
+  hdrs.forEach((h2,i)=>{
+    const x=i===0?6:(cols[i]+(i===1?cReal:i===2?cBud:i===3?cPct:i===4?cYoY:cDesv)/2);
+    const anchor=i===0?'start':'middle';
+    s+=`<text x="${x}" y="${hdrH/2}" dominant-baseline="central" text-anchor="${anchor}" font-size="6.5" font-weight="700" fill="${mu}" font-family="Segoe UI" letter-spacing=".3">${h2}</text>`;
+  });
+  s+=`<line x1="0" y1="${hdrH}" x2="${w}" y2="${hdrH}" stroke="${bdC}" stroke-width=".8"/>`;
+  rows.forEach((r,i)=>{
+    const y=hdrH+4+i*rowH;
+    const midY=y+rowH/2;  // FIX: usar dominant-baseline para alineación perfecta
+    const fs=Math.max(7,Math.min(9.5,rowH*.56));
+    const posYoY=r.yoy>0;const posDesv=r.desv>0;
+    if(i%2===0)s+=`<rect x="0" y="${y}" width="${w}" height="${rowH}" fill="${altBg}"/>`;
+    // FIX: micro-bar centrada verticalmente
+    const maxReal=842;const barMaxW=cReal-8;const barW=Math.max(2,Math.round((r.real/maxReal)*barMaxW));
+    const barH=Math.max(3,Math.round(rowH*0.28));
+    const barY=midY-barH/2;
+    s+=`<rect x="${cols[1]+2}" y="${barY}" width="${barW}" height="${barH}" rx="1" fill="${acc}" opacity=".2"/>`;
+    // FIX: todos los textos con dominant-baseline="central" para alineación vertical perfecta
+    s+=`<text x="6" y="${midY}" dominant-baseline="central" font-size="${fs}" fill="${ink}" font-family="Segoe UI" font-weight="500">${r.n}</text>`;
+    s+=`<text x="${cols[1]+cReal/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${fs}" font-weight="700" fill="${ink}" font-family="Segoe UI">${r.real}K</text>`;
+    s+=`<text x="${cols[2]+cBud/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${fs}" fill="${mu}" font-family="Segoe UI">${r.bud}K</text>`;
+    s+=`<text x="${cols[3]+cPct/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${fs}" fill="${mu}" font-family="Segoe UI">${r.pct}%</text>`;
+    // YoY badge
+    const yclr=posYoY?'#4a9e6a':'#c05050';
+    const ybg=posYoY?(dark?'rgba(75,158,106,.18)':'rgba(107,201,140,.12)'):(dark?'rgba(192,80,80,.18)':'rgba(232,128,128,.12)');
+    const badgeH=Math.max(10,Math.round(rowH*0.62));const badgeY=midY-badgeH/2;
+    s+=`<rect x="${cols[4]+2}" y="${badgeY}" width="${cYoY-4}" height="${badgeH}" rx="2" fill="${ybg}"/>`;
+    s+=`<text x="${cols[4]+cYoY/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${Math.max(6,fs*.85)}" font-weight="700" fill="${yclr}" font-family="Segoe UI">${posYoY?'▲':'▼'} ${Math.abs(r.yoy).toFixed(1)}%</text>`;
+    const dclr=posDesv?'#4a9e6a':'#c05050';
+    s+=`<text x="${cols[5]+cDesv/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${Math.max(6,fs*.85)}" font-weight="700" fill="${dclr}" font-family="Segoe UI">${posDesv?'+':''}${r.desv}K</text>`;
+    if(i<rows.length-1)s+=`<line x1="0" y1="${y+rowH}" x2="${w}" y2="${y+rowH}" stroke="${bdC}" stroke-width=".4"/>`;
+  });
+  return s+'</svg>';
+}
+
+// FIX: WATERFALL — margen inferior para labels, spacing mejorado
+function svgWaterfall(w,h){
+  const {acc,pos,neg,grid,axis,txt,dark}=cc();
+  const data=[
+    {l:'Ene',v:580,b:0,t:true},
+    {l:'+Ventas',v:312,b:580},
+    {l:'+Cross',v:168,b:892},
+    {l:'-Dev.',v:-98,b:1060},
+    {l:'-Gtos',v:-62,b:962},
+    {l:'Total',v:900,b:0,t:true},
+  ];
+  const maxV=1100;
+  // FIX: pB aumentado para que labels no se corten
+  const pL=6,pR=8,pT=18,pB=20;
+  const uw=w-pL-pR,uH=h-pT-pB;
+  const bw=Math.max(4,Math.floor(uw/data.length*.6));
+  const sp2=Math.max(2,Math.floor((uw-bw*data.length)/(data.length-1)));
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  [.25,.5,.75].forEach(v=>{
+    const y=pT+Math.round((1-v)*uH*.9);
+    s+=`<line x1="${pL}" y1="${y}" x2="${w-pR}" y2="${y}" stroke="${grid}" stroke-width=".8"/>`;
+  });
+  let prevTopY=null;
+  data.forEach((d,i)=>{
+    const x=pL+i*(bw+sp2);
+    const bh=Math.max(3,Math.round(Math.abs(d.v)/maxV*uH*.9));
+    const base=pT+Math.round((1-d.b/maxV)*uH*.9);
+    const y=d.t?pT+Math.round((1-d.v/maxV)*uH*.9):(d.v>0?base-bh:base);
+    const col=d.t?acc:(d.v>0?pos:neg);
+    if(prevTopY!==null&&!d.t){
+      s+=`<line x1="${x-sp2}" y1="${prevTopY}" x2="${x+bw}" y2="${prevTopY}" stroke="${dark?'#3a3a5c':'#cccce0'}" stroke-width=".8" stroke-dasharray="2,2"/>`;
+    }
+    s+=`<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="2.5" fill="${col}" opacity="${d.t?1:.88}"/>`;
+    // Valor encima
+    const absV=Math.abs(d.v);
+    const vLabel=absV>=1000?`${(absV/1000).toFixed(1)}K`:`${absV}`;
+    if(bw>14){
+      s+=`<text x="${x+bw/2}" y="${y-4}" text-anchor="middle" font-size="${Math.max(6,Math.min(8,bw*.55))}" font-weight="${d.t?700:600}" fill="${d.t?acc:(d.v>0?pos:neg)}" font-family="Segoe UI">${d.v>0&&!d.t?'+':''}${d.v<0?'-':''}${vLabel}</text>`;
+    }
+    // FIX: label abajo — posicionado desde h-4 (siempre visible)
+    s+=`<text x="${x+bw/2}" y="${h-5}" text-anchor="middle" dominant-baseline="auto" font-size="${Math.max(5.5,Math.min(7.5,bw*.68))}" fill="${d.t?acc:txt}" font-weight="${d.t?700:400}" font-family="Segoe UI">${d.l}</text>`;
+    prevTopY=d.t?null:(d.v>0?y:y+bh);
+  });
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${w-pR}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
+  return s+'</svg>';
+}
+
+// FUNNEL — 
+function svgFunnel(w,h){
+  const {acc,txt,dark}=cc();
+  const stages=[
+    {l:'Visitas',n:24812},{l:'Leads',n:16872},
+    {l:'Demos',n:10421},{l:'Propuestas',n:5955},{l:'Cierre',n:2729},
+  ];
+  const total=stages[0].n;
+  const n=stages.length;
+  const FILL=dark?'#7F77DD':'#6B68D4';
+  const LIGHT=dark?'rgba(127,119,221,0.18)':'rgba(107,104,212,0.15)';
+  const DROP_TXT=dark?'#F09595':'#A32D2D';
+  const DROP_BG=dark?'rgba(192,80,80,0.2)':'#FCEBEB';
+  const DROP_BD=dark?'rgba(240,149,149,0.4)':'#F09595';
+  // layout
+  const kpiH=Math.round(h*0.38);
+  const chartH=h-kpiH;
+  const colW=w/n;
+  const maxBarH=chartH*0.82;
+  const baseY=kpiH+chartH*0.90;
+  const heights=stages.map(st=>Math.max(6,Math.round(st.n/total*maxBarH)));
+  const fs=Math.max(6.5,Math.min(9,colW*0.1));
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+
+  // KPI header per column — sin cambios
+  stages.forEach((st,i)=>{
+    const cx=i*colW+colW/2;
+    const convR=i===0?null:Math.round(st.n/stages[i-1].n*100);
+    const nStr=st.n>=1000?(st.n/1000).toFixed(1)+'K':st.n;
+    if(i>0)s+=`<line x1="${i*colW}" y1="0" x2="${i*colW}" y2="${kpiH-4}" stroke="${dark?'rgba(255,255,255,0.08)':'rgba(0,0,0,0.07)'}" stroke-width="0.5"/>`;
+    s+=`<text x="${cx}" y="10" text-anchor="middle" dominant-baseline="hanging" font-size="${Math.max(6,fs*0.85)}" font-weight="500" fill="${txt}" font-family="Segoe UI" opacity="0.7">${st.l}</text>`;
+    s+=`<text x="${cx}" y="${Math.round(kpiH*0.22)}" text-anchor="middle" dominant-baseline="hanging" font-size="${Math.max(10,Math.min(18,colW*0.22))}" font-weight="500" fill="${dark?'#d8d8f0':'#111'}" font-family="Segoe UI">${nStr}</text>`;
+    if(convR!==null){
+      const delta=convR-[70,40,35,18][i-1];
+      const dclr=delta>=0?(dark?'#5fd494':'#3B6D11'):(dark?'#F09595':'#A32D2D');
+      s+=`<text x="${cx}" y="${Math.round(kpiH*0.55)}" text-anchor="middle" dominant-baseline="hanging" font-size="${Math.max(6,fs*0.82)}" fill="${txt}" font-family="Segoe UI" opacity="0.65">conv. target ${[70,40,35,18][i-1]}%</text>`;
+      s+=`<text x="${cx}" y="${Math.round(kpiH*0.72)}" text-anchor="middle" dominant-baseline="hanging" font-size="${Math.max(6,fs*0.88)}" font-weight="700" fill="${dclr}" font-family="Segoe UI">${delta>=0?'▲':'▼'} ${Math.abs(delta)}%</text>`;
+    }
+    s+=`<line x1="${i*colW+2}" y1="${kpiH-1}" x2="${(i+1)*colW-2}" y2="${kpiH-1}" stroke="${dark?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.08)'}" stroke-width="0.5"/>`;
+  });
+
+  // bezier connectors — sin cambios
+  for(let i=0;i<n-1;i++){
+    const bx1=i*colW+colW*0.05,bw1=colW*0.9;
+    const bx2=(i+1)*colW+colW*0.05;
+    const h1=heights[i],h2=heights[i+1];
+    const y1t=baseY-h1,y2t=baseY-h2;
+    const cx1=bx1+bw1,cx2=bx2;
+    const dx=cx2-cx1;
+    const path=`M${cx1},${y1t} C${cx1+dx*0.5},${y1t} ${cx2-dx*0.05},${y2t} ${cx2},${y2t} L${cx2},${baseY} C${cx2-dx*0.05},${baseY} ${cx1+dx*0.5},${baseY} ${cx1},${baseY} Z`;
+    s+=`<path d="${path}" fill="${LIGHT}"/>`;
+  }
+
+  // bars — sin cambios
+  stages.forEach((st,i)=>{
+    const bx=i*colW+colW*0.05,bw2=colW*0.9;
+    const bh=heights[i],by=baseY-bh;
+    s+=`<rect x="${bx}" y="${by}" width="${bw2}" height="${bh}" rx="3" fill="${FILL}"/>`;
+    const pctTot=Math.round(st.n/total*100);
+    if(bh>14)s+=`<text x="${bx+bw2/2}" y="${baseY-5}" text-anchor="middle" dominant-baseline="auto" font-size="${Math.max(6,Math.min(10,bw2*0.16))}" font-weight="500" fill="rgba(255,255,255,0.88)" font-family="Segoe UI">${pctTot}%</text>`;
+  });
+
+  // FIX: drop pill badges — encima de las barras, en cápsula
+  for(let i=0;i<n-1;i++){
+    const drop=Math.round((1-stages[i+1].n/stages[i].n)*100);
+    const label=`↓ ${drop}%`;
+    const cx=i*colW+colW;
+    // posición: justo encima de la barra más alta de las dos adyacentes
+    const topY=baseY-Math.max(heights[i],heights[i+1]);
+    const pillW=Math.max(34,fs*5.2);
+    const pillH=Math.max(13,fs*1.8);
+    const pillR=pillH/2;
+    const px=cx-pillW/2;
+    const py=topY-pillH-5; // 5px por encima del top de la barra
+    // sombra sutil
+    s+=`<rect x="${px+1}" y="${py+2}" width="${pillW}" height="${pillH}" rx="${pillR}" fill="${dark?'rgba(0,0,0,0.25)':'rgba(0,0,0,0.07)'}"/>`;
+    // píldora
+    s+=`<rect x="${px}" y="${py}" width="${pillW}" height="${pillH}" rx="${pillR}" fill="${DROP_BG}" stroke="${DROP_BD}" stroke-width="0.5"/>`;
+    // texto
+    s+=`<text x="${cx}" y="${py+pillH/2}" text-anchor="middle" dominant-baseline="central" font-size="${Math.max(6,fs*0.92)}" font-weight="700" fill="${DROP_TXT}" font-family="Segoe UI">${label}</text>`;
+    // línea punteada conectora
+    const lineTop=py+pillH+2;
+    const lineBot=topY-2;
+    if(lineBot>lineTop+2)s+=`<line x1="${cx}" y1="${lineTop}" x2="${cx}" y2="${lineBot}" stroke="${DROP_BD}" stroke-width="0.5" stroke-dasharray="2,2"/>`;
+  }
+
+  return s+'</svg>';
+}
+
+// AREA — green annotation, median reference line
+function svgArea(w,h,uid){
+  const {acc,line2,grid,axis,txt,dark}=cc();
+  const n=12,pL=12,pR=18,pT=14,pB=14,uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
+
+  const d1=[.35,.52,.44,.68,.57,.78,.65,.84,.72,.90,.80,.95];
+  const d2=[.60,.55,.68,.50,.72,.60,.76,.62,.80,.68,.82,.72];
+
+  const cv=d=>d.map((v,i)=>({
+    x:pL+Math.round(i/(n-1)*uw),
+    y:pT+Math.round((1-v)*uH*.88)
+  }));
+
+  const c1=cv(d1),c2=cv(d2);
+
+  const mk=c=>'M'+c.map(p=>`${p.x},${p.y}`).join('L');
+  const mkA=c=>mk(c)+`L${c[n-1].x},${pT+uH}L${c[0].x},${pT+uH}Z`;
+
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+
+  s+=`<defs>
+    <linearGradient id="a1${uid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${acc}" stop-opacity="${dark?.45:.38}"/>
+      <stop offset="60%" stop-color="${acc}" stop-opacity="${dark?.12:.06}"/>
+      <stop offset="100%" stop-color="${acc}" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="a2${uid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${line2}" stop-opacity="${dark?.3:.22}"/>
+      <stop offset="100%" stop-color="${line2}" stop-opacity="0"/>
+    </linearGradient>
+  </defs>`;
+
+  // Grid lines
+  [.25,.5,.75].forEach(v=>{
+    const y=pT+Math.round((1-v)*uH*.88);
+    s+=`<line x1="${pL}" y1="${y}" x2="${w-pR}" y2="${y}" stroke="${grid}" stroke-width="1"/>`;
+  });
+
+  // Median line
+  const medY=pT+Math.round((1-.60)*uH*.88);
+  s+=`<line x1="${pL}" y1="${medY}" x2="${w-pR}" y2="${medY}" stroke="${dark?'rgba(180,180,220,.25)':'rgba(100,100,180,.18)'}" stroke-width="1.2" stroke-dasharray="3,4"/>`;
+
+  if(w>130){
+    s+=`<text x="${pL}" y="${medY-3}" font-size="6.5" fill="${txt}" font-family="Segoe UI" opacity=".65">Media</text>`;
+  }
+
+  // Area + lines
+  s+=`<path d="${mkA(c1)}" fill="url(#a1${uid})"/>`;
+  s+=`<path d="${mk(c2)}" fill="none" stroke="${line2}" stroke-width="1.8" stroke-linejoin="round" stroke-dasharray="5,3" opacity=".6"/>`;
+  s+=`<path d="${mk(c1)}" fill="none" stroke="${acc}" stroke-width="2.8" stroke-linejoin="round"/>`;
+
+  const peak=c1[n-1];
+
+  // Punto destacado
+  s+=`<circle cx="${peak.x}" cy="${peak.y}" r="5" fill="${acc}"/>`;
+  s+=`<circle cx="${peak.x}" cy="${peak.y}" r="10" fill="${acc}" opacity=".15"/>`;
+
+  // 🟢 LABEL MEJORADO (compacto + bien posicionado)
+  if(w>100){
+
+    const label = "+27%";
+
+    const fontSize = 7;
+    const paddingX = 4;
+    const paddingY = 2;
+
+    const lbW = label.length * 4.8 + paddingX * 2;
+    const lbH = fontSize + paddingY * 2;
+
+    let lbX = peak.x - lbW / 2;
+    let lbY = peak.y - lbH - 6;
+
+    // límites
+    if(lbX + lbW > w - pR){
+      lbX = w - pR - lbW;
+    }
+    if(lbX < pL){
+      lbX = pL;
+    }
+
+    // Fondo
+    s+=`
+      <rect 
+        x="${lbX}" 
+        y="${lbY}" 
+        width="${lbW}" 
+        height="${lbH}" 
+        rx="3" 
+        fill="${dark ? '#5FCF87' : '#7EDC9A'}"
+      />
+    `;
+
+    // Texto
+    s+=`
+      <text 
+        x="${lbX + lbW/2}" 
+        y="${lbY + lbH/2}" 
+        text-anchor="middle" 
+        dominant-baseline="central"
+        font-size="${fontSize}" 
+        font-weight="700" 
+        fill="#ffffff"
+        font-family="Segoe UI"
+      >
+        ${label}
+      </text>
+    `;
+  }
+
+  // Axis
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${w-pR}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
+
+  return s+'</svg>';
+}
+
+// MATRIX heatmap (sin cambios, funciona bien)
+function svgMatrix(w,h){
+  const {acc,txt,dark}=cc();
+  const rows=3,cols=4,cw2=Math.floor((w-8)/cols),rh2=Math.floor((h-16)/rows);
+  const vals=[[.90,.58,.28,.72],[.38,.86,.62,.18],[.71,.32,.78,.52]];
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  s+=`<rect x="0" y="0" width="${w}" height="14" fill="${dark?'rgba(255,255,255,.04)':'#f2f2f4'}" rx="2"/>`;
+  ['Q1','Q2','Q3','Q4'].forEach((l,i)=>s+=`<text x="${4+i*cw2+cw2/2}" y="7" dominant-baseline="central" text-anchor="middle" font-size="7" font-weight="700" fill="${txt}" font-family="Segoe UI">${l}</text>`);
+  vals.forEach((row,ri)=>{
+    row.forEach((v,ci)=>{
+      const x=4+ci*cw2,y=16+ri*rh2;
+      s+=`<rect x="${x}" y="${y}" width="${cw2-3}" height="${rh2-3}" rx="2" fill="${acc}" opacity="${.1+v*.78}"/>`;
+      const fs=Math.max(7,Math.min(rh2*.38,11));
+      s+=`<text x="${x+cw2/2}" y="${y+rh2/2}" text-anchor="middle" dominant-baseline="central" font-size="${fs}" font-weight="700" fill="${v>.5?'#fff':(dark?'#c0c0e0':'#555')}" font-family="Segoe UI">${Math.round(v*100)}</text>`;
+    });
+  });
+  return s+'</svg>';
+}
+
+// FIX: COLUMN — labels eje X sin clipping, margen inferior garantizado
+function svgColumn(w,h){
+  const {acc,ghost,grid,axis,txt,dark}=cc();
+  const vals=[64,82,71,97,78,91,85,68,94,88];
+  const n=vals.length,max=Math.max(...vals);
+  const lblH=12; // espacio reservado para labels eje X
+  const pL=8,pR=8,pT=20,pB=lblH+4;
+  const uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
+  const bw=Math.max(4,Math.floor(uw/n*.62));
+  const gap2=Math.max(1,Math.floor((uw-bw*n)/(n-1)));
+  const peak=vals.indexOf(max);
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  const targetY=pT+Math.round((1-85/max)*uH*.9);
+  s+=`<line x1="${pL}" y1="${targetY}" x2="${w-pR}" y2="${targetY}" stroke="${acc}" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>`;
+  if(w>120)s+=`<text x="${w-pR+2}" y="${targetY}" dominant-baseline="central" font-size="6.5" fill="${acc}" font-family="Segoe UI" opacity=".7">T</text>`;
+  [.25,.5,.75].forEach(v=>{const y=pT+Math.round((1-v)*uH*.9);s+=`<line x1="${pL}" y1="${y}" x2="${w-pR}" y2="${y}" stroke="${grid}" stroke-width="1"/>`;});
+  vals.forEach((v,i)=>{
+    const bh=Math.max(3,Math.round(v/max*uH*.9));const x=pL+i*(bw+gap2);const y=pT+uH-bh;
+    const hi=i===peak;
+    s+=`<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="2" fill="${hi?acc:ghost}" opacity="${hi?1:.7}"/>`;
+    if(hi){s+=`<text x="${x+bw/2}" y="${y-4}" text-anchor="middle" dominant-baseline="auto" font-size="${Math.max(6,Math.min(9,bw*.52))}" font-weight="700" fill="${acc}" font-family="Segoe UI">${v}</text>`;}
+    // FIX: labels eje X posicionados en zona reservada (h-pB+4), siempre visibles
+    const lbl=['En','Fe','Ma','Ab','Ma','Ju','Jl','Ag','Se','Oc'][i]||'';
+    if(bw>6)s+=`<text x="${x+bw/2}" y="${pT+uH+lblH/2+3}" text-anchor="middle" dominant-baseline="central" font-size="${Math.max(5.5,Math.min(7,bw*.55))}" fill="${txt}" font-family="Segoe UI">${lbl}</text>`;
+  });
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${w-pR}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
+  return s+'</svg>';
+}
+
+// FIX: LOLLIPOP — recentrado, espacio derecho para valores
+function svgLollypop(w,h){
+  const {acc,ghost,grid,axis,txt,dark}=cc();
+  const data=[
+    {l:'Zona Norte',v:92},{l:'Zona Sur',v:78},{l:'Zona Este',v:85},
+    {l:'Zona Oeste',v:61},{l:'Nacional',v:97},{l:'Europa',v:54},
+  ];
+  const n=data.length;
+  // FIX: pR ampliado para valores, pL ajustado con min/max
+  const pL=Math.max(55,Math.min(75,w*0.36));
+  const pR=36,pT=10,pB=10;
+  const uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
+  const rh=uH/n,max=100;
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  [.25,.5,.75,1].forEach(v=>{const x=pL+Math.round(v*uw);s+=`<line x1="${x}" y1="${pT}" x2="${x}" y2="${pT+uH}" stroke="${grid}" stroke-width="1"/>`;});
+  data.forEach((d,i)=>{
+    const cy=pT+i*rh+rh/2;
+    const x=pL+Math.round(d.v/max*uw);
+    const hi=i===4;
+    s+=`<text x="${pL-5}" y="${cy}" dominant-baseline="central" text-anchor="end" font-size="${Math.max(7,Math.min(9,rh*.42))}" fill="${txt}" font-family="Segoe UI" font-weight="${hi?600:400}">${d.l}</text>`;
+    s+=`<line x1="${pL}" y1="${cy}" x2="${x}" y2="${cy}" stroke="${hi?acc:ghost}" stroke-width="${hi?2:1.4}" stroke-linecap="round"/>`;
+    s+=`<circle cx="${x}" cy="${cy}" r="${hi?5:4}" fill="${hi?acc:ghost}"/>`;
+    if(hi)s+=`<circle cx="${x}" cy="${cy}" r="9" fill="${acc}" opacity=".16"/>`;
+    // FIX: valor siempre a la derecha del círculo, cabe en pR
+    s+=`<text x="${x+9}" y="${cy}" dominant-baseline="central" font-size="${Math.max(7,rh*.36)}" font-weight="${hi?700:500}" fill="${hi?acc:txt}" font-family="Segoe UI">${d.v}%</text>`;
+  });
+  s+=`<line x1="${pL}" y1="${pT}" x2="${pL}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
+  return s+'</svg>';
+}
+
+// FIX: DUMBBELL — etiquetas en ambos extremos
+function svgDumbbell(w,h){
+  const {acc,ghost,grid,axis,txt,dark}=cc();
+  const data=[
+    {l:'Producto A',a:58,b:82},{l:'Producto B',a:72,b:68},
+    {l:'Producto C',a:45,b:71},{l:'Producto D',a:81,b:89},
+    {l:'Producto E',a:38,b:55},{l:'Producto F',a:63,b:60},
+  ];
+  const n=data.length;
+  const pL=Math.max(60,Math.min(80,w*0.34));
+  const pR=34,pT=16,pB=10;
+  const uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
+  const rh=uH/n,max=100;
+  const c2=dark?'#666688':'#c0c0d8';
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  // Legend
+  s+=`<circle cx="${pL}" cy="${pT-5}" r="3.5" fill="${c2}"/><text x="${pL+7}" y="${pT-5}" dominant-baseline="central" font-size="7" fill="${txt}" font-family="Segoe UI">Ant.</text>`;
+  s+=`<circle cx="${pL+46}" cy="${pT-5}" r="3.5" fill="${acc}"/><text x="${pL+53}" y="${pT-5}" dominant-baseline="central" font-size="7" fill="${txt}" font-family="Segoe UI">Act.</text>`;
+  [.25,.5,.75,1].forEach(v=>{const x=pL+Math.round(v*uw);s+=`<line x1="${x}" y1="${pT}" x2="${x}" y2="${pT+uH}" stroke="${grid}" stroke-width="1"/>`;});
+  data.forEach((d,i)=>{
+    const cy=pT+i*rh+rh/2;
+    const xa=pL+Math.round(d.a/max*uw),xb=pL+Math.round(d.b/max*uw);
+    const improved=d.b>d.a;
+    s+=`<text x="${pL-5}" y="${cy}" dominant-baseline="central" text-anchor="end" font-size="${Math.max(7,rh*.36)}" fill="${txt}" font-family="Segoe UI">${d.l}</text>`;
+    s+=`<line x1="${Math.min(xa,xb)}" y1="${cy}" x2="${Math.max(xa,xb)}" y2="${cy}" stroke="${improved?acc:c2}" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>`;
+    // FIX: etiqueta valor en círculo izquierdo (ant.)
+    s+=`<circle cx="${xa}" cy="${cy}" r="4.5" fill="${c2}"/>`;
+    s+=`<text x="${xa}" y="${cy}" dominant-baseline="central" text-anchor="middle" font-size="5.5" font-weight="700" fill="#fff" font-family="Segoe UI">${d.a}</text>`;
+    // FIX: etiqueta valor en círculo derecho (act.)
+    s+=`<circle cx="${xb}" cy="${cy}" r="5" fill="${improved?acc:'#e88080'}"/>`;
+    s+=`<text x="${xb}" y="${cy}" dominant-baseline="central" text-anchor="middle" font-size="5.5" font-weight="700" fill="#fff" font-family="Segoe UI">${d.b}</text>`;
+    // Delta externo si hay espacio
+    const deltaX=improved?Math.max(xa,xb)+10:Math.min(xa,xb)-9;
+    const deltaAnchor=improved?'start':'end';
+    if(Math.abs(xb-xa)>8&&deltaX>pL&&deltaX<pL+uw+pR-4){
+      s+=`<text x="${deltaX}" y="${cy}" dominant-baseline="central" text-anchor="${deltaAnchor}" font-size="7" font-weight="700" fill="${improved?acc:'#e88080'}" font-family="Segoe UI">${improved?'+':''}${d.b-d.a}</text>`;
+    }
+  });
+  s+=`<line x1="${pL}" y1="${pT}" x2="${pL}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
+  return s+'</svg>';
+}
+
+// FIX: SLOPE — valores en inicio/fin y nombres de región
+function svgSlope(w,h){
+  const {acc,ghost,grid,txt,dark}=cc();
+  const data=[
+    {l:'Región A',a:45,b:78,pos:true},
+    {l:'Región B',a:72,b:65,pos:false},
+    {l:'Región C',a:38,b:82,pos:true},
+    {l:'Región D',a:85,b:91,pos:true},
+    {l:'Región E',a:55,b:48,pos:false},
+  ];
+  // FIX: pL y pR amplios para labels de región y valores
+  const pL=52,pR=52,pT=26,pB=14;
+  const uw=Math.max(10,w-pL-pR),uH=h-pT-pB,max=100;
+  const xL=pL,xR=w-pR;
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  s+=`<text x="${xL}" y="${pT-8}" text-anchor="middle" font-size="8.5" font-weight="700" fill="${txt}" font-family="Segoe UI">2025</text>`;
+  s+=`<text x="${xR}" y="${pT-8}" text-anchor="middle" font-size="8.5" font-weight="700" fill="${txt}" font-family="Segoe UI">2026</text>`;
+  s+=`<line x1="${xL}" y1="${pT}" x2="${xL}" y2="${pT+uH}" stroke="${txt}" stroke-width="1.2" opacity=".3"/>`;
+  s+=`<line x1="${xR}" y1="${pT}" x2="${xR}" y2="${pT+uH}" stroke="${txt}" stroke-width="1.2" opacity=".3"/>`;
+  data.forEach((d,i)=>{
+    const yA=pT+Math.round((1-d.a/max)*uH*.92);
+    const yB=pT+Math.round((1-d.b/max)*uH*.92);
+    const col=d.pos?acc:(dark?'#4a4a68':'#b0b0c8');
+    const hi=i===3;
+    s+=`<line x1="${xL}" y1="${yA}" x2="${xR}" y2="${yB}" stroke="${col}" stroke-width="${hi?2.2:1.4}" opacity="${hi?0.9:0.55}"/>`;
+    s+=`<circle cx="${xL}" cy="${yA}" r="${hi?4.5:3.5}" fill="${col}" opacity="${hi?1:.75}"/>`;
+    s+=`<circle cx="${xR}" cy="${yB}" r="${hi?4.5:3.5}" fill="${col}" opacity="${hi?1:.75}"/>`;
+    // FIX: valor izquierda (2025)
+    s+=`<text x="${xL-7}" y="${yA}" dominant-baseline="central" text-anchor="end" font-size="${Math.max(7,hi?8.5:7.5)}" font-weight="${hi?700:500}" fill="${col}" font-family="Segoe UI">${d.a}</text>`;
+    // FIX: nombre de región a la izquierda del valor
+    s+=`<text x="${xL-22}" y="${yA}" dominant-baseline="central" text-anchor="end" font-size="${Math.max(5.5,hi?7:6)}" fill="${txt}" font-family="Segoe UI" opacity="${hi?1:.7}">${d.l}</text>`;
+    // FIX: valor derecha (2026)
+    s+=`<text x="${xR+7}" y="${yB}" dominant-baseline="central" font-size="${Math.max(7,hi?8.5:7.5)}" font-weight="${hi?700:500}" fill="${col}" font-family="Segoe UI">${d.b}</text>`;
+  });
+  return s+'</svg>';
+}
+
+// Spark mini charts (KPI) — sin cambios
+function svgKpiSparkline(w,h,uid){
+  const dark=cc().dark;
+  const pts=[.38,.45,.40,.55,.50,.62,.57,.70,.65,.80,.74,.88];
+  const n=pts.length,pL=2,pR=2,pT=3,pB=2,uw=w-pL-pR,uH=h-pT-pB;
+  const cv=pts.map((v,i)=>({x:pL+Math.round(i/(n-1)*uw),y:pT+Math.round((1-v)*uH)}));
+  const mk=c=>'M'+c.map(p=>`${p.x},${p.y}`).join('L');
+  const mkA=c=>mk(c)+`L${c[n-1].x},${pT+uH}L${c[0].x},${pT+uH}Z`;
+  const sc=dark?'rgba(180,180,220,.55)':'#b8b8d0';
+  return`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="spkg${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${sc}" stop-opacity=".25"/><stop offset="100%" stop-color="${sc}" stop-opacity=".02"/></linearGradient></defs>
+    <path d="${mkA(cv)}" fill="url(#spkg${uid})"/>
+    <path d="${mk(cv)}" fill="none" stroke="${sc}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${cv[n-1].x}" cy="${cv[n-1].y}" r="2" fill="${sc}"/>
+  </svg>`;
+}
+function svgKpiBars(w,h,uid){
+  const dark=cc().dark;const sc=dark?'#444460':'#d4d4e8';const sc2=dark?'#5a5a80':'#b8b8d0';
+  const bars=[.38,.52,.45,.68,.55,.74,.62,.88];const n=bars.length;
+  const pL=1,pR=1,pT=3,pB=0,uw=w-pL-pR,uH=h-pT-pB;
+  const bw=Math.max(2,Math.floor(uw/n*.62)),gap2=Math.max(1,Math.floor((uw-bw*n)/(n-1)));
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  bars.forEach((v,i)=>{const bh=Math.max(2,Math.round(v*uH*.92));const x=pL+i*(bw+gap2);s+=`<rect x="${x}" y="${pT+uH-bh}" width="${bw}" height="${bh}" rx="1" fill="${i===n-1?sc2:sc}" opacity="${i===n-1?1:.8}"/>`});
+  return s+'</svg>';
+}
+
+function renderChart(type,w,h,uid){
+  if(w<10||h<10)return'';
+  const map={bar:()=>svgBar(w,h),line:()=>svgLine(w,h,uid),table:()=>svgTable(w,h),waterfall:()=>svgWaterfall(w,h),funnel:()=>svgFunnel(w,h),area:()=>svgArea(w,h,uid),matrix:()=>svgMatrix(w,h),column:()=>svgColumn(w,h),lollypop:()=>svgLollypop(w,h),dumbbell:()=>svgDumbbell(w,h),slope:()=>svgSlope(w,h)};
+  return (map[type]||map.bar)();
+}
+
+// ═══════════════════════════════════════════
+// FIX: PATTERN OVERLAY — colores theme-aware
+// ═══════════════════════════════════════════
+let _lpk='';
+function updatePatternOverlay(pat,L){
+  const ov=document.getElementById('pat-overlay');if(!ov)return;
+  const sz=L.sz;
+  ov.style.cssText=`position:absolute;top:0;left:0;width:${sz.w}px;height:${sz.h}px;pointer-events:none;z-index:30;overflow:visible`;
+  if(pat==='none'){ov.innerHTML='';return;}
+  ov.innerHTML=buildPatternSVG(pat,L,sz);
+}
+function buildPatternSVG(pat,L,sz){
+  const m=L.m;
+  const x1=L.cx+18,x2=L.cx+L.cw-18;
+  const y1=m.t+18,y2=sz.h-m.b-18,yMid=(y1+y2)*.5,xMid=L.cx+L.cw*.56;
+  // FIX: colores dinámicos según tema
+  const isDark=S.theme==='dark';
+  const ink=isDark?'rgba(200,200,255,0.9)':'rgba(20,20,40,0.85)';
+  const acZ='#7a7bff';
+  const acF='#7a7bff';
+  const tfs=Math.max(9,Math.min(13,sz.w*.009));
+  const defs=`<defs>
+    <marker id="arZ" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 Z" fill="${ink}" opacity=".9"/></marker>
+    <marker id="arZb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 Z" fill="${acZ}" opacity=".95"/></marker>
+    <marker id="arF" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 Z" fill="${ink}" opacity=".9"/></marker>
+    <marker id="arFb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 Z" fill="${acF}" opacity=".95"/></marker>
+    <filter id="glow"><feGaussianBlur stdDeviation="2.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>`;
+  if(pat==='Z'){
+    const len1=x2-x1,len2=Math.hypot(x2-x1,y2-y1),len3=x2-x1;
+    return`<svg width="${sz.w}" height="${sz.h}" xmlns="http://www.w3.org/2000/svg">${defs}
+      <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y1}" stroke="${ink}" stroke-width="2.5" stroke-linecap="round" opacity=".85" marker-end="url(#arZ)" class="pat-line" style="--len:${len1};stroke-dasharray:${len1};--delay:0.1s;--dur:0.55s"/>
+      <line x1="${x2}" y1="${y1}" x2="${x1}" y2="${y2}" stroke="${ink}" stroke-width="1.6" stroke-linecap="round" opacity="${isDark?.4:.35}" stroke-dasharray="8,5" class="pat-line" style="--len:${Math.round(len2*2)};stroke-dasharray:${Math.round(len2*2)};--delay:0.72s;--dur:0.42s"/>
+      <line x1="${x1}" y1="${y2}" x2="${x2}" y2="${y2}" stroke="${acZ}" stroke-width="2.5" stroke-linecap="round" opacity=".85" marker-end="url(#arZb)" class="pat-line" style="--len:${len3};stroke-dasharray:${len3};--delay:1.22s;--dur:0.55s"/>
+      <circle cx="${x1}" cy="${y1}" r="7" fill="${ink}" opacity="${isDark?.2:.12}" class="pat-dot" style="--delay:0.05s"/>
+      <circle cx="${x1}" cy="${y1}" r="5" fill="${ink}" opacity="${isDark?.95:.8}" class="pat-dot" style="--delay:0.05s" filter="url(#glow)"/>
+      <circle cx="${x2}" cy="${y1}" r="4" fill="${ink}" opacity="${isDark?.65:.5}" class="pat-dot" style="--delay:0.7s"/>
+      <circle cx="${x1}" cy="${y2}" r="4" fill="${ink}" opacity="${isDark?.65:.5}" class="pat-dot" style="--delay:1.2s"/>
+      <circle cx="${x2}" cy="${y2}" r="7" fill="${acZ}" opacity="${isDark?.25:.18}" class="pat-dot" style="--delay:1.6s"/>
+      <circle cx="${x2}" cy="${y2}" r="5" fill="${acZ}" opacity=".95" class="pat-dot" style="--delay:1.6s" filter="url(#glow)"/>
+      <text x="${x1+10}" y="${y1-10}" font-size="${tfs}" font-weight="700" fill="${ink}" font-family="Segoe UI" class="pat-lbl" style="--delay:0.15s">① Inicio · KPIs</text>
+      <text x="${x2-10}" y="${y1-10}" font-size="${tfs}" font-weight="700" fill="${ink}" font-family="Segoe UI" text-anchor="end" class="pat-lbl" style="--delay:0.75s">②</text>
+      <text x="${x1+10}" y="${y2+tfs+6}" font-size="${tfs}" font-weight="700" fill="${ink}" font-family="Segoe UI" class="pat-lbl" style="--delay:1.3s">③</text>
+      <text x="${x2-10}" y="${y2+tfs+6}" font-size="${tfs+1}" font-weight="700" fill="${acZ}" font-family="Segoe UI" text-anchor="end" class="pat-lbl" style="--delay:1.65s">④ CTA / Acción</text>
+    </svg>`;
+  }
+  if(pat==='F'){
+    const lenH=x2-x1,lenV=y2-y1,lenM=xMid-x1,y3=y1+(y2-y1)*.72;
+    return`<svg width="${sz.w}" height="${sz.h}" xmlns="http://www.w3.org/2000/svg">${defs}
+      <line x1="${x1}" y1="${y1}" x2="${x1}" y2="${y2}" stroke="${ink}" stroke-width="1.2" opacity="${isDark?.3:.2}" stroke-dasharray="6,4" class="pat-line" style="--len:${Math.round(lenV*2)};stroke-dasharray:${Math.round(lenV*2)};--delay:0.08s;--dur:0.4s"/>
+      <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y1}" stroke="${ink}" stroke-width="2.5" stroke-linecap="round" opacity=".85" marker-end="url(#arF)" class="pat-line" style="--len:${lenH};stroke-dasharray:${lenH};--delay:0.12s;--dur:0.55s"/>
+      <line x1="${x1}" y1="${yMid}" x2="${xMid}" y2="${yMid}" stroke="${acF}" stroke-width="2.2" stroke-linecap="round" opacity=".85" marker-end="url(#arFb)" class="pat-line" style="--len:${lenM};stroke-dasharray:${lenM};--delay:0.72s;--dur:0.42s"/>
+      <line x1="${x1}" y1="${y3}" x2="${x1+lenM*.62}" y2="${y3}" stroke="${ink}" stroke-width="1.7" stroke-linecap="round" opacity="${isDark?.55:.45}" marker-end="url(#arF)" class="pat-line" style="--len:${Math.round(lenM*.62)};stroke-dasharray:${Math.round(lenM*.62)};--delay:1.2s;--dur:0.3s"/>
+      <circle cx="${x1}" cy="${y1}" r="7" fill="${ink}" opacity="${isDark?.2:.12}" class="pat-dot" style="--delay:0.05s"/>
+      <circle cx="${x1}" cy="${y1}" r="5" fill="${ink}" opacity="${isDark?.95:.8}" class="pat-dot" style="--delay:0.05s" filter="url(#glow)"/>
+      <circle cx="${x1}" cy="${yMid}" r="4" fill="${acF}" opacity="${isDark?.75:.6}" class="pat-dot" style="--delay:0.72s"/>
+      <circle cx="${x1}" cy="${y3}" r="3.5" fill="${ink}" opacity="${isDark?.55:.4}" class="pat-dot" style="--delay:1.18s"/>
+      <text x="${x1+10}" y="${y1-10}" font-size="${tfs}" font-weight="700" fill="${ink}" font-family="Segoe UI" class="pat-lbl" style="--delay:0.2s">① Escaneo completo</text>
+      <text x="${x1+10}" y="${yMid-9}" font-size="${tfs}" font-weight="700" fill="${acF}" font-family="Segoe UI" class="pat-lbl" style="--delay:0.78s">② Lectura secundaria</text>
+      <text x="${x1+10}" y="${y3-9}" font-size="${tfs}" font-weight="700" fill="${ink}" opacity="${isDark?.75:.6}" font-family="Segoe UI" class="pat-lbl" style="--delay:1.24s">③ Detalle</text>
+    </svg>`;
+  }return'';
+}
+
+// ═══════════════════════════════════════════
+// MAIN PREVIEW
+// ═══════════════════════════════════════════
+let _uid=0;
+function renderPreview(){
+  const L=calcLayout();const sz=L.sz,m=L.m,gap=L.gap,z=S.z,st=S.st;
+  const cbg=getCbg(),ccard=getCcard(),cbord=getCbord(),br=st.br;
+  const isDark=S.theme==='dark';
+  const ink=isDark?'#d8d8f0':'#1a1a2e';
+  const mu=isDark?'#6a6a90':'#aaa';
+  const dashTitle=document.getElementById('dash-title')?.value||'Dashboard';
+  const dashSub=document.getElementById('dash-sub')?.value||'';
+  const dashSubtitle=document.getElementById('dash-subtitle')?.value||'';
+
+  document.getElementById('dt').textContent=`${sz.w} × ${sz.h}`;
+  const {scale,ox,oy}=calcScale(sz);
+  document.getElementById('sc').textContent=Math.round(scale*100)+'%';
+  updateZoomUI();
+
+  const psc=document.getElementById('psc');
+  psc.style.cssText=`width:${sz.w}px;height:${sz.h}px;transform:scale(${scale});transform-origin:top left;position:absolute;left:${ox}px;top:${oy}px`;
+
+  document.getElementById('layout-info').style.display='flex';
+  document.getElementById('lt').textContent=`${z.kpi} KPIs · ${z.main}A · ${z.sec}B`;
+
+  const dp=document.getElementById('dp2');
+  dp.style.cssText=`width:${sz.w}px;height:${sz.h}px;background:${cbg};border-radius:${st.canvasRadius||3}px;position:relative;overflow:hidden;box-sizing:border-box`;
+
+  let html='';
+  const card=(x,y,w,h,inner='')=>
+    `<div style="position:absolute;left:${x}px;top:${y}px;width:${w}px;height:${h}px;background:${ccard};border:.5px solid ${cbord};border-radius:${br}px;overflow:hidden;box-sizing:border-box">${inner}</div>`;
+
+  // ── FILTER LEFT ──
+  if(L.fleft&&L.fsw){
+    const fh=Math.max(24,Math.round(L.uh*.092));const fs=Math.max(7,Math.min(9,L.fsw*.055));
+    const filtros=[{l:'Región',v:'Madrid',a:true},{l:'Categoría',v:'Todos',a:false},{l:'Periodo',v:'Ene–Mar 2026',a:true},{l:'Segmento',v:'Todos',a:false},{l:'Canal',v:'Todos',a:false}];
+    const nA=filtros.filter(f=>f.a).length;
+    let fhtml=`<div style="display:flex;flex-direction:column;height:100%;font-family:'Segoe UI',sans-serif">
+      <div style="padding:${Math.round(fh*.28)}px ${Math.round(L.fsw*.07)}px;border-bottom:.5px solid ${cbord}">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:${nA?5:0}px">
+          <span style="font-size:${fs}px;font-weight:700;color:${mu};text-transform:uppercase;letter-spacing:.7px">Filtros</span>
+          ${nA?`<span style="background:#ededff;color:#5a5bcc;font-size:${Math.max(7,fs*.9)}px;font-weight:700;padding:1px 6px;border-radius:20px">${nA} activos</span>`:''}
+        </div>
+      </div>
+      <div style="flex:1;overflow:hidden;padding:${Math.round(fh*.2)}px ${Math.round(L.fsw*.07)}px">`;
+    filtros.forEach(f=>{
+      const isA=f.a;const dropH=Math.max(22,Math.round(fh*.7));
+      fhtml+=`<div style="margin-bottom:${Math.round(fh*.22)}px">
+        <div style="font-size:${Math.max(7,fs*.82)}px;font-weight:${isA?700:600};color:${isA?'#5a5bcc':mu};text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">${f.l}</div>
+        <div style="height:${dropH}px;background:${isA?(isDark?'rgba(122,123,255,.1)':'#f7f7ff'):cbg};border:.5px solid ${isA?(isDark?'rgba(122,123,255,.3)':'#c0c0ff'):cbord};border-radius:4px;display:flex;align-items:center;padding:0 8px;gap:4px">
+          <span style="font-size:${Math.max(7,fs)}px;color:${isA?(isDark?'#a0a0ff':'#2a2a3a'):mu};flex:1;font-weight:${isA?600:400};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.v}</span>
+          <span style="font-size:8px;color:${isA?(isDark?'#8888ee':'#7a7bff'):mu}">▾</span>
+        </div></div>`;
+    });
+    fhtml+=`</div>
+      <div style="padding:${Math.round(fh*.18)}px ${Math.round(L.fsw*.07)}px;border-top:.5px solid ${cbord};display:flex;gap:5px">
+        <div style="flex:1;height:${Math.max(22,Math.round(fh*.62))}px;border:.5px solid ${cbord};border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:${Math.max(7,fs*.9)}px;color:${mu}">Limpiar</div>
+        <div style="flex:1;height:${Math.max(22,Math.round(fh*.62))}px;background:#7a7bff;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:${Math.max(7,fs*.9)}px;color:#fff;font-weight:700">Aplicar</div>
+      </div></div>`;
+    html+=card(m.l,m.t,L.fsw,L.uh,fhtml);
+  }
+
+  // ── HEADER ──
+  if(z.header&&L.hdrH){
+    const hPad=Math.max(12,Math.round(L.hdrH*.35));
+    const btnFs=Math.max(8,Math.round(L.hdrH*.16));
+    html+=card(L.cx,L.ys.hdr,L.cw,L.hdrH,`
+      <div style="display:flex;align-items:center;height:100%;padding:0 ${hPad}px;gap:14px;font-family:'Segoe UI',sans-serif">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:${S.titleSize}px;font-weight:800;color:${ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.3px">${escHtml(dashTitle)}</div>
+          ${dashSubtitle?`<div style="font-size:${S.subtitleSize}px;font-weight:700;color:${ink};opacity:.75;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.1px">${escHtml(dashSubtitle)}</div>`:''}
+          ${dashSub?`<div style="font-size:${S.subSize}px;color:${mu};margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(dashSub)}</div>`:''}
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <div style="height:24px;padding:0 10px;border-radius:4px;background:${isDark?'rgba(255,255,255,.06)':CBGS[Math.min(st.cbg+1,CBGS.length-1)].h};border:.5px solid ${cbord};display:flex;align-items:center;font-size:${btnFs}px;color:${mu}">Exportar</div>
+          <div style="height:24px;padding:0 12px;border-radius:4px;background:#7a7bff;display:flex;align-items:center;font-size:${btnFs}px;color:#fff;font-weight:700">⟳ Actualizar</div>
+        </div>
+      </div>`);
+  }
+
+  // ── FILTER TOP ──
+  if(L.ftop&&L.ftH&&L.ys.ftop!==undefined){
+    let fti=`<div style="display:flex;align-items:center;height:100%;gap:7px;padding:0 14px;font-family:'Segoe UI',sans-serif">
+      <span style="font-size:9px;font-weight:700;color:${mu};text-transform:uppercase;letter-spacing:.5px;flex-shrink:0;margin-right:2px">Filtrar por</span>`;
+    ['Región','Periodo','Categoría','Segmento'].forEach((f,fi)=>{
+      fti+=`<div style="height:25px;min-width:72px;background:${fi===0?(isDark?'rgba(122,123,255,.12)':'#ededff'):cbg};border:.5px solid ${fi===0?(isDark?'rgba(122,123,255,.3)':'#c5c5ff'):cbord};border-radius:20px;display:flex;align-items:center;padding:0 9px;gap:4px;flex-shrink:0">
+        <span style="font-size:8.5px;color:${fi===0?(isDark?'#a0a0ff':'#5a5bcc'):mu};flex:1;font-weight:${fi===0?600:400}">${f}</span>
+        <span style="font-size:8px;color:${fi===0?(isDark?'#8888ee':'#8a8bdd'):mu}">▾</span></div>`;
+    });
+    fti+=`<div style="margin-left:auto;height:25px;padding:0 10px;border-radius:4px;background:${ink};display:flex;align-items:center;font-size:8.5px;color:${isDark?'#111':'#fff'};font-weight:700;flex-shrink:0">Aplicar</div></div>`;
+    html+=card(L.cx,L.ys.ftop,L.cw,L.ftH,fti);
+  }
+
+  // ── KPI ROW ──
+  if(z.kpi>0&&L.kpiH&&L.ys.kpi!==undefined){
+    const kpiW=Math.floor((L.cw-(z.kpi-1)*gap)/z.kpi);
+    for(let i=0;i<z.kpi;i++){
+      const kd=KD[i%KD.length];const kx=L.cx+i*(kpiW+gap);
+      const pad=Math.max(10,Math.round(kpiW*.07));
+      const barC=kd.p?'#6bc98c':'#e88080';
+      const valFs=Math.min(S.kpiValueSize,Math.round(L.kpiH*.38));
+      const labelFs=Math.max(7,Math.min(10,L.kpiH*.12));
+      const hasSpark=S.kpiSparkline!=='none';
+      const sparkW=hasSpark?Math.round(kpiW*.32):0;
+      const sparkH=hasSpark?Math.round(L.kpiH*.52):0;
+      const uid_k=++_uid;
+      const sp=hasSpark?`<div style="position:absolute;right:${pad}px;bottom:${Math.round(L.kpiH*.16)}px;width:${sparkW}px;height:${sparkH}px">${S.kpiSparkline==='sparkline'?svgKpiSparkline(sparkW,sparkH,uid_k):svgKpiBars(sparkW,sparkH,uid_k)}</div>`:'';
+      const rPad=hasSpark?sparkW+pad+6:pad;
+      html+=card(kx,L.ys.kpi,kpiW,L.kpiH,`
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:${barC};opacity:.9;border-radius:0 2px 2px 0"></div>
+        ${sp}
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 ${rPad}px 0 ${pad+7}px;font-family:'Segoe UI',sans-serif">
+          <div style="font-size:${labelFs}px;color:${mu};font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${kd.l}</div>
+          <div style="font-size:${valFs}px;font-weight:800;color:${ink};line-height:1;letter-spacing:-.3px;white-space:nowrap;overflow:hidden">${kd.v}</div>
+          <div style="display:flex;align-items:center;gap:4px;margin-top:5px">
+            <span style="padding:2px 7px;border-radius:20px;font-size:${Math.max(7,L.kpiH*.11)}px;font-weight:700;background:${kd.p?(isDark?'rgba(107,201,140,.18)':'rgba(107,201,140,.14)'):(isDark?'rgba(232,128,128,.18)':'rgba(232,128,128,.14)')};color:${kd.p?'#4a9e6a':'#c05050'};white-space:nowrap">${kd.p?'▲':'▼'} ${kd.d}</span>
+          </div>
+        </div>`);
+    }
+  }
+
+  // ── ZONE A ──
+  if(z.main>0&&L.mainH>0){
+    const mainW=Math.floor((L.cw-(z.main-1)*gap)/z.main);
+    for(let i=0;i<z.main;i++){
+      const k=`main-${i}`;const vtype=gvt(k,i);const vx=L.cx+i*(mainW+gap);
+      const padH=Math.max(10,Math.round(mainW*.04)),padV=Math.max(8,Math.round(L.mainH*.04));
+      const hdrFs=Math.max(8,Math.min(12,L.mainH*.055));
+      const hdrH=Math.max(24,Math.round(hdrFs*2.4));
+      const chartH=L.mainH-hdrH-padV*2,chartW=mainW-padH*2;
+      const uid2=++_uid;
+      html+=`<div class="vsl" data-k="${k}" style="position:absolute;left:${vx}px;top:${L.ys.main}px;width:${mainW}px;height:${L.mainH}px;background:${ccard};border:.5px solid ${cbord};border-radius:${br}px;overflow:hidden;box-sizing:border-box;font-family:'Segoe UI',sans-serif">
+        <div class="vsl-badge">Cambiar tipo</div>
+        ${(S.vDrill[k]||S.vTooltip[k])?`<div style="position:absolute;bottom:6px;left:8px;display:flex;gap:3px;z-index:4">${S.vDrill[k]?'<span style="padding:1px 6px;background:#ededff;border:.5px solid #c5c5ff;border-radius:20px;font-size:7px;font-weight:700;color:#5a5bcc;font-family:Segoe UI">Drill</span>':''} ${S.vTooltip[k]?'<span style="padding:1px 6px;background:#ededff;border:.5px solid #c5c5ff;border-radius:20px;font-size:7px;font-weight:700;color:#5a5bcc;font-family:Segoe UI">Tooltip</span>':''}</div>`:''}
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:${padV}px ${padH}px;box-sizing:border-box">
+          <div style="display:flex;align-items:center;height:${hdrH}px;flex-shrink:0;margin-bottom:${Math.round(padV*.35)}px">
+            <div style="flex:1;min-width:0">
+              <div style="font-size:${hdrFs}px;font-weight:700;color:${ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${VLABELS[vtype]}</div>
+              <div style="font-size:${Math.max(6,hdrFs*.75)}px;color:${mu};margin-top:2px">Análisis Comercial · 2026</div>
+            </div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#7a7bff;margin-left:8px;opacity:.5"></div>
+          </div>
+          <div style="flex:1;min-height:0;overflow:hidden">${renderChart(vtype,Math.max(10,chartW),Math.max(10,chartH),uid2)}</div>
+        </div>
+      </div>`;
+    }
+  }
+
+  // ── ZONE B ──
+  if(z.sec>0&&L.secH>0&&L.ys.sec!==undefined){
+    const secW=Math.floor((L.cw-(z.sec-1)*gap)/z.sec);
+    for(let i=0;i<z.sec;i++){
+      const k=`sec-${i}`;const vtype=gvt(k,i+2);const vx=L.cx+i*(secW+gap);
+      const padH=Math.max(8,Math.round(secW*.04)),padV=Math.max(8,Math.round(L.secH*.04));
+      const hdrFs=Math.max(7,Math.min(11,L.secH*.06));
+      const hdrH=Math.max(20,Math.round(hdrFs*2.4));
+      const chartH=L.secH-hdrH-padV*2,chartW=secW-padH*2;
+      const uid3=++_uid;
+      html+=`<div class="vsl" data-k="${k}" style="position:absolute;left:${vx}px;top:${L.ys.sec}px;width:${secW}px;height:${L.secH}px;background:${ccard};border:.5px solid ${cbord};border-radius:${br}px;overflow:hidden;box-sizing:border-box;font-family:'Segoe UI',sans-serif">
+        <div class="vsl-badge">Cambiar tipo</div>
+        ${(S.vDrill[k]||S.vTooltip[k])?`<div style="position:absolute;bottom:6px;left:8px;display:flex;gap:3px;z-index:4">${S.vDrill[k]?'<span style="padding:1px 6px;background:#ededff;border:.5px solid #c5c5ff;border-radius:20px;font-size:7px;font-weight:700;color:#5a5bcc;font-family:Segoe UI">Drill</span>':''} ${S.vTooltip[k]?'<span style="padding:1px 6px;background:#ededff;border:.5px solid #c5c5ff;border-radius:20px;font-size:7px;font-weight:700;color:#5a5bcc;font-family:Segoe UI">Tooltip</span>':''}</div>`:''}
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:${padV}px ${padH}px;box-sizing:border-box">
+          <div style="display:flex;align-items:center;height:${hdrH}px;flex-shrink:0;margin-bottom:${Math.round(padV*.35)}px">
+            <div style="font-size:${hdrFs}px;font-weight:700;color:${ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1">${VLABELS[vtype]}</div>
+          </div>
+          <div style="flex:1;min-height:0;overflow:hidden">${renderChart(vtype,Math.max(10,chartW),Math.max(10,chartH),uid3)}</div>
+        </div>
+      </div>`;
+    }
+  }
+
+  // ── TOOLTIP ZONE (redesigned) — solo desde S.z.tooltip ──
+  if(z.tooltip){
+    const tw=Math.min(240,Math.round(sz.w*.22));
+    const th=Math.min(190,Math.round(sz.h*.3));
+    // FIX: posicionado completamente dentro del canvas, sin overflow
+    const tx=Math.max(L.cx,Math.min(L.cx+L.cw-tw-8, L.cx+L.cw-tw-16));
+    const ty=Math.max(m.t+8, (L.ys.main||m.t)+16);
+    const ttBg=isDark?'rgba(16,16,28,.97)':ccard;
+    const ttBd=isDark?'rgba(122,123,255,.4)':cbord;
+    const sepC=isDark?'rgba(122,123,255,.2)':cbord;
+    html+=`<div style="position:absolute;left:${tx}px;top:${ty}px;width:${tw}px;background:${ttBg};border:.5px solid ${ttBd};border-radius:${br+2}px;box-shadow:0 8px 32px rgba(0,0,0,${isDark?.5:.18}),0 2px 8px rgba(0,0,0,${isDark?.3:.1});box-sizing:border-box;overflow:hidden;font-family:'Segoe UI',sans-serif;z-index:20">
+      <!-- Tooltip header -->
+      <div style="padding:9px 12px 7px;border-bottom:.5px solid ${sepC}">
+        <div style="font-size:7.5px;font-weight:700;color:${isDark?'#8888ff':'#7a7bff'};text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px">Tooltip · Power BI</div>
+        <div style="font-size:10px;font-weight:700;color:${ink}">Producto A · Zona Norte</div>
+        <div style="font-size:8px;color:${mu};margin-top:1px">Ene–Mar 2026</div>
+      </div>
+      <!-- Tooltip KVs -->
+      <div style="padding:8px 12px">
+        ${[
+          {l:'Ventas',v:'€ 842K',hi:true},
+          {l:'vs Presupuesto',v:'▲ +5,3%',pos:true},
+          {l:'vs Año ant.',v:'▲ +12,4%',pos:true},
+          {l:'% sobre total',v:'18,4%',hi:false},
+        ].map(({l,v,hi,pos})=>`
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:.5px solid ${sepC}">
+            <span style="font-size:8.5px;color:${mu};font-weight:500">${l}</span>
+            <span style="font-size:${hi?'10':'8.5'}px;font-weight:${hi?800:700};color:${pos===true?'#4a9e6a':pos===false?'#c05050':ink}">${v}</span>
+          </div>`).join('')}
+      </div>
+      <!-- Tooltip mini chart -->
+      <div style="padding:6px 12px 10px">
+        <div style="font-size:7px;color:${mu};font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Evolución mensual</div>
+        <div style="height:32px">${svgLine(tw-24,32,++_uid)}</div>
+      </div>
+    </div>`;
+  }
+
+  // ── DRILL-THROUGH ZONE ──
+  if(z.drillthrough){
+    const dw=Math.min(200,Math.round(sz.w*.2));const dh=60;
+    const dx=m.l+8;const dy=sz.h-m.b-dh-8;
+    html+=`<div style="position:absolute;left:${dx}px;top:${dy}px;width:${dw}px;height:${dh}px;background:${isDark?'rgba(122,123,255,.08)':'#ededff'};border:.5px solid ${isDark?'rgba(122,123,255,.3)':'#c5c5ff'};border-radius:${br}px;box-sizing:border-box;display:flex;align-items:center;padding:0 12px;gap:10px;font-family:'Segoe UI',sans-serif;z-index:12">
+      <div style="width:28px;height:28px;background:#7a7bff;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#fff" stroke-width="1.2"/><path d="M7 4.5v5M4.5 7h5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <div style="font-size:9px;font-weight:700;color:#5a5bcc">Drill-through</div>
+        <div style="font-size:7.5px;color:${isDark?'#8888ee':'#7a7bff'};margin-top:1px">Botón derecho → Ver detalle</div>
+      </div>
+    </div>`;
+  }
+
+  // ── GRID GUIDES ──
+  if(S.grid.show){
+    const g=S.grid,gx=L.cx+g.margin,gy=m.t+g.margin,gw=L.cw-g.margin*2,gh=L.uh-g.margin*2;
+    const sB='rgba(255,107,89,0.08)',sBd='rgba(255,107,89,0.42)';
+    if((g.dir==='vertical'||g.dir==='both')&&g.cols>0){
+      const cw2=(gw-(g.cols-1)*g.gutter)/g.cols;
+      for(let ci=0;ci<g.cols;ci++){const cx2=gx+ci*(cw2+g.gutter);html+=`<div style="position:absolute;left:${cx2}px;top:${gy}px;width:${cw2}px;height:${gh}px;background:${sB};border:.5px solid ${sBd};pointer-events:none;box-sizing:border-box"></div>`;}
+    }
+    if((g.dir==='horizontal'||g.dir==='both')&&g.cols>0){
+      const rh2=(gh-(g.cols-1)*g.gutter)/g.cols;
+      for(let ri=0;ri<g.cols;ri++){const ry=gy+ri*(rh2+g.gutter);html+=`<div style="position:absolute;left:${gx}px;top:${ry}px;width:${gw}px;height:${rh2}px;background:${sB};border:.5px solid ${sBd};pointer-events:none;box-sizing:border-box"></div>`;}
+    }
+    html+=`<div style="position:absolute;left:${gx}px;top:${Math.max(2,gy-13)}px;font-size:8px;font-weight:700;color:rgba(200,80,60,.65);font-family:'Segoe UI',sans-serif;letter-spacing:.5px;pointer-events:none">GRID ${g.cols} ${g.dir==='horizontal'?'ROWS':g.dir==='vertical'?'COLS':'COL·ROW'} · ${g.gutter}px</div>`;
+  }
+
+  dp.innerHTML=html;
+  dp.querySelectorAll('.vsl').forEach(el=>{el.addEventListener('click',()=>{const k=el.dataset.k;S.vt[k]=((S.vt[k]||0)+1)%VTYPES.length;renderControls();renderPreview()})});
+
+  const patKey=`${S.pattern}_${Math.round(L.cx)}_${Math.round(L.cw)}_${sz.w}_${sz.h}`;
+  if(patKey!==_lpk){_lpk=patKey;updatePatternOverlay(S.pattern,L);}
+  else{const ov=document.getElementById('pat-overlay');if(ov){ov.style.width=sz.w+'px';ov.style.height=sz.h+'px';}}
+
+  renderPBar();
+}
+
+// ═══════════════════════════════════════════
+// PRINCIPLES BAR
+// ═══════════════════════════════════════════
+function renderPBar(){
+  const z=S.z,g=S.grid;
+  const p=[
+    {c:'#3FBF7F',t:'Jerarquía visual activa'},
+    {c:'#E88ACF',t:`Proximidad: gap ${S.gap}px`},
+    {c:'#4DAFD1',t:'Semejanza: tarjetas uniformes'},
+    {c:'#F2C66D',t:`Patrón ${S.pattern==='none'?'libre':S.pattern}`},
+    {c:'#E27D73',t:`Carga cognitiva: ${z.kpi+z.main+z.sec} elementos`},
+    {c:'#B8846B',t:`Filtros: ${z.filter==='none'?'ninguno':z.filter==='top'?'top':'sidebar'}`},
+    {c:g.show?'rgba(255,107,89,.9)':'var(--theme-bd)',t:`Grid: ${g.show?g.cols+' '+(g.dir==='horizontal'?'rows':g.dir==='vertical'?'cols':'col+row'):'oculto'}`},
+    {c:S.theme==='dark'?'#7a7bff':S.theme==='warm'?'#8c6840':'var(--p)',t:`Tema: ${THEMES[S.theme]?.n||S.theme}`},
+  ];
+  document.getElementById('pbar').innerHTML=p.map(x=>`<div class="ptag"><div class="pdot" style="background:${x.c}"></div>${x.t}</div>`).join('<div style="width:.5px;height:12px;background:var(--theme-bd);flex-shrink:0"></div>');
+}
+
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+function toast(msg,ok=null){
+  const zone=document.getElementById('toast-zone');if(!zone)return;
+  const t=document.createElement('div');
+  t.className='toast'+(ok===true?' ok':ok===false?' err':'');
+  t.textContent=msg;zone.appendChild(t);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('in')));
+  setTimeout(()=>{t.classList.remove('in');setTimeout(()=>t.remove(),300)},2500);
+}
+
+// ═══════════════════════════════════════════
+// EXPORT PNG
+// ═══════════════════════════════════════════
+async function doDownload(){
+  const btn=document.getElementById('dl-btn');
+  if(btn.classList.contains('ld'))return;
+  btn.classList.add('ld');
+  btn.innerHTML=`<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" opacity=".3"/><path d="M12 3a9 9 0 0 1 9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur=".8s" repeatCount="indefinite"/></path></svg> Exportando…`;
+  try{
+    const sz=getCanvasSize();const psc=document.getElementById('psc');const prev=psc.style.cssText;
+    psc.style.cssText=`width:${sz.w}px;height:${sz.h}px;transform:scale(1);transform-origin:top left;position:absolute;left:0;top:0`;
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    const canvas=await html2canvas(document.getElementById('dp2'),{width:sz.w,height:sz.h,scale:2,useCORS:true,allowTaint:true,backgroundColor:getCbg(),logging:false,imageTimeout:0});
+    psc.style.cssText=prev;renderPreview();
+    const a=document.createElement('a');
+    const title=(document.getElementById('dash-title')?.value||'dashboard').replace(/[^a-z0-9áéíóúñ\-_\s]/gi,'').trim().replace(/\s+/g,'_').substring(0,40)||'dashboard';
+    a.download=`pbi_mockup_${title}_${sz.w}x${sz.h}.png`;
+    a.href=canvas.toDataURL('image/png',1.0);a.click();
+    toast('PNG exportado correctamente',true);
+  }catch(e){console.error(e);toast('Error al exportar PNG',false)}
+  finally{
+    btn.classList.remove('ld');
+    btn.innerHTML=`<svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7.5M3.5 6l3 3 3-3M1.5 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Exportar PNG`;
+  }
+}
+
+// ═══════════════════════════════════════════
+// EXPORT PDF
+// ═══════════════════════════════════════════
+async function doExportPDF(){
+  const btn=document.getElementById('pdf-btn');
+  btn.disabled=true;btn.textContent='…';
+  try{
+    const sz=getCanvasSize();const psc=document.getElementById('psc');const prev=psc.style.cssText;
+    psc.style.cssText=`width:${sz.w}px;height:${sz.h}px;transform:scale(1);transform-origin:top left;position:absolute;left:0;top:0`;
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    const canvas=await html2canvas(document.getElementById('dp2'),{width:sz.w,height:sz.h,scale:2,useCORS:true,allowTaint:true,backgroundColor:getCbg(),logging:false});
+    psc.style.cssText=prev;renderPreview();
+    const imgData=canvas.toDataURL('image/png',1.0);
+    const {jsPDF}=window.jspdf;
+    const isPortrait=sz.h>sz.w;
+    const pdf=new jsPDF({orientation:isPortrait?'portrait':'landscape',unit:'px',format:[sz.w,sz.h]});
+    pdf.addImage(imgData,'PNG',0,0,sz.w,sz.h);
+    const title=(document.getElementById('dash-title')?.value||'dashboard').replace(/[^a-z0-9\-_\s]/gi,'_').trim().replace(/\s+/g,'_').substring(0,40)||'dashboard';
+    pdf.save(`pbi_mockup_${title}.pdf`);
+    toast('PDF exportado correctamente',true);
+  }catch(e){console.error(e);toast('Error al exportar PDF',false)}
+  finally{
+    btn.disabled=false;
+    btn.innerHTML=`<svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 5h6M4 7.5h4M4 10h3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg> PDF`;
+  }
+}
+
+// ═══════════════════════════════════════════
+// KEYBOARD SHORTCUTS
+// ═══════════════════════════════════════════
+document.addEventListener('keydown',e=>{
+  const tag=document.activeElement.tagName;
+  if(tag==='INPUT'||tag==='TEXTAREA')return;
+  if(e.key==='Escape'){exitPresentation();return}
+  if((e.key==='p'||e.key==='P')&&!e.metaKey&&!e.ctrlKey){togglePresentation();return}
+  if((e.metaKey||e.ctrlKey)&&e.key==='s'){e.preventDefault();saveTemplateJSON();return}
+  if((e.metaKey||e.ctrlKey)&&e.key==='e'){e.preventDefault();doDownload();return}
+  if((e.metaKey||e.ctrlKey)&&(e.key==='='||e.key==='+')){e.preventDefault();changeZoom(0.1);return}
+  if((e.metaKey||e.ctrlKey)&&e.key==='-'){e.preventDefault();changeZoom(-0.1);return}
+  if((e.metaKey||e.ctrlKey)&&e.key==='0'){e.preventDefault();fitZoom();return}
+});
+
+// ═══════════════════════════════════════════
+// RESIZE OBSERVER + INIT
+// ═══════════════════════════════════════════
+new ResizeObserver(()=>requestAnimationFrame(renderPreview)).observe(document.getElementById('pco'));
+
+function init(){
+  renderControls();
+  renderThemePills();
+  requestAnimationFrame(()=>requestAnimationFrame(renderPreview));
+}
+init();
+</script>
+</body>
+</html>
