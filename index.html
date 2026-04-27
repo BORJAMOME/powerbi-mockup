@@ -929,8 +929,7 @@ function saveTemplateJSON(){
   const data=JSON.stringify(S,null,2);
   const blob=new Blob([data],{type:'application/json'});
   const a=document.createElement('a');
-  const title=(document.getElementById('dash-title')?.value||'mockup').replace(/[^a-z0-9\-_]/gi,'_').substring(0,30);
-  a.download=`pbi_mockup_${title}.json`;
+const title=(document.getElementById('dash-title')?.value||'mockup').replace(/[^a-z0-9áéíóúñ\-_\s]/gi,'').trim().replace(/\s+/g,'_').substring(0,40)||'mockup';  a.download=`pbi_mockup_${title}.json`;
   a.href=URL.createObjectURL(blob);a.click();
   toast('Plantilla guardada como JSON',true);
 }
@@ -962,7 +961,16 @@ function loadTemplateFile(e){
 // ZOOM
 // ═══════════════════════════════════════════
 function changeZoom(d){S.zoom=Math.max(0.25,Math.min(3,S.zoom+d));renderPreview()}
-function fitZoom(){S.zoom=1;renderPreview()}
+ffunction fitZoom(){
+  const sz=getCanvasSize();
+  const co=document.getElementById('pco');
+  const rect=co.getBoundingClientRect();
+  if(!rect.width||!rect.height){S.zoom=1;renderPreview();return;}
+  const availW=rect.width-48,availH=rect.height-48;
+  const fitScale=Math.min(availW/sz.w,availH/sz.h,1);
+  S.zoom=Math.round(fitScale*100)/100; // redondeo a 2 decimales para UI limpia
+  renderPreview();
+}
 function updateZoomUI(){
   const el=document.getElementById('zoom-val');
   if(el)el.textContent=Math.round(S.zoom*100)+'%';
