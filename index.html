@@ -73,10 +73,16 @@ body.pres #sb{transform:translateX(calc(-1 * var(--sb) - 2px))}
 
 /* ── SECTIONS ── */
 .cs{border-bottom:.5px solid var(--theme-bd)}
-.cs-hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;cursor:pointer;user-select:none;transition:background var(--tr)}
+.cs-hd{display:flex;align-items:center;justify-content:space-between;padding:8px 12px 8px 14px;cursor:pointer;user-select:none;transition:background var(--tr)}
 .cs-hd:hover{background:var(--theme-hover)}
-.cs-label{font-size:9px;font-weight:700;color:var(--theme-mu);text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:6px}
-.cs-label span.tag{width:4px;height:4px;border-radius:50%;background:var(--p);display:inline-block;flex-shrink:0}
+.cs-label{display:flex;align-items:center;gap:8px}
+.cs-label span.tag{display:none}
+.cs-icon{display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--pl);color:var(--p);flex-shrink:0;transition:background var(--tr),color var(--tr)}
+.cs-hd:hover .cs-icon{background:var(--p);color:#fff}
+.cs-texts{display:flex;flex-direction:column;gap:1px}
+.cs-title{font-size:10.5px;font-weight:700;color:var(--theme-ink);letter-spacing:-.1px;text-transform:none;letter-spacing:normal}
+.cs-subtitle{font-size:8px;color:var(--theme-mu);font-weight:400;letter-spacing:normal}
+.cs-num{display:inline-block;font-size:8px;font-weight:700;color:var(--p);letter-spacing:.3px;margin-right:2px;opacity:.7}
 .cs-chevron{font-size:9px;color:var(--theme-mu);transition:transform var(--tr)}
 .cs-chevron.open{transform:rotate(180deg)}
 .cs-body{padding:10px 14px 12px;display:none}
@@ -171,6 +177,12 @@ body.pres #canvas-tb{display:none}
 body.pres #pbar{display:none}
 .ptag{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--theme-mu);white-space:nowrap}
 .pdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;box-shadow:0 0 4px currentColor}
+.pbar-sep{width:.5px;height:12px;background:var(--theme-bd);flex-shrink:0}
+.pbar-label{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--theme-mu);white-space:nowrap;flex-shrink:0}
+.gchip{display:flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:600;cursor:pointer;border:.5px solid var(--theme-bd);color:var(--theme-mu);background:transparent;transition:all .12s;white-space:nowrap;font-family:var(--fn)}
+.gchip:hover{border-color:var(--p);color:var(--p)}
+.gchip.on{background:var(--p);color:#fff;border-color:var(--p)}
+.gchip-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:currentColor}
 
 /* ── CREDIT ── */
 #credit{height:32px;background:var(--theme-cr);display:flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0;transition:background var(--tr)}
@@ -246,10 +258,58 @@ body.pres #pres-bar{display:flex}
 .pat-line{animation:drawPat var(--dur,.5s) cubic-bezier(.4,0,.2,1) var(--delay,0s) forwards}
 .pat-dot{opacity:0;animation:fadePat .25s ease-out var(--delay,0s) forwards}
 .pat-lbl{opacity:0;animation:fadePat .3s ease-out var(--delay,0s) forwards}
+.pat-zone{opacity:0;animation:fadePat var(--dur,.5s) ease-out var(--delay,0s) forwards}
 
 /* ── FILE INPUT HIDDEN ── */
 #tpl-file-input{display:none}
-</style>
+
+/* ── VISUAL TYPE PICKER ── */
+.vpick-group{border-bottom:.5px solid var(--theme-bd)}
+.vpick-group:last-child{border-bottom:none}
+.vpick-ghd{display:flex;align-items:center;justify-content:space-between;padding:7px 8px;cursor:pointer;user-select:none;border-radius:4px;transition:background var(--tr)}
+.vpick-ghd:hover{background:var(--theme-hover)}
+.vpick-glabel{font-size:9px;font-weight:700;color:var(--theme-mu);text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:5px}
+.vpick-gchev{font-size:8px;color:var(--theme-mu);transition:transform .15s ease;flex-shrink:0}
+.vpick-gbody{display:none;padding:4px 4px 8px}
+.vpick-gbody.open{display:block}
+.vpick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+.vpick-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px 4px;border-radius:5px;border:.5px solid transparent;cursor:pointer;background:transparent;transition:all .12s ease;position:relative;color:var(--theme-mu)}
+.vpick-btn:hover{background:var(--theme-hover);border-color:var(--theme-bd);color:var(--theme-ink)}
+.vpick-btn.on{background:var(--pl);border-color:var(--p);color:var(--p)}
+.vpick-lbl{font-size:7px;font-weight:500;text-align:center;line-height:1.2;max-width:40px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vpick-tip{position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:9px;font-weight:600;padding:3px 7px;border-radius:4px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:100}
+.vpick-btn:hover .vpick-tip{opacity:1}
+.vpick-active-dot{width:5px;height:5px;border-radius:50%;background:var(--p);flex-shrink:0}
+
+/* ── STORY SECTION ── */
+.story-intro{font-size:10px;color:var(--theme-mu);line-height:1.55;margin-bottom:10px;padding:8px 10px;background:var(--theme-tag-bg);border-radius:6px;border-left:2px solid var(--p)}
+.story-field{margin-bottom:10px}
+.story-label{font-size:9px;font-weight:700;color:var(--theme-mu);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;display:flex;align-items:center;gap:4px}
+.story-label-req{width:5px;height:5px;border-radius:50%;background:var(--p);flex-shrink:0}
+.story-label-req.done{background:#3c8a37}
+.story-chips{display:flex;gap:4px;flex-wrap:wrap}
+.story-chip{padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;border:.5px solid var(--theme-bd);background:var(--theme-sb);color:var(--theme-mu);transition:all var(--tr);font-family:var(--fn)}
+.story-chip:hover{border-color:var(--p);color:var(--p)}
+.story-chip.on{background:var(--p);color:#fff;border-color:var(--p)}
+.story-textarea{width:100%;padding:6px 8px;border:.5px solid var(--theme-bd);border-radius:5px;font-size:11px;font-family:var(--fn);color:var(--theme-ink);background:var(--theme-sb);outline:none;resize:none;line-height:1.45;transition:border-color var(--tr)}
+.story-textarea:focus{border-color:var(--p)}
+.story-textarea::placeholder{color:var(--theme-mu);opacity:.7}
+.story-bar-wrap{margin:10px 0 8px;display:flex;align-items:center;gap:8px}
+.story-bar-track{flex:1;height:3px;background:var(--theme-bd);border-radius:2px;overflow:hidden}
+.story-bar-fill{height:100%;background:linear-gradient(90deg,var(--p),#a3223e);border-radius:2px;transition:width .4s ease}
+.story-bar-pct{font-size:9px;font-weight:700;color:var(--theme-mu);flex-shrink:0;min-width:24px;text-align:right}
+.story-suggestion{margin-top:8px;padding:9px 11px;border:.5px solid rgba(122,123,255,.3);border-radius:7px;background:var(--pl);display:none}
+.story-suggestion.show{display:block}
+.story-sug-label{font-size:8.5px;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+.story-sug-text{font-size:11px;color:var(--theme-ink);line-height:1.5;margin-bottom:6px}
+.story-sug-btn{font-size:9px;font-weight:700;color:var(--p);cursor:pointer;padding:3px 8px;border:.5px solid rgba(122,123,255,.35);border-radius:20px;background:transparent;font-family:var(--fn);transition:all var(--tr)}
+.story-sug-btn:hover{background:var(--p);color:#fff}
+.story-preview-badge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:3px 8px;border-radius:4px;background:rgba(60,138,55,.1);border:.5px solid rgba(60,138,55,.25);font-size:9px;color:#2a6a25;font-weight:600}
+/* ── FORMAT TOGGLE BUTTONS (B / I) ── */
+.fmt-btn{width:22px;height:22px;border-radius:4px;border:.5px solid var(--theme-bd);background:var(--theme-sb);color:var(--theme-mu);font-family:'Segoe UI',sans-serif;font-size:11px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all var(--tr);flex-shrink:0;line-height:1;padding:0}
+.fmt-btn.on{background:var(--p);color:#fff;border-color:var(--p)}
+.fmt-btn:hover:not(.on){border-color:var(--p);color:var(--p)}
+.fmt-btn-i{font-style:italic;font-weight:400;font-size:12px}</style>
 </head>
 <body>
 <div id="app">
@@ -259,25 +319,52 @@ body.pres #pres-bar{display:flex}
       <div class="logo-r">
         <div class="logo-d"></div>
         <span class="sb-title">PBI Mockup Creator</span>
-        <span style="margin-left:auto;background:var(--pl);color:var(--p);font-size:8.5px;font-weight:700;padding:2px 6px;border-radius:3px">v2026</span>
+        <span style="margin-left:auto;background:var(--pl);color:var(--p);font-size:8.5px;font-weight:700;padding:2px 6px;border-radius:3px">v10</span>
       </div>
     </div>
     <div id="sb-sc">
-<!-- 1. Canvas -->
+
+<!-- 00 · Historia del Dashboard -->
+<div class="cs">
+  <div class="cs-hd" onclick="toggleSection('story')">
+    <span class="cs-label">
+      <span class="cs-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2h10a1 1 0 011 1v6a1 1 0 01-1 1H5l-3 2V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+          <line x1="4.5" y1="5" x2="9.5" y2="5" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".6"/>
+          <line x1="4.5" y1="7" x2="7.5" y2="7" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".4"/>
+        </svg>
+      </span>
+      <span class="cs-texts">
+        <span class="cs-title">Historia del Dashboard</span>
+        <span class="cs-subtitle">Audiencia, decisión y dato clave</span>
+      </span>
+    </span>
+    <span class="cs-chevron open" id="chev-story">▾</span>
+  </div>
+  <div class="cs-body open" id="body-story"><div id="storyc"></div></div>
+</div>
+
+<!-- 01 · Canvas -->
 <div class="cs">
   <div class="cs-hd" onclick="toggleSection('canvas')">
     <span class="cs-label">
-      <span class="tag"></span>Canvas
+      <span class="cs-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="1" y1="4.2" x2="13" y2="4.2" stroke="currentColor" stroke-width=".8" opacity=".55"/>
+          <line x1="4.2" y1="1" x2="4.2" y2="4.2" stroke="currentColor" stroke-width=".8" opacity=".55"/>
+        </svg>
+      </span>
+      <span class="cs-texts">
+        <span class="cs-title">Canvas</span>
+        <span class="cs-subtitle">Formato y dimensiones del lienzo</span>
+      </span>
     </span>
     <span class="cs-chevron open" id="chev-canvas">▾</span>
   </div>
-
   <div class="cs-body open" id="body-canvas">
-
-    <!-- Canvas preview -->
     <div class="pg" id="pg"></div>
-
-    <!-- Custom size -->
     <div id="custom-size-row" class="hidden">
       <div class="sdiv">Dimensiones</div>
       <div class="custom-size">
@@ -287,67 +374,129 @@ body.pres #pres-bar{display:flex}
         <span>px</span>
       </div>
     </div>
-
-    <div class="spacer-8"></div>
-
-    <!-- 🔹 TÍTULO -->
-    <div class="sdiv">Título del dashboard</div>
-    <div class="block">
-      <input 
-        type="text" 
-        class="ti" 
-        id="dash-title" 
-        value="Análisis Comercial · 2026"
-      >
-
-      <div class="cr">
-        <span class="cl">Tamaño título</span>
-        <div id="dash-title-stp"></div>
-      </div>
-    </div>
-
-    <!-- 🔹 SUBTÍTULO -->
-    <div class="sdiv">Subtítulo del dashboard</div>
-    <div class="block">
-      <input 
-        type="text" 
-        class="ti" 
-        id="dash-subtitle" 
-        value="Análisis de ventas por canal y región"
-      >
-
-      <div class="cr">
-        <span class="cl">Tamaño</span>
-        <div id="dash-subtitle-stp"></div>
-      </div>
-    </div>
-
   </div>
 </div>
-      <!-- 2. Márgenes -->
-      <div class="cs"><div class="cs-hd" onclick="toggleSection('margins')"><span class="cs-label"><span class="tag"></span>Márgenes &amp; Spacing</span><span class="cs-chevron open" id="chev-margins">▾</span></div>
-        <div class="cs-body open" id="body-margins"><div id="mc"></div></div>
-      </div>
-      <!-- 3. Zonas -->
-      <div class="cs"><div class="cs-hd" onclick="toggleSection('zones')"><span class="cs-label"><span class="tag"></span>Zonas del Dashboard</span><span class="cs-chevron open" id="chev-zones">▾</span></div>
-        <div class="cs-body open" id="body-zones"><div id="zc"></div></div>
-      </div>
-      <!-- 4. Estilo -->
-      <div class="cs"><div class="cs-hd" onclick="toggleSection('style')"><span class="cs-label"><span class="tag"></span>Estilo Visual</span><span class="cs-chevron" id="chev-style">▾</span></div>
-        <div class="cs-body" id="body-style"><div id="stc"></div></div>
-      </div>
-      <!-- 5. Guías -->
-      <div class="cs"><div class="cs-hd" onclick="toggleSection('guides')"><span class="cs-label"><span class="tag"></span>Guías de Diseño</span><span class="cs-chevron" id="chev-guides">▾</span></div>
-        <div class="cs-body" id="body-guides"><div id="gc"></div></div>
-      </div>
-      <!-- 6. Visuales -->
-      <div class="cs"><div class="cs-hd" onclick="toggleSection('vtypes')"><span class="cs-label"><span class="tag"></span>Tipo de Visuales</span><span class="cs-chevron" id="chev-vtypes">▾</span></div>
-        <div class="cs-body" id="body-vtypes"><div id="vtc"></div></div>
-      </div>
-      <!-- 7. Plantillas -->
-      <div class="cs"><div class="cs-hd" onclick="toggleSection('templates')"><span class="cs-label"><span class="tag"></span>Plantillas</span><span class="cs-chevron" id="chev-templates">▾</span></div>
-        <div class="cs-body" id="body-templates"><div id="tplc"></div></div>
-      </div>
+
+<!-- 02 · Layout del Dashboard -->
+<div class="cs">
+  <div class="cs-hd" onclick="toggleSection('layout')">
+    <span class="cs-label">
+      <span class="cs-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="1" width="12" height="3.5" rx="1" stroke="currentColor" stroke-width="1.1"/>
+          <rect x="1" y="6" width="5" height="7" rx="1" stroke="currentColor" stroke-width="1.1"/>
+          <rect x="8" y="6" width="5" height="7" rx="1" stroke="currentColor" stroke-width="1.1"/>
+        </svg>
+      </span>
+      <span class="cs-texts">
+        <span class="cs-title">Layout del Dashboard</span>
+        <span class="cs-subtitle">Estructura y zonas del dashboard</span>
+      </span>
+    </span>
+    <span class="cs-chevron open" id="chev-layout">▾</span>
+  </div>
+  <div class="cs-body open" id="body-layout">
+    <div id="mc"></div>
+    <div style="height:6px;border-top:.5px solid var(--theme-bd);margin:10px 0 6px"></div>
+    <div id="zc"></div>
+  </div>
+</div>
+
+<!-- 03 · Estilo Visual -->
+<div class="cs">
+  <div class="cs-hd" onclick="toggleSection('style')">
+    <span class="cs-label">
+      <span class="cs-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="7" cy="7" r="2" fill="currentColor"/>
+          <line x1="7" y1="1.5" x2="7" y2="4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="7" y1="9.5" x2="7" y2="12.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="1.5" y1="7" x2="4.5" y2="7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="9.5" y1="7" x2="12.5" y2="7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="cs-texts">
+        <span class="cs-title">Estilo Visual</span>
+        <span class="cs-subtitle">Apariencia, colores y geometría</span>
+      </span>
+    </span>
+    <span class="cs-chevron" id="chev-style">▾</span>
+  </div>
+  <div class="cs-body" id="body-style">
+    <div id="stc"></div>
+    <div style="height:6px;border-top:.5px solid var(--theme-bd);margin:10px 0 6px"></div>
+    <div id="gc"></div>
+  </div>
+</div>
+
+<!-- 04 · Tarjetas KPI -->
+<div class="cs">
+  <div class="cs-hd" onclick="toggleSection('kpis')">
+    <span class="cs-label">
+      <span class="cs-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="3" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="3.5" y1="6.5" x2="7" y2="6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="3.5" y1="8.5" x2="5.5" y2="8.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+          <path d="M9 5.2 L11.5 7 L9 8.8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="cs-texts">
+        <span class="cs-title">Tarjetas KPI</span>
+        <span class="cs-subtitle">Métricas, valores y mini gráficos</span>
+      </span>
+    </span>
+    <span class="cs-chevron" id="chev-kpis">▾</span>
+  </div>
+  <div class="cs-body" id="body-kpis"><div id="kpic"></div></div>
+</div>
+
+<!-- 05 · Tipo de Visuales -->
+<div class="cs">
+  <div class="cs-hd" onclick="toggleSection('vtypes')">
+    <span class="cs-label">
+      <span class="cs-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="1" y1="13" x2="13" y2="13" stroke="currentColor" stroke-width="1" opacity=".4"/>
+          <line x1="1" y1="1" x2="1" y2="13" stroke="currentColor" stroke-width="1" opacity=".4"/>
+          <rect x="2.5" y="7.5" width="2" height="5.5" rx=".4" fill="currentColor" opacity=".45"/>
+          <rect x="6" y="4" width="2" height="9" rx=".4" fill="currentColor"/>
+          <rect x="9.5" y="9" width="2" height="4" rx=".4" fill="currentColor" opacity=".45"/>
+        </svg>
+      </span>
+      <span class="cs-texts">
+        <span class="cs-title">Tipo de Visuales</span>
+        <span class="cs-subtitle">Gráficos por zona y configuración avanzada</span>
+      </span>
+    </span>
+    <span class="cs-chevron" id="chev-vtypes">▾</span>
+  </div>
+  <div class="cs-body" id="body-vtypes"><div id="vtc"></div></div>
+</div>
+
+<!-- 06 · Plantillas -->
+<div class="cs">
+  <div class="cs-hd" onclick="toggleSection('templates')">
+    <span class="cs-label">
+      <span class="cs-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="1" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+          <line x1="4.5" y1="4.5" x2="9.5" y2="4.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          <line x1="4.5" y1="7" x2="9.5" y2="7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity=".5"/>
+          <line x1="4.5" y1="9.5" x2="7.5" y2="9.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity=".5"/>
+        </svg>
+      </span>
+      <span class="cs-texts">
+        <span class="cs-title">Plantillas</span>
+        <span class="cs-subtitle">Presets, guardar y cargar JSON</span>
+      </span>
+    </span>
+    <span class="cs-chevron" id="chev-templates">▾</span>
+  </div>
+  <div class="cs-body" id="body-templates"><div id="tplc"></div></div>
+</div>
+
     </div>
     <div class="dl-group">
       <button id="dl-btn" onclick="doDownload()">
@@ -413,7 +562,7 @@ body.pres #pres-bar{display:flex}
     linkedin.com/in/borjamoramendez
   </a>
   <div class="credit-sep"></div>
-  <span class="credit-tag">PBI MOCKUP CREATOR v4</span>
+  <span class="credit-tag">PBI MOCKUP CREATOR v10</span>
 </div>
 
 <!-- PRESENTATION BAR -->
@@ -446,15 +595,60 @@ const SIZES=[
   {n:'Móvil',w:400,h:640,d:'400×640'},
   {n:'Custom',w:1280,h:720,d:'Custom',custom:true},
 ];
-const VTYPES=['bar','line','table','waterfall','funnel','area','matrix','column','lollypop','dumbbell','slope'];
-const VLABELS={bar:'Barras',line:'Líneas',table:'Tabla',waterfall:'Cascada',funnel:'Funnel',area:'Área',matrix:'Matrix',column:'Columnas',lollypop:'Lollipop',dumbbell:'Dumbbell',slope:'Slope'};
+const VTYPES=['bar','bar-stacked','bar-grouped','bar-100','column','column-stacked','column-grouped','column-100','line','area','area-stacked','area-100','combo-stacked','combo-grouped','ribbon','waterfall','funnel','scatter','donut','treemap','table','matrix','lollypop','dumbbell','slope'];
+const VLABELS={
+  'bar':'Barras','bar-stacked':'Barras apiladas','bar-grouped':'Barras agrupadas','bar-100':'Barras 100%',
+  'column':'Columnas','column-stacked':'Col. apiladas','column-grouped':'Col. agrupadas','column-100':'Col. 100%',
+  'line':'Líneas','area':'Área','area-stacked':'Área apilada','area-100':'Área 100%',
+  'combo-stacked':'Col. apil. + Líneas','combo-grouped':'Col. agrup. + Líneas',
+  'ribbon':'Cintas','waterfall':'Cascada','funnel':'Embudo','scatter':'Dispersión',
+  'donut':'Anillos','treemap':'Mapa de árbol',
+  'table':'Tabla','matrix':'Matrix','lollypop':'Lollipop','dumbbell':'Dumbbell','slope':'Slope',
+};
+// Grupos de visuales para el selector (igual que PBI panel)
+const VGROUPS=[
+  {label:'Barras & Columnas',types:['bar','bar-stacked','bar-grouped','bar-100','column','column-stacked','column-grouped','column-100']},
+  {label:'Líneas & Áreas',types:['line','area','area-stacked','area-100','combo-stacked','combo-grouped']},
+  {label:'Otros gráficos',types:['ribbon','waterfall','funnel','scatter','donut','treemap']},
+  {label:'Análisis avanzado',types:['table','matrix','lollypop','dumbbell','slope']},
+];
+// Iconos SVG estilo Power BI — 36×36, stroke outline, azul acento + gris
+const _ic=(body)=>`<svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" style="display:block">${body}</svg>`;
+const _ax=`<line x1="5" y1="31" x2="31" y2="31" stroke="currentColor" stroke-width="1.2" opacity=".35"/><line x1="5" y1="5" x2="5" y2="31" stroke="currentColor" stroke-width="1.2" opacity=".35"/>`;
+const VICONS={
+  'bar':_ic(`${_ax}<rect x="7" y="9" width="20" height="4" rx="0" fill="#7a7bff"/><rect x="7" y="15" width="14" height="4" rx="0" fill="#c8c8e0"/><rect x="7" y="21" width="18" height="4" rx="0" fill="#c8c8e0"/>`),
+  'bar-stacked':_ic(`${_ax}<rect x="7" y="9" width="12" height="4" rx="0" fill="#7a7bff"/><rect x="19" y="9" width="8" height="4" rx="0" fill="#c8c8e0"/><rect x="7" y="15" width="9" height="4" rx="0" fill="#7a7bff"/><rect x="16" y="15" width="6" height="4" rx="0" fill="#c8c8e0"/><rect x="7" y="21" width="11" height="4" rx="0" fill="#7a7bff"/><rect x="18" y="21" width="7" height="4" rx="0" fill="#c8c8e0"/>`),
+  'bar-grouped':_ic(`${_ax}<rect x="7" y="8" width="18" height="3" rx="0" fill="#7a7bff"/><rect x="7" y="12" width="13" height="3" rx="0" fill="#c8c8e0"/><rect x="7" y="17" width="15" height="3" rx="0" fill="#7a7bff"/><rect x="7" y="21" width="10" height="3" rx="0" fill="#c8c8e0"/><rect x="7" y="26" width="12" height="3" rx="0" fill="#7a7bff"/>`),
+  'bar-100':_ic(`${_ax}<rect x="7" y="9" width="10" height="4" rx="0" fill="#7a7bff"/><rect x="17" y="9" width="7" height="4" rx="0" fill="#c8c8e0"/><rect x="24" y="9" width="3" height="4" rx="0" fill="#9898cc"/><rect x="7" y="15" width="13" height="4" rx="0" fill="#7a7bff"/><rect x="20" y="15" width="7" height="4" rx="0" fill="#9898cc"/><rect x="7" y="21" width="8" height="4" rx="0" fill="#7a7bff"/><rect x="15" y="21" width="9" height="4" rx="0" fill="#c8c8e0"/><rect x="24" y="21" width="3" height="4" rx="0" fill="#9898cc"/><line x1="27" y1="9" x2="27" y2="25" stroke="#7a7bff" stroke-width="0.8" stroke-dasharray="2,2" opacity=".5"/>`),
+  'column':_ic(`${_ax}<rect x="7" y="17" width="5" height="14" rx="0" fill="#c8c8e0"/><rect x="14" y="13" width="5" height="18" rx="0" fill="#7a7bff"/><rect x="21" y="19" width="5" height="12" rx="0" fill="#c8c8e0"/>`),
+  'column-stacked':_ic(`${_ax}<rect x="7" y="20" width="5" height="11" rx="0" fill="#7a7bff"/><rect x="7" y="15" width="5" height="5" rx="0" fill="#c8c8e0"/><rect x="14" y="17" width="5" height="14" rx="0" fill="#7a7bff"/><rect x="14" y="13" width="5" height="4" rx="0" fill="#c8c8e0"/><rect x="21" y="18" width="5" height="13" rx="0" fill="#7a7bff"/><rect x="21" y="14" width="5" height="4" rx="0" fill="#c8c8e0"/>`),
+  'column-grouped':_ic(`${_ax}<rect x="7" y="16" width="3.5" height="15" rx="0" fill="#7a7bff"/><rect x="11" y="20" width="3.5" height="11" rx="0" fill="#c8c8e0"/><rect x="16" y="13" width="3.5" height="18" rx="0" fill="#7a7bff"/><rect x="20" y="18" width="3.5" height="13" rx="0" fill="#c8c8e0"/><rect x="25" y="18" width="3.5" height="13" rx="0" fill="#7a7bff"/>`),
+  'column-100':_ic(`${_ax}<rect x="7" y="15" width="5" height="16" rx="0" fill="#7a7bff"/><rect x="7" y="10" width="5" height="5" rx="0" fill="#c8c8e0"/><rect x="7" y="7" width="5" height="3" rx="0" fill="#9898cc"/><rect x="14" y="13" width="5" height="18" rx="0" fill="#7a7bff"/><rect x="14" y="9" width="5" height="4" rx="0" fill="#9898cc"/><rect x="21" y="16" width="5" height="15" rx="0" fill="#7a7bff"/><rect x="21" y="11" width="5" height="5" rx="0" fill="#c8c8e0"/><rect x="21" y="8" width="5" height="3" rx="0" fill="#9898cc"/><line x1="5" y1="7" x2="28" y2="7" stroke="#7a7bff" stroke-width="0.8" stroke-dasharray="2,2" opacity=".5"/>`),
+  'line':_ic(`${_ax}<polyline points="5,24 10,18 15,20 20,12 25,15 31,8" fill="none" stroke="#7a7bff" stroke-width="2" stroke-linejoin="miter"/><circle cx="20" cy="12" r="2" fill="#7a7bff"/><polyline points="5,27 10,24 15,26 20,21 25,22 31,18" fill="none" stroke="#c8c8e0" stroke-width="1.5" stroke-linejoin="miter"/>`),
+  'area':_ic(`${_ax}<polygon points="5,24 10,18 15,20 20,12 25,15 31,8 31,31 5,31" fill="#7a7bff" opacity=".25"/><polyline points="5,24 10,18 15,20 20,12 25,15 31,8" fill="none" stroke="#7a7bff" stroke-width="2" stroke-linejoin="miter"/>`),
+  'area-stacked':_ic(`${_ax}<polygon points="5,28 10,25 15,26 20,22 25,24 31,20 31,31 5,31" fill="#c8c8e0" opacity=".7"/><polygon points="5,22 10,18 15,20 20,15 25,17 31,13 31,20 25,24 20,22 15,26 10,25 5,28" fill="#7a7bff" opacity=".4"/><polyline points="5,22 10,18 15,20 20,15 25,17 31,13" fill="none" stroke="#7a7bff" stroke-width="1.8" stroke-linejoin="miter"/>`),
+  'area-100':_ic(`${_ax}<rect x="5" y="7" width="26" height="24" fill="#c8c8e0" opacity=".5"/><polygon points="5,31 5,15 10,17 15,14 20,18 25,12 31,16 31,31" fill="#7a7bff" opacity=".7"/><line x1="5" y1="7" x2="31" y2="7" stroke="#7a7bff" stroke-width="0.8" stroke-dasharray="2,2" opacity=".5"/>`),
+  'combo-stacked':_ic(`${_ax}<rect x="7" y="20" width="5" height="11" rx="0" fill="#7a7bff"/><rect x="7" y="16" width="5" height="4" rx="0" fill="#c8c8e0"/><rect x="14" y="18" width="5" height="13" rx="0" fill="#7a7bff"/><rect x="14" y="14" width="5" height="4" rx="0" fill="#c8c8e0"/><rect x="21" y="17" width="5" height="14" rx="0" fill="#7a7bff"/><rect x="21" y="13" width="5" height="4" rx="0" fill="#c8c8e0"/><polyline points="5,20 9,17 16,15 23,13 31,10" fill="none" stroke="#a3223e" stroke-width="2" stroke-linejoin="miter"/><circle cx="16" cy="15" r="2" fill="#a3223e"/>`),
+  'combo-grouped':_ic(`${_ax}<rect x="7" y="17" width="3.5" height="14" rx="0" fill="#7a7bff"/><rect x="11" y="21" width="3.5" height="10" rx="0" fill="#c8c8e0"/><rect x="16" y="14" width="3.5" height="17" rx="0" fill="#7a7bff"/><rect x="20" y="19" width="3.5" height="12" rx="0" fill="#c8c8e0"/><rect x="25" y="19" width="3.5" height="12" rx="0" fill="#7a7bff"/><polyline points="5,19 9,16 16,13 22,17 27,16 31,12" fill="none" stroke="#a3223e" stroke-width="2" stroke-linejoin="miter"/><circle cx="16" cy="13" r="2" fill="#a3223e"/>`),
+  'ribbon':_ic(`${_ax}<path d="M7,28 C10,20 14,24 18,16 C22,8 26,14 30,10" fill="none" stroke="#7a7bff" stroke-width="4" opacity=".7"/><path d="M7,31 C10,23 14,27 18,19 C22,11 26,17 30,13" fill="none" stroke="#c8c8e0" stroke-width="4" opacity=".7"/>`),
+  'waterfall':_ic(`${_ax}<rect x="7" y="22" width="4" height="9" rx="0" fill="#7a7bff"/><rect x="13" y="17" width="4" height="5" rx="0" fill="#3c8a37"/><rect x="19" y="20" width="4" height="7" rx="0" fill="#a3223e"/><rect x="25" y="15" width="4" height="7" rx="0" fill="#7a7bff"/><line x1="11" y1="22" x2="13" y2="22" stroke="#888" stroke-width="0.8" stroke-dasharray="2,1"/><line x1="17" y1="17" x2="19" y2="17" stroke="#888" stroke-width="0.8" stroke-dasharray="2,1"/><line x1="23" y1="20" x2="25" y2="20" stroke="#888" stroke-width="0.8" stroke-dasharray="2,1"/>`),
+  'funnel':_ic(`<rect x="6" y="6" width="24" height="5" rx="0" fill="#7a7bff" opacity=".85"/><rect x="8" y="13" width="20" height="4" rx="0" fill="#7a7bff" opacity=".7"/><rect x="10" y="19" width="16" height="4" rx="0" fill="#7a7bff" opacity=".55"/><rect x="13" y="25" width="10" height="4" rx="0" fill="#7a7bff" opacity=".4"/>`),
+  'scatter':_ic(`${_ax}<circle cx="12" cy="22" r="2.5" fill="#7a7bff"/><circle cx="18" cy="14" r="2" fill="#7a7bff"/><circle cx="22" cy="19" r="3" fill="#7a7bff" opacity=".7"/><circle cx="26" cy="11" r="2" fill="#c8c8e0"/><circle cx="10" cy="27" r="1.5" fill="#c8c8e0"/><circle cx="15" cy="25" r="2" fill="#c8c8e0"/><circle cx="28" cy="18" r="1.5" fill="#7a7bff" opacity=".5"/>`),
+  'donut':_ic(`<circle cx="18" cy="18" r="12" fill="none" stroke="#7a7bff" stroke-width="6" stroke-dasharray="28 48" stroke-dashoffset="-6"/><circle cx="18" cy="18" r="12" fill="none" stroke="#c8c8e0" stroke-width="6" stroke-dasharray="20 56" stroke-dashoffset="-34"/><circle cx="18" cy="18" r="12" fill="none" stroke="#9898cc" stroke-width="6" stroke-dasharray="28 48" stroke-dashoffset="0"/><circle cx="18" cy="18" r="5" fill="white"/>`),
+  'treemap':_ic(`<rect x="4" y="4" width="16" height="18" rx="0" fill="#7a7bff" opacity=".85"/><rect x="21" y="4" width="11" height="10" rx="0" fill="#c8c8e0"/><rect x="21" y="15" width="11" height="7" rx="0" fill="#9898cc" opacity=".7"/><rect x="4" y="23" width="10" height="9" rx="0" fill="#c8c8e0" opacity=".8"/><rect x="15" y="23" width="17" height="9" rx="0" fill="#7a7bff" opacity=".4"/>`),
+  'table':_ic(`<rect x="4" y="4" width="28" height="28" rx="1" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".4"/><line x1="4" y1="11" x2="32" y2="11" stroke="currentColor" stroke-width="1.2" opacity=".6"/><line x1="4" y1="18" x2="32" y2="18" stroke="currentColor" stroke-width="0.8" opacity=".3"/><line x1="4" y1="25" x2="32" y2="25" stroke="currentColor" stroke-width="0.8" opacity=".3"/><line x1="13" y1="4" x2="13" y2="32" stroke="currentColor" stroke-width="0.8" opacity=".3"/><line x1="22" y1="4" x2="22" y2="32" stroke="currentColor" stroke-width="0.8" opacity=".3"/><rect x="4" y="4" width="28" height="7" rx="1" fill="#7a7bff" opacity=".15"/>`),
+  'matrix':_ic(`<rect x="4" y="4" width="28" height="28" rx="1" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".4"/><line x1="4" y1="11" x2="32" y2="11" stroke="currentColor" stroke-width="1.2" opacity=".6"/><line x1="4" y1="18" x2="32" y2="18" stroke="currentColor" stroke-width="0.8" opacity=".3"/><line x1="4" y1="25" x2="32" y2="25" stroke="currentColor" stroke-width="0.8" opacity=".3"/><line x1="11" y1="4" x2="11" y2="32" stroke="currentColor" stroke-width="1.2" opacity=".6"/><line x1="19" y1="4" x2="19" y2="32" stroke="currentColor" stroke-width="0.8" opacity=".3"/><rect x="12" y="12" width="7" height="6" fill="#7a7bff" opacity=".6"/><rect x="20" y="19" width="12" height="6" fill="#7a7bff" opacity=".3"/>`),
+  'lollypop':_ic(`${_ax}<line x1="7" y1="14" x2="24" y2="14" stroke="#c8c8e0" stroke-width="1.5"/><circle cx="24" cy="14" r="3" fill="#7a7bff"/><line x1="7" y1="20" x2="19" y2="20" stroke="#c8c8e0" stroke-width="1.5"/><circle cx="19" cy="20" r="3" fill="#7a7bff"/><line x1="7" y1="26" x2="27" y2="26" stroke="#7a7bff" stroke-width="2"/><circle cx="27" cy="26" r="3.5" fill="#7a7bff"/>`),
+  'dumbbell':_ic(`${_ax}<line x1="9" y1="14" x2="22" y2="14" stroke="#7a7bff" stroke-width="1.5" opacity=".5"/><circle cx="9" cy="14" r="3" fill="none" stroke="#c8c8e0" stroke-width="1.5"/><circle cx="22" cy="14" r="3" fill="#7a7bff"/><line x1="9" y1="21" x2="18" y2="21" stroke="#c8c8e0" stroke-width="1.5" opacity=".5"/><circle cx="9" cy="21" r="3" fill="none" stroke="#c8c8e0" stroke-width="1.5"/><circle cx="18" cy="21" r="3" fill="#c8c8e0"/><line x1="9" y1="28" x2="26" y2="28" stroke="#7a7bff" stroke-width="2" opacity=".5"/><circle cx="9" cy="28" r="3" fill="none" stroke="#7a7bff" stroke-width="1.5"/><circle cx="26" cy="28" r="3.5" fill="#7a7bff"/>`),
+  'slope':_ic(`<line x1="10" y1="5" x2="10" y2="31" stroke="currentColor" stroke-width="1.2" opacity=".3"/><line x1="26" y1="5" x2="26" y2="31" stroke="currentColor" stroke-width="1.2" opacity=".3"/><text x="10" y="4" text-anchor="middle" font-size="5" fill="currentColor" opacity=".5" font-family="Segoe UI">A</text><text x="26" y="4" text-anchor="middle" font-size="5" fill="currentColor" opacity=".5" font-family="Segoe UI">B</text><line x1="10" y1="10" x2="26" y2="20" stroke="#7a7bff" stroke-width="2"/><circle cx="10" cy="10" r="2.5" fill="#7a7bff"/><circle cx="26" cy="20" r="2.5" fill="#7a7bff"/><line x1="10" y1="18" x2="26" y2="12" stroke="#c8c8e0" stroke-width="1.5" opacity=".7"/><circle cx="10" cy="18" r="2" fill="#c8c8e0"/><circle cx="26" cy="12" r="2" fill="#c8c8e0"/><line x1="10" y1="25" x2="26" y2="28" stroke="#c8c8e0" stroke-width="1.5" opacity=".5"/>`),
+};
 const CBGS=[{h:'#FFFFFF',n:'Blanco'},{h:'#F8F8F8',n:'Snow'},{h:'#F2F2F2',n:'Humo'},{h:'#EAEAEA',n:'Plata'},{h:'#E0E0E0',n:'Gris'},{h:'#D5D5D5',n:'Plomo'}];
 const CBGS_D=[{h:'#0f0f14',n:'Negro'},{h:'#141420',n:'Noche'},{h:'#1a1a28',n:'Dark'},{h:'#22222e',n:'Carbón'},{h:'#2a2a38',n:'Pizarra'}];
 const CCARD=[{h:'#FFFFFF',n:'Blanco'},{h:'#FAFAFA',n:'Nieve'},{h:'#F6F6F6',n:'Lino'},{h:'#EFEFEF',n:'Perla'}];
 const CCARD_D=[{h:'#111118',n:'Negro'},{h:'#181825',n:'Noche'},{h:'#1e1e2e',n:'Dark'},{h:'#252535',n:'Carbón'}];
 const CBORD=[{h:'#EBEBEB',n:'S-suave'},{h:'#DCDCDC',n:'Suave'},{h:'#CCCCCC',n:'Medio'},{h:'#BBBBBB',n:'Fuerte'}];
 const CBORD_D=[{h:'#222230',n:'S-suave'},{h:'#2e2e42',n:'Suave'},{h:'#3a3a55',n:'Medio'},{h:'#484860',n:'Fuerte'}];
-const KD=[
+const KD_DEFAULT=[
   {l:'Ingresos',v:'€ 2,84M',d:'+12,4%',p:true},
   {l:'Unidades',v:'48.236',d:'+8,1%',p:true},
   {l:'Ticket Medio',v:'€ 58,90',d:'-2,3%',p:false},
@@ -535,6 +729,7 @@ const BUILT_IN_TPLS=[
 let S={
   si:0,customW:1280,customH:720,
   titleSize:18,subSize:11,subtitleSize:13,kpiValueSize:28,kpiSparkline:'sparkline',
+  titleBold:true,titleItalic:false,subtitleBold:false,subtitleItalic:false,
   m:{t:24,b:24,l:24,r:24},gap:12,
   z:{header:true,filter:'none',filterW:160,kpi:4,main:2,sec:2,tooltip:false,drillthrough:false},
   st:{br:8,cbg:1,ccard:0,cbord:0,canvasRadius:3},
@@ -542,9 +737,18 @@ let S={
   pattern:'Z',theme:'light',zoom:1,vt:{},
   vDrill:{},
   vTooltip:{},
+  kd:KD_DEFAULT.map(k=>({...k})),
+  vTitles:{},
+  vSubtitles:{},
+  story:{audience:'',decision:'',keyMetric:'',context:''},
+  gestalt:'',
 };
 
-function gvt(k,fb){return VTYPES[(S.vt[k]!==undefined?S.vt[k]:(fb||0))%VTYPES.length]}
+function gvt(k,fb){
+  const idx=S.vt[k];
+  if(idx!==undefined&&idx>=0&&idx<VTYPES.length)return VTYPES[idx];
+  return VTYPES[fb||0]||VTYPES[0];
+}
 
 // ═══════════════════════════════════════════
 // PRESS & HOLD
@@ -626,6 +830,7 @@ function afterChange(path){
   renderPreview();
 }
 function ss(path,val){sp2(path,val);renderControls();renderPreview()}
+function toggleFmt(key){S[key]=!S[key];renderZones();renderPreview();}
 function sp2(path,val){
   const parts=path.split('.');let obj=S;
   for(let i=0;i<parts.length-1;i++)obj=obj[parts[i]];
@@ -684,8 +889,147 @@ function getCbord(){
 // ═══════════════════════════════════════════
 // CONTROLS RENDERING
 // ═══════════════════════════════════════════
+// ── HISTORIA DEL DASHBOARD ──────────────────────────────────────────────────
+const STORY_AUDIENCES=[
+  {id:'csuite',  label:'C-Suite',    hint:'Decisores. Quieren el número y la tendencia. Sin ruido.'},
+  {id:'comercial',label:'Comercial', hint:'Equipo de ventas. Seguimiento diario, filtros rápidos.'},
+  {id:'analitico',label:'Analistas', hint:'Deep-dive. Aceptan complejidad si hay densidad de insight.'},
+  {id:'cliente',  label:'Cliente',   hint:'Externo. Máxima claridad, mínima jerga técnica.'},
+];
+const STORY_TPL_MAP={
+  'csuite':   {tpl:0, pattern:'Z', msg:'C-Suite → Patrón Z + plantilla Ejecutivo. El número manda arriba-izquierda, el CTA abajo-derecha.'},
+  'comercial':{tpl:1, pattern:'F', msg:'Comercial → Patrón F + plantilla Comercial. Primera fila completa, filtros accesibles.'},
+  'analitico':{tpl:2, pattern:'F', msg:'Analistas → Sidebar lateral + plantilla Analítico. Densidad controlada con jerarquía clara.'},
+  'cliente':  {tpl:3, pattern:'Z', msg:'Cliente externo → Patrón Z + plantilla Storytelling. Una historia, un mensaje principal.'},
+};
+
+function renderStory(){
+  const el=document.getElementById('storyc'); if(!el)return;
+  const st=S.story;
+  // barra de completitud: 4 campos, cada uno vale 25
+  const filled=[st.audience,st.decision,st.keyMetric,st.context].filter(v=>v&&v.trim().length>0).length;
+  const pct=Math.round(filled/4*100);
+  const sug=st.audience?STORY_TPL_MAP[st.audience]:null;
+
+  el.innerHTML=`
+    <div class="story-intro">
+      Define el contexto antes de diseñar. El mockup más efectivo no empieza por los visuales — empieza por la pregunta que tiene que responder.
+    </div>
+
+    <div class="story-bar-wrap">
+      <div class="story-bar-track"><div class="story-bar-fill" style="width:${pct}%"></div></div>
+      <span class="story-bar-pct" style="color:${pct===100?'#3c8a37':pct>50?'var(--p)':'var(--theme-mu)'}">${pct}%</span>
+    </div>
+
+    <div class="story-field">
+      <div class="story-label">
+        <div class="story-label-req ${st.audience?'done':''}"></div>
+        ¿Quién va a ver este dashboard?
+      </div>
+      <div class="story-chips">
+        ${STORY_AUDIENCES.map(a=>`
+          <button class="story-chip ${st.audience===a.id?'on':''}"
+            onclick="setStoryAudience('${a.id}')"
+            title="${a.hint}">${a.label}</button>`).join('')}
+      </div>
+      ${st.audience?`<div style="font-size:9.5px;color:var(--theme-mu);margin-top:5px;line-height:1.45;padding-left:2px">${STORY_AUDIENCES.find(a=>a.id===st.audience)?.hint||''}</div>`:''}
+    </div>
+
+    <div class="story-field">
+      <div class="story-label">
+        <div class="story-label-req ${st.decision?'done':''}"></div>
+        ¿Qué decisión tiene que tomar?
+      </div>
+      <textarea class="story-textarea" rows="2" maxlength="120"
+        placeholder="Ej: Decidir si renovar el contrato con el proveedor X este trimestre"
+        oninput="S.story.decision=this.value;refreshStoryBar()">${escHtml(st.decision)}</textarea>
+    </div>
+
+    <div class="story-field">
+      <div class="story-label">
+        <div class="story-label-req ${st.keyMetric?'done':''}"></div>
+        ¿Cuál es el dato más importante?
+      </div>
+      <textarea class="story-textarea" rows="1" maxlength="80"
+        placeholder="Ej: Margen bruto por categoría vs objetivo trimestral"
+        oninput="S.story.keyMetric=this.value;refreshStoryBar()">${escHtml(st.keyMetric)}</textarea>
+    </div>
+
+    <div class="story-field">
+      <div class="story-label">
+        <div class="story-label-req ${st.context?'done':''}"></div>
+        Contexto adicional <span style="font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span>
+      </div>
+      <textarea class="story-textarea" rows="2" maxlength="200"
+        placeholder="Ej: Se presenta en el comité mensual. El CEO solo mira los 2 primeros KPIs."
+        oninput="S.story.context=this.value;refreshStoryBar()">${escHtml(st.context)}</textarea>
+    </div>
+
+    <div class="story-suggestion ${sug?'show':''}">
+      ${sug?`
+        <div class="story-sug-label">Recomendación automática</div>
+        <div class="story-sug-text">${sug.msg}</div>
+        <button class="story-sug-btn" onclick="applyStorySuggestion('${st.audience}')">Aplicar sugerencia →</button>
+      `:''}
+    </div>
+
+    ${pct===100?`<div class="story-preview-badge"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#2a6a25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Historia completa · el contexto se guardará con el JSON</div>`:''}
+  `;
+}
+
+function setStoryAudience(id){
+  S.story.audience=id;
+  renderStory();
+}
+
+function refreshStoryBar(){
+  // actualiza solo la barra y el dot sin re-renderizar todo el panel
+  const st=S.story;
+  const filled=[st.audience,st.decision,st.keyMetric,st.context].filter(v=>v&&v.trim().length>0).length;
+  const pct=Math.round(filled/4*100);
+  const fill=document.querySelector('.story-bar-fill');
+  const pctEl=document.querySelector('.story-bar-pct');
+  if(fill) fill.style.width=pct+'%';
+  if(pctEl){
+    pctEl.textContent=pct+'%';
+    pctEl.style.color=pct===100?'#3c8a37':pct>50?'var(--p)':'var(--theme-mu)';
+  }
+  // actualiza dots
+  document.querySelectorAll('.story-label-req').forEach((dot,i)=>{
+    const vals=[st.audience,st.decision,st.keyMetric,st.context];
+    dot.classList.toggle('done',!!(vals[i]&&vals[i].trim().length>0));
+  });
+  // badge completo
+  const badge=document.querySelector('.story-preview-badge');
+  if(pct===100&&!badge){
+    const el=document.getElementById('storyc');
+    if(el){
+      const b=document.createElement('div');
+      b.className='story-preview-badge';
+      b.innerHTML='<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#2a6a25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Historia completa · el contexto se guardará con el JSON';
+      el.appendChild(b);
+    }
+  }
+}
+
+function applyStorySuggestion(audienceId){
+  const map=STORY_TPL_MAP[audienceId]; if(!map)return;
+  // aplicar plantilla
+  const t=BUILT_IN_TPLS[map.tpl];
+  if(t){
+    if(t.si!=null)S.si=t.si;
+    Object.assign(S.z,t.s.z);Object.assign(S.m,t.s.m);
+    S.gap=t.s.gap;Object.assign(S.st,t.s.st);S.vt={...t.s.vt};
+  }
+  // aplicar patrón de lectura
+  S.pattern=map.pattern;
+  renderControls();renderPreview();
+  _lpk='';requestAnimationFrame(()=>updatePatternOverlay(S.pattern,calcLayout()));
+  toast(`✓ Layout y patrón aplicados para ${STORY_AUDIENCES.find(a=>a.id===audienceId)?.label}`,true);
+}
+
 function renderControls(){
-  renderSizes();renderTitleSteppers();renderMargins();renderZones();renderStyle();renderGuides();renderVTypes();renderTemplates();renderThemePills();
+  renderSizes();renderTitleSteppers();renderMargins();renderZones();renderStyle();renderGuides();renderKpis();renderVTypes();renderTemplates();renderThemePills();renderStory();
 }
 function renderTitleSteppers(){
   const e1=document.getElementById('dash-title-stp'),e2=document.getElementById('dash-sub-stp'),e3=document.getElementById('dash-subtitle-stp');
@@ -728,7 +1072,7 @@ function renderMargins(){
 function renderZones(){
   const z=S.z;
   document.getElementById('zc').innerHTML=`
-    <div class="sdiv">Elementos del layout</div>
+    <div class="sdiv">Header &amp; filtros</div>
     <div class="trow"><span class="cl">Header ${tip('header')}</span>
       <label class="tg"><input type="checkbox" ${z.header?'checked':''} onchange="ss('z.header',this.checked)"><span class="tg-sl"></span></label>
     </div>
@@ -743,7 +1087,33 @@ function renderZones(){
     <div class="sdiv">Bloques de datos</div>
     ${sp('kpi','KPIs',0,6,z.kpi,'z.kpi','kpi')}
     ${sp('main','Zona A',1,4,z.main,'z.main','mainV')}
-    ${sp('sec','Zona B',0,4,z.sec,'z.sec','secV')}`;
+    ${sp('sec','Zona B',0,4,z.sec,'z.sec','secV')}
+    <div style="height:10px;border-top:.5px solid var(--theme-bd);margin-top:10px"></div>
+    <div class="sdiv" style="margin-top:6px">Título del header</div>
+    <div style="margin-bottom:10px">
+      <input type="text" class="ti" id="dash-title" value="Análisis Comercial · 2026" placeholder="Título del dashboard" style="margin-bottom:6px">
+      <div class="cr">
+        <span class="cl" style="font-size:10px">Tamaño letra</span>
+        <div style="display:flex;align-items:center;gap:4px">
+          <div id="dash-title-stp"></div>
+          <button class="fmt-btn ${S.titleBold?'on':''}" onclick="toggleFmt('titleBold')" title="Negrita">B</button>
+          <button class="fmt-btn fmt-btn-i ${S.titleItalic?'on':''}" onclick="toggleFmt('titleItalic')" title="Cursiva">I</button>
+        </div>
+      </div>
+    </div>
+    <div class="sdiv">Subtítulo del header</div>
+    <div style="margin-bottom:4px">
+      <input type="text" class="ti" id="dash-subtitle" value="Análisis de ventas por canal y región" placeholder="Subtítulo" style="margin-bottom:6px">
+      <div class="cr">
+        <span class="cl" style="font-size:10px">Tamaño letra</span>
+        <div style="display:flex;align-items:center;gap:4px">
+          <div id="dash-subtitle-stp"></div>
+          <button class="fmt-btn ${S.subtitleBold?'on':''}" onclick="toggleFmt('subtitleBold')" title="Negrita">B</button>
+          <button class="fmt-btn fmt-btn-i ${S.subtitleItalic?'on':''}" onclick="toggleFmt('subtitleItalic')" title="Cursiva">I</button>
+        </div>
+      </div>
+    </div>`;
+  renderTitleSteppers();
 }
 
 function renderStyle(){
@@ -792,93 +1162,231 @@ function renderGuides(){
     <div class="sdiv">Patrón de lectura ${tip('pattern')}</div>
     <div class="pattern-panel">
       <div class="pattern-tab-bar">
-        ${[['Z','Patrón Z'],['F','Patrón F'],['none','Libre']].map(([v,l])=>
+        ${[['Z','Z'],['F','F'],['layer-cake','Layer'],['none','Libre']].map(([v,l])=>
           `<button class="pattern-tab ${pt===v?'on':''}" onclick="setPattern('${v}')">${l}</button>`).join('')}
       </div>
       ${pt!=='none'?`
       <div class="pattern-body">
-        <div class="pattern-desc">${pt==='Z'
-          ?'El ojo recorre en Z: izquierda→derecha arriba, diagonal, izquierda→derecha abajo. KPIs en la barra top, CTA abajo derecha.'
-          :'El ojo escanea en F: fila superior completa, segunda línea más corta, descenso por la izquierda. Potencia la jerarquía de la primera fila.'
-        }</div>
-        <svg class="pattern-preview-vis" viewBox="0 0 220 80" xmlns="http://www.w3.org/2000/svg">
-          <rect x="4" y="4" width="212" height="16" rx="2" fill="#e5e5e5" opacity=".5"/>
-          <rect x="4" y="24" width="49" height="16" rx="2" fill="#e5e5e5" opacity=".4"/>
-          <rect x="57" y="24" width="49" height="16" rx="2" fill="#e5e5e5" opacity=".4"/>
-          <rect x="110" y="24" width="49" height="16" rx="2" fill="#e5e5e5" opacity=".4"/>
-          <rect x="163" y="24" width="49" height="16" rx="2" fill="#e5e5e5" opacity=".4"/>
-          <rect x="4" y="44" width="104" height="30" rx="2" fill="#e5e5e5" opacity=".35"/>
-          <rect x="112" y="44" width="100" height="30" rx="2" fill="#e5e5e5" opacity=".35"/>
+        <div class="pattern-desc">${{
+          'Z':'El ojo recorre en Z. Máxima atención arriba-izquierda y abajo-derecha. Ideal para dashboards con KPIs en header y CTA al final.',
+          'F':'El ojo escanea en F. Primera fila completa, luego lectura parcial. La columna izquierda concentra la jerarquía clave.',
+          'layer-cake':'Atención por capas horizontales decrecientes. Cada fila pierde intensidad. Ideal para rankings y comparativas.'
+        }[pt]||''}</div>
+        <svg class="pattern-preview-vis" viewBox="0 0 220 88" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="220" height="88" rx="4" fill="${isDark?'#1a1a2a':'#f0f0f4'}"/>
+          <rect x="5" y="4" width="210" height="13" rx="2" fill="${isDark?'#2a2a3e':'#dddde8'}"/>
+          <rect x="5" y="20" width="47" height="10" rx="2" fill="${isDark?'#2a2a3e':'#dddde8'}"/>
+          <rect x="56" y="20" width="47" height="10" rx="2" fill="${isDark?'#2a2a3e':'#dddde8'}"/>
+          <rect x="107" y="20" width="47" height="10" rx="2" fill="${isDark?'#2a2a3e':'#dddde8'}"/>
+          <rect x="158" y="20" width="57" height="10" rx="2" fill="${isDark?'#2a2a3e':'#dddde8'}"/>
+          <rect x="5" y="34" width="102" height="48" rx="2" fill="${isDark?'#2a2a3e':'#dddde8'}"/>
+          <rect x="112" y="34" width="103" height="48" rx="2" fill="${isDark?'#2a2a3e':'#dddde8'}"/>
+          <defs>
+            <filter id="pblur"><feGaussianBlur stdDeviation="5"/></filter>
+            <marker id="pmk" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 Z" fill="#f97316" opacity=".95"/></marker>
+          </defs>
           ${pt==='Z'?`
-            <defs><marker id="pz2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 Z" fill="#111" opacity=".8"/></marker></defs>
-            <circle cx="12" cy="12" r="3.5" fill="#111" opacity=".7"/>
-            <line x1="15" y1="12" x2="207" y2="12" stroke="#111" stroke-width="1.4" stroke-dasharray="4,2" marker-end="url(#pz2)" opacity=".7"/>
-            <line x1="207" y1="12" x2="12" y2="59" stroke="#111" stroke-width="1.1" stroke-dasharray="3,2" opacity=".35"/>
-            <line x1="12" y1="59" x2="207" y2="59" stroke="#7a7bff" stroke-width="1.4" stroke-dasharray="4,2" marker-end="url(#pz2)" opacity=".65"/>
-            <text x="8" y="9" font-size="7" font-weight="700" fill="#111" font-family="Segoe UI">①</text>
-            <text x="200" y="9" font-size="7" font-weight="700" fill="#111" font-family="Segoe UI">②</text>
-            <text x="8" y="74" font-size="7" font-weight="700" fill="#111" font-family="Segoe UI">③</text>
-            <text x="196" y="74" font-size="7" font-weight="700" fill="#7a7bff" font-family="Segoe UI">④</text>
-          `:`
-            <defs><marker id="pf2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 Z" fill="#111" opacity=".8"/></marker></defs>
-            <circle cx="12" cy="12" r="3.5" fill="#111" opacity=".7"/>
-            <line x1="12" y1="12" x2="12" y2="70" stroke="#111" stroke-width="1" stroke-dasharray="3,2" opacity=".2"/>
-            <line x1="15" y1="12" x2="207" y2="12" stroke="#111" stroke-width="1.4" stroke-dasharray="4,2" marker-end="url(#pf2)" opacity=".7"/>
-            <line x1="12" y1="36" x2="140" y2="36" stroke="#7a7bff" stroke-width="1.3" stroke-dasharray="4,2" marker-end="url(#pf2)" opacity=".65"/>
-            <line x1="12" y1="59" x2="90" y2="59" stroke="#111" stroke-width="1.1" stroke-dasharray="3,2" marker-end="url(#pf2)" opacity=".4"/>
-            <text x="8" y="9" font-size="7" font-weight="700" fill="#111" font-family="Segoe UI">①</text>
-            <text x="8" y="33" font-size="7" font-weight="700" fill="#7a7bff" font-family="Segoe UI">②</text>
-            <text x="8" y="74" font-size="7" font-weight="700" fill="#111" font-family="Segoe UI">③</text>
-          `}
+            <rect x="2" y="2" width="130" height="19" rx="3" fill="#f97316" opacity=".5" filter="url(#pblur)"/>
+            <rect x="2" y="2" width="130" height="19" rx="3" fill="#f97316" opacity=".32"/>
+            <rect x="120" y="55" width="98" height="32" rx="3" fill="#f97316" opacity=".52" filter="url(#pblur)"/>
+            <rect x="120" y="55" width="98" height="32" rx="3" fill="#f97316" opacity=".28"/>
+            <rect x="5" y="34" width="102" height="28" rx="2" fill="#f97316" opacity=".1"/>
+            <line x1="18" y1="10" x2="118" y2="10" stroke="#f97316" stroke-width="1.6" stroke-dasharray="5,3" opacity=".85" marker-end="url(#pmk)"/>
+            <line x1="118" y1="10" x2="18" y2="78" stroke="#f97316" stroke-width="1" stroke-dasharray="3,4" opacity=".38"/>
+            <line x1="18" y1="78" x2="188" y2="78" stroke="#f97316" stroke-width="1.4" stroke-dasharray="5,3" opacity=".75" marker-end="url(#pmk)"/>
+            <circle cx="18" cy="10" r="3.5" fill="#f97316" opacity=".95"/>
+            <circle cx="118" cy="10" r="2.5" fill="#f97316" opacity=".6"/>
+            <circle cx="18" cy="78" r="2.5" fill="#f97316" opacity=".6"/>
+            <circle cx="188" cy="78" r="3.5" fill="#f97316" opacity=".95"/>
+            <rect x="6" y="4" width="32" height="10" rx="2.5" fill="#f97316" opacity=".95"/>
+            <text x="22" y="10.5" text-anchor="middle" font-size="6.5" font-weight="700" fill="white" font-family="Segoe UI">① Alta</text>
+            <rect x="130" y="57" width="32" height="10" rx="2.5" fill="#f97316" opacity=".9"/>
+            <text x="146" y="63.5" text-anchor="middle" font-size="6.5" font-weight="700" fill="white" font-family="Segoe UI">④ CTA</text>
+          `:''}
+          ${pt==='F'?`
+            <rect x="2" y="2" width="216" height="19" rx="3" fill="#f97316" opacity=".55" filter="url(#pblur)"/>
+            <rect x="2" y="2" width="216" height="19" rx="3" fill="#f97316" opacity=".38"/>
+            <rect x="2" y="18" width="130" height="16" rx="3" fill="#f97316" opacity=".38" filter="url(#pblur)"/>
+            <rect x="2" y="18" width="130" height="16" rx="3" fill="#f97316" opacity=".22"/>
+            <rect x="2" y="34" width="80" height="48" rx="3" fill="#f97316" opacity=".18" filter="url(#pblur)"/>
+            <rect x="2" y="34" width="80" height="48" rx="3" fill="#f97316" opacity=".1"/>
+            <line x1="14" y1="10" x2="206" y2="10" stroke="#f97316" stroke-width="1.6" stroke-dasharray="5,3" opacity=".85" marker-end="url(#pmk)"/>
+            <line x1="14" y1="26" x2="120" y2="26" stroke="#f97316" stroke-width="1.3" stroke-dasharray="4,3" opacity=".65" marker-end="url(#pmk)"/>
+            <line x1="14" y1="10" x2="14" y2="82" stroke="#f97316" stroke-width="1" stroke-dasharray="2,4" opacity=".3"/>
+            <circle cx="14" cy="10" r="3.5" fill="#f97316" opacity=".95"/>
+            <circle cx="14" cy="26" r="2.5" fill="#f97316" opacity=".75"/>
+            <rect x="6" y="4" width="32" height="10" rx="2.5" fill="#f97316" opacity=".95"/>
+            <text x="22" y="10.5" text-anchor="middle" font-size="6.5" font-weight="700" fill="white" font-family="Segoe UI">① Alta</text>
+            <rect x="6" y="20" width="34" height="10" rx="2.5" fill="#f97316" opacity=".8"/>
+            <text x="23" y="26.5" text-anchor="middle" font-size="6.5" font-weight="600" fill="white" font-family="Segoe UI">② Media</text>
+            <rect x="6" y="52" width="30" height="10" rx="2.5" fill="#f97316" opacity=".55"/>
+            <text x="21" y="58.5" text-anchor="middle" font-size="6" font-weight="600" fill="white" font-family="Segoe UI">③ Baja</text>
+          `:''}
+          ${pt==='layer-cake'?`
+            <rect x="2" y="2" width="216" height="17" rx="3" fill="#f97316" opacity=".6" filter="url(#pblur)"/>
+            <rect x="2" y="2" width="216" height="17" rx="3" fill="#f97316" opacity=".42"/>
+            <rect x="2" y="19" width="216" height="15" rx="3" fill="#f97316" opacity=".38" filter="url(#pblur)"/>
+            <rect x="2" y="19" width="216" height="15" rx="3" fill="#f97316" opacity=".25"/>
+            <rect x="2" y="34" width="216" height="26" rx="3" fill="#f97316" opacity=".22" filter="url(#pblur)"/>
+            <rect x="2" y="34" width="216" height="26" rx="3" fill="#f97316" opacity=".13"/>
+            <rect x="2" y="60" width="216" height="26" rx="3" fill="#f97316" opacity=".1" filter="url(#pblur)"/>
+            <rect x="2" y="60" width="216" height="26" rx="3" fill="#f97316" opacity=".06"/>
+            <rect x="6" y="4" width="32" height="10" rx="2.5" fill="#f97316" opacity=".95"/>
+            <text x="22" y="10.5" text-anchor="middle" font-size="6.5" font-weight="700" fill="white" font-family="Segoe UI">① Alta</text>
+            <rect x="6" y="21" width="34" height="10" rx="2.5" fill="#f97316" opacity=".8"/>
+            <text x="23" y="27.5" text-anchor="middle" font-size="6.5" font-weight="700" fill="white" font-family="Segoe UI">② Media</text>
+            <rect x="6" y="37" width="28" height="10" rx="2.5" fill="#f97316" opacity=".6"/>
+            <text x="20" y="43.5" text-anchor="middle" font-size="6" font-weight="600" fill="white" font-family="Segoe UI">③ Baja</text>
+            <rect x="6" y="63" width="30" height="10" rx="2.5" fill="#f97316" opacity=".4"/>
+            <text x="21" y="69.5" text-anchor="middle" font-size="6" font-weight="500" fill="white" font-family="Segoe UI">④ Mín.</text>
+          `:''}
         </svg>
         <div class="pattern-legend">
-          <div class="pattern-leg-item"><div class="pattern-leg-dot" style="background:#111;height:2px"></div>Flujo primario</div>
-          <div class="pattern-leg-item"><div class="pattern-leg-dot" style="background:#7a7bff"></div>${pt==='Z'?'CTA / acción':'Lectura sec.'}</div>
+          <div class="pattern-leg-item"><div class="pattern-leg-dot" style="background:#f97316;opacity:1;height:8px;width:8px;border-radius:50%"></div>Alta atención</div>
+          <div class="pattern-leg-item"><div class="pattern-leg-dot" style="background:#f97316;opacity:.5;height:8px;width:8px;border-radius:50%"></div>Media</div>
+          <div class="pattern-leg-item"><div class="pattern-leg-dot" style="background:#f97316;opacity:.2;height:8px;width:8px;border-radius:50%"></div>Periferia</div>
         </div>
-      </div>`:`<div class="pattern-body"><div class="pattern-desc">Sin patrón. Flujo visual libre.</div></div>`}
+      </div>`:`<div class="pattern-body"><div class="pattern-desc">Sin patrón de lectura aplicado. El usuario decide su propio flujo visual.</div></div>`}
     </div>`;
 }
 
 function setPattern(v){S.pattern=v;renderGuides();renderPreview();_lpk='';requestAnimationFrame(()=>updatePatternOverlay(v,calcLayout()))}
 
-// FIX: renderVTypes — única fuente de verdad para Tooltip y Drill-through
-function renderVTypes(){
-  const z=S.z;let html='';
-  html+=`<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:.5px solid var(--theme-bd)">
-    <div class="sdiv">KPI — Valor principal ${tip('kpiSize')}</div>
+// KPI SECTION — sección independiente
+function renderKpis(){
+  const el=document.getElementById('kpic');if(!el)return;
+  let html='';
+  html+=`<div style="margin-bottom:8px">
+    <div class="sdiv">Valor principal ${tip('kpiSize')}</div>
     <div class="cr" style="margin-bottom:8px"><span class="cl">Tamaño</span>${spxHtml('kpiValueSize',S.kpiValueSize,10,48,1)}</div>
     <div class="sdiv" style="margin-top:6px">Mini gráfico ${tip('kpiSparkline')}</div>
-    <div class="rp-g">${[['none','Sin gráfico'],['sparkline','Sparkline'],['bars','Columnas']].map(([v,l])=>
+    <div class="rp-g" style="margin-bottom:10px">${[['none','Sin gráfico'],['sparkline','Sparkline'],['bars','Columnas']].map(([v,l])=>
       `<button class="rp ${S.kpiSparkline===v?'on':''}" onclick="setKpiSparkline('${v}')">${l}</button>`).join('')}
-    </div></div>`;
+    </div>
+    <div class="sdiv" style="margin-top:2px">Editar KPIs del canvas</div>
+    ${Array.from({length:Math.min(S.z.kpi,S.kd.length)},(_,i)=>{
+      const k=S.kd[i];
+      const bodyId=`kpi-body-${i}`;
+      const chevId=`kpi-chev-${i}`;
+      return`<div style="border:.5px solid var(--theme-bd);border-radius:6px;margin-bottom:6px;overflow:hidden;background:var(--theme-ow)">
+        <div onclick="toggleVGroup('${bodyId}','${chevId}')" style="display:flex;align-items:center;gap:7px;padding:7px 10px;cursor:pointer;user-select:none;transition:background var(--tr)" onmouseover="this.style.background='var(--theme-hover)'" onmouseout="this.style.background=''">
+          <span style="width:16px;height:16px;background:${k.p?'rgba(107,201,140,.18)':'rgba(232,128,128,.18)'};border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0">${k.p?'▲':'▼'}</span>
+          <span style="font-size:10px;font-weight:700;color:var(--theme-ink);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(k.l)||'KPI '+(i+1)}</span>
+          <span style="font-size:9px;font-weight:600;color:var(--theme-mu);flex-shrink:0">${escHtml(k.v)}</span>
+          <span id="${chevId}" style="font-size:8px;color:var(--theme-mu);transition:transform .15s ease;flex-shrink:0">▾</span>
+        </div>
+        <div id="${bodyId}" style="display:none;padding:8px 10px;border-top:.5px solid var(--theme-bd)">
+          <div class="cr" style="margin-bottom:5px">
+            <span class="cl" style="min-width:52px;font-size:10px">Nombre</span>
+            <input class="ti" style="font-size:10px;padding:3px 7px" value="${escHtml(k.l)}" oninput="updateKd(${i},'l',this.value);updateKpiHd(${i})" placeholder="Nombre del KPI">
+          </div>
+          <div class="cr" style="margin-bottom:5px">
+            <span class="cl" style="min-width:52px;font-size:10px">Valor</span>
+            <input class="ti" style="font-size:10px;padding:3px 7px" value="${escHtml(k.v)}" oninput="updateKd(${i},'v',this.value);updateKpiHd(${i})" placeholder="€ 0,00">
+          </div>
+          <div class="cr" style="margin-bottom:6px">
+            <span class="cl" style="min-width:52px;font-size:10px">Variación</span>
+            <input class="ti" style="font-size:10px;padding:3px 7px" value="${escHtml(k.d)}" oninput="updateKd(${i},'d',this.value)" placeholder="+0,0%">
+          </div>
+          <button onclick="toggleKpiDir(${i})" style="font-size:8px;font-weight:600;padding:3px 8px;border-radius:4px;border:.5px solid var(--theme-bd);background:var(--theme-sb);color:var(--theme-mu);cursor:pointer;font-family:var(--fn)">Dirección: ${k.p?'Positivo ▲':'Negativo ▼'}</button>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+  el.innerHTML=html;
+}
+
+// VISUAL TYPE PICKER — grid de iconos agrupado por categoría
+function renderVTypes(){
+  const z=S.z;let html='';
+
+  // ── helper: icon grid con acordeones por grupo ──
+  function iconPicker(slotKey, activeType){
+    // Grupo que contiene el tipo activo — se abre por defecto
+    const activeGroupIdx=VGROUPS.findIndex(g=>g.types.includes(activeType));
+    return VGROUPS.map((g,gi)=>{
+      const hasActive=g.types.includes(activeType);
+      const isOpen=hasActive; // abierto solo si contiene el visual activo
+      const bodyId=`vpg-${slotKey}-${gi}`;
+      const chevId=`vpc-${slotKey}-${gi}`;
+      // dot indicador si el grupo tiene el visual activo
+      const activeDot=hasActive?`<span class="vpick-active-dot"></span>`:'';
+      return`<div class="vpick-group">
+        <div class="vpick-ghd" onclick="toggleVGroup('${bodyId}','${chevId}')">
+          <span class="vpick-glabel">${activeDot}${g.label}</span>
+          <span class="vpick-gchev" id="${chevId}" style="transform:${isOpen?'rotate(180deg)':'rotate(0deg)'}">▾</span>
+        </div>
+        <div class="vpick-gbody ${isOpen?'open':''}" id="${bodyId}">
+          <div class="vpick-grid">
+            ${g.types.map(v=>{
+              const on=activeType===v;
+              const vi=VTYPES.indexOf(v);
+              const icon=VICONS[v]||'';
+              return`<button class="vpick-btn ${on?'on':''}" onclick="setVT('${slotKey}',${vi})" title="${VLABELS[v]}">
+                <span class="vpick-tip">${VLABELS[v]}</span>
+                ${icon}
+                <span class="vpick-lbl">${VLABELS[v]}</span>
+              </button>`;
+            }).join('')}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
 
   function vBadges(k){
     const dt=S.vDrill[k]||false;const tt=S.vTooltip[k]||false;
-    return `<div style="display:flex;gap:4px;margin-top:5px">
+    return `<div style="display:flex;gap:4px;margin-top:8px;padding-top:8px;border-top:.5px solid var(--theme-bd)">
       <button style="padding:2px 7px;border-radius:20px;font-size:9px;font-weight:600;cursor:pointer;border:.5px solid ${dt?'#7a7bff':'var(--theme-bd)'};background:${dt?'var(--pl)':'transparent'};color:${dt?'#5a5bcc':'var(--theme-mu)'};font-family:var(--fn)" onclick="S.vDrill['${k}']=!S.vDrill['${k}'];renderVTypes();renderPreview()">Drill-through</button>
       <button style="padding:2px 7px;border-radius:20px;font-size:9px;font-weight:600;cursor:pointer;border:.5px solid ${tt?'#7a7bff':'var(--theme-bd)'};background:${tt?'var(--pl)':'transparent'};color:${tt?'#5a5bcc':'var(--theme-mu)'};font-family:var(--fn)" onclick="S.vTooltip['${k}']=!S.vTooltip['${k}'];renderVTypes();renderPreview()">Tooltip</button>
     </div>`;
   }
+
   for(let i=0;i<z.main;i++){
     const k=`main-${i}`;const t=gvt(k,i);
     html+=`<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:.5px solid var(--theme-bd)">
-      <div class="sdiv">Zona A · Visual ${i+1}${i===0?' — principal':''}</div>
-      <div class="rp-g">${VTYPES.map((v,vi)=>`<button class="rp ${t===v?'on':''}" onclick="setVT('${k}',${vi})">${VLABELS[v]}</button>`).join('')}</div>
+      <div class="sdiv" style="margin-bottom:8px">Zona A · Visual ${i+1}${i===0?' — principal':''}</div>
+      <div style="background:var(--theme-ow);border:.5px solid var(--theme-bd);border-radius:6px;padding:8px 8px 4px">
+        ${iconPicker(k,t)}
+      </div>
       ${vBadges(k)}
     </div>`;
   }
   for(let i=0;i<z.sec;i++){
     const k=`sec-${i}`;const t=gvt(k,i+2);
     html+=`<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:.5px solid var(--theme-bd)">
-      <div class="sdiv">Zona B · Visual ${i+1}</div>
-      <div class="rp-g">${VTYPES.map((v,vi)=>`<button class="rp ${t===v?'on':''}" onclick="setVT('${k}',${vi})">${VLABELS[v]}</button>`).join('')}</div>
+      <div class="sdiv" style="margin-bottom:8px">Zona B · Visual ${i+1}</div>
+      <div style="background:var(--theme-ow);border:.5px solid var(--theme-bd);border-radius:6px;padding:8px 8px 4px">
+        ${iconPicker(k,t)}
+      </div>
       ${vBadges(k)}
     </div>`;
   }
   document.getElementById('vtc').innerHTML=html;
 }
 function setVT(k,vi){S.vt[k]=vi;renderControls();renderPreview()}
-function setKpiSparkline(v){S.kpiSparkline=v;renderControls();renderPreview()}
+function toggleVGroup(bodyId,chevId){
+  const body=document.getElementById(bodyId);
+  const chev=document.getElementById(chevId);
+  if(!body||!chev)return;
+  const open=body.style.display==='none'||body.style.display==='';
+  body.style.display=open?'block':'none';
+  if(body.classList.contains('vpick-gbody')){body.classList.toggle('open',open);}
+  chev.style.transform=open?'rotate(180deg)':'rotate(0deg)';
+}
+function setKpiSparkline(v){S.kpiSparkline=v;renderKpis();renderPreview()}
+function updateKd(i,field,val){S.kd[i][field]=val;renderPreview()}
+function updateKpiHd(i){
+  const k=S.kd[i];
+  const body=document.getElementById(`kpi-body-${i}`);
+  if(!body)return;
+  const hd=body.previousElementSibling;
+  if(!hd)return;
+  const spans=hd.querySelectorAll('span');
+  if(spans[1])spans[1].textContent=k.l||`KPI ${i+1}`;
+  if(spans[2])spans[2].textContent=k.v;
+}
+function toggleKpiDir(i){S.kd[i].p=!S.kd[i].p;renderKpis();renderPreview()}
 
 function renderTemplates(){
   const el=document.getElementById('tplc');if(!el)return;
@@ -946,6 +1454,10 @@ function loadTemplateFile(e){
       if(loaded.grid)Object.assign(S.grid,loaded.grid);
       if(loaded.gap!=null)S.gap=loaded.gap;
       if(loaded.vt)S.vt=loaded.vt;
+      if(loaded.kd&&Array.isArray(loaded.kd))S.kd=loaded.kd;
+      if(loaded.vTitles)S.vTitles=loaded.vTitles;
+      if(loaded.vSubtitles)S.vSubtitles=loaded.vSubtitles;
+      if(loaded.story&&typeof loaded.story==='object')Object.assign(S.story,loaded.story);
       if(loaded.pattern)S.pattern=loaded.pattern;
       if(loaded.titleSize)S.titleSize=loaded.titleSize;
       if(loaded.subSize)S.subSize=loaded.subSize;
@@ -1054,183 +1566,223 @@ function cc(){
 // ═══════════════════════════════════════════
 
 // FIX: BAR — padding consistente, no clipping
+// BARRAS HORIZONTALES — fidelidad Power BI: rx=0, eje Y solo línea base, grid vertical ligero
 function svgBar(w,h){
   const {acc,ghost,grid,axis,txt,dark}=cc();
   const data=[
-    {l:'Zona Norte',v:0.92},{l:'Zona Sur',v:0.78},{l:'Zona Este',v:0.85},
-    {l:'Zona Oeste',v:0.61},{l:'Nacional',v:0.97},{l:'Europa',v:0.54},
+    {l:'Zona Norte',v:812},{l:'Europa',v:698},{l:'Nacional',v:654},
+    {l:'Zona Este',v:521},{l:'Zona Sur',v:463},{l:'Zona Oeste',v:312},
   ];
+  const maxV=900;
   const n=data.length;
-  const lblW=Math.max(48,Math.min(70,w*0.32));
-  const pL=lblW+4,pR=36,pT=8,pB=8;
+  const lblW=Math.max(52,Math.min(72,w*0.34));
+  const pL=lblW+8,pR=40,pT=6,pB=6;
   const uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
-  const bh=Math.max(5,Math.floor((uH/n)*0.52));
-  const gap2=Math.max(2,Math.floor((uH-bh*n)/(n-1)));
+  const totalBarH=uH*0.55;
+  const bh=Math.max(6,Math.floor(totalBarH/n));
+  const rowH=Math.floor(uH/n);
+  const fs=Math.max(7,Math.min(9,rowH*0.38));
   let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  // grid vertical — líneas delgadas PBI style
   [0.25,0.5,0.75,1].forEach(v=>{
     const x=pL+Math.round(v*uw);
-    s+=`<line x1="${x}" y1="${pT}" x2="${x}" y2="${pT+uH}" stroke="${grid}" stroke-width="1"/>`;
+    s+=`<line x1="${x}" y1="${pT}" x2="${x}" y2="${pT+uH}" stroke="${grid}" stroke-width="0.6" stroke-dasharray="2,3"/>`;
   });
   data.forEach((d,i)=>{
-    const cy=pT+i*(bh+gap2)+bh/2;
-    const bw2=Math.max(2,Math.round(d.v*uw));
-    const hi=i===4;
-    s+=`<text x="${pL-5}" y="${cy+3.5}" text-anchor="end" font-size="${Math.max(7,Math.min(9,bh*.9))}" fill="${txt}" font-family="Segoe UI" font-weight="${hi?600:400}">${d.l}</text>`;
-    s+=`<rect x="${pL}" y="${cy-bh/2}" width="${bw2}" height="${bh}" rx="2" fill="${hi?acc:ghost}" opacity="${hi?1:.72}"/>`;
-    // FIX: valor siempre cabe — espacio reservado en pR
-    s+=`<text x="${pL+bw2+4}" y="${cy+3.5}" font-size="${Math.max(6,Math.min(8,bh*.82))}" font-weight="${hi?700:500}" fill="${hi?acc:txt}" font-family="Segoe UI">${Math.round(d.v*100)}%</text>`;
+    const cy=pT+i*rowH+rowH/2;
+    const bw2=Math.max(2,Math.round(d.v/maxV*uw));
+    const hi=i===0;
+    // label categoría
+    s+=`<text x="${pL-6}" y="${cy}" dominant-baseline="central" text-anchor="end" font-size="${fs}" fill="${hi?acc:txt}" font-family="Segoe UI" font-weight="${hi?600:400}">${d.l}</text>`;
+    // barra PBI: rx=0, sin border-radius
+    s+=`<rect x="${pL}" y="${cy-bh/2}" width="${bw2}" height="${bh}" rx="0" fill="${hi?acc:ghost}"/>`;
+    // valor a la derecha
+    s+=`<text x="${pL+bw2+5}" y="${cy}" dominant-baseline="central" font-size="${Math.max(6,fs*0.85)}" font-weight="${hi?700:400}" fill="${hi?acc:txt}" font-family="Segoe UI">${d.v}K</text>`;
   });
-  s+=`<line x1="${pL}" y1="${pT}" x2="${pL}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
+  // línea base eje Y — solo horizontal inferior, igual que PBI
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${pL+uw}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;
   return s+'</svg>';
 }
 
-// FIX: LINE — padding derecho para que el último punto no se corte
+// LÍNEAS — fidelidad PBI: puntos marcados, línea base solo, sin curvas, leyenda top-left
 function svgLine(w,h,uid){
-  const {acc,line2,line3,grid,axis,txt,dark}=cc();
-  const n=12,pL=12,pR=18,pT=16,pB=14;
+  const {acc,line2,grid,axis,txt,dark}=cc();
+  const n=12;
+  const pL=8,pR=12,pT=18,pB=16;
   const uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
-  const d1=[.28,.38,.32,.50,.44,.62,.55,.70,.62,.80,.73,.88];
-  const d2=[.50,.45,.58,.42,.65,.50,.72,.58,.78,.62,.70,.68];
-  const d3=[.68,.62,.70,.55,.74,.60,.78,.65,.80,.68,.76,.72];
-  const cv=d=>d.map((v,i)=>({x:pL+Math.round(i/(n-1)*uw),y:pT+Math.round((1-v)*uH*.88)}));
-  const c1=cv(d1),c2=cv(d2),c3=cv(d3);
-  const mk=c=>'M'+c.map(p=>`${p.x},${p.y}`).join('L');
+  const months=['E','F','M','A','M','J','J','A','S','O','N','D'];
+  const d1=[320,410,365,490,445,580,540,660,610,740,690,820];
+  const d2=[480,450,510,430,570,500,620,545,680,580,640,610];
+  const maxV=900;
+  const px=(v,i)=>pL+Math.round(i/(n-1)*uw);
+  const py=(v)=>pT+Math.round((1-v/maxV)*uH*0.88);
+  const pts1=d1.map((v,i)=>({x:px(v,i),y:py(v)}));
+  const pts2=d2.map((v,i)=>({x:px(v,i),y:py(v)}));
+  const path=pts=>'M'+pts.map(p=>`${p.x},${p.y}`).join('L');
+  const c2stroke=dark?'#555575':'#c8c8e0';
   let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
-  [.25,.5,.75].forEach(v=>{const y=pT+Math.round((1-v)*uH*.88);s+=`<line x1="${pL}" y1="${y}" x2="${w-pR}" y2="${y}" stroke="${grid}" stroke-width="1"/>`;});
-  s+=`<path d="${mk(c3)}" fill="none" stroke="${dark?'#2e2e48':'#ddddf4'}" stroke-width="1.2" stroke-linejoin="round" stroke-dasharray="4,3"/>`;
-  s+=`<path d="${mk(c2)}" fill="none" stroke="${dark?'#3a3a5c':'#c0c0dc'}" stroke-width="1.8" stroke-linejoin="round"/>`;
-  s+=`<path d="${mk(c1)}" fill="none" stroke="${acc}" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>`;
-  // FIX: dot final bien dentro del viewport (pR=18 garantiza espacio)
-  s+=`<circle cx="${c1[n-1].x}" cy="${c1[n-1].y}" r="4" fill="${acc}"/>`;
-  s+=`<circle cx="${c1[n-1].x}" cy="${c1[n-1].y}" r="7" fill="${acc}" opacity=".16"/>`;
-  if(w>120){
-    const ly=pT-7;
-    s+=`<circle cx="${pL}" cy="${ly}" r="3" fill="${acc}"/>`;
-    s+=`<text x="${pL+6}" y="${ly+3.5}" font-size="7" fill="${txt}" font-family="Segoe UI" font-weight="600">Serie A</text>`;
-    s+=`<line x1="${pL+42}" y1="${ly}" x2="${pL+52}" y2="${ly}" stroke="${dark?'#3a3a5c':'#c0c0dc'}" stroke-width="2"/>`;
-    s+=`<text x="${pL+56}" y="${ly+3.5}" font-size="7" fill="${txt}" font-family="Segoe UI">Serie B</text>`;
-    s+=`<line x1="${pL+84}" y1="${ly}" x2="${pL+94}" y2="${ly}" stroke="${dark?'#2e2e48':'#ddddf4'}" stroke-width="1.5" stroke-dasharray="4,3"/>`;
-    s+=`<text x="${pL+98}" y="${ly+3.5}" font-size="7" fill="${txt}" font-family="Segoe UI">Serie C</text>`;
+  // leyenda compacta arriba — estilo PBI
+  if(w>100){
+    s+=`<rect x="${pL}" y="2" width="8" height="2" rx="0" fill="${acc}"/>`;
+    s+=`<text x="${pL+11}" y="3" dominant-baseline="central" font-size="7" fill="${txt}" font-family="Segoe UI">2026</text>`;
+    s+=`<rect x="${pL+40}" y="2" width="8" height="2" rx="0" fill="${c2stroke}"/>`;
+    s+=`<text x="${pL+51}" y="3" dominant-baseline="central" font-size="7" fill="${txt}" font-family="Segoe UI">2025</text>`;
   }
-  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${w-pR}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
+  // grid horizontal
+  [200,400,600,800].forEach(v=>{
+    const y=py(v);
+    s+=`<line x1="${pL}" y1="${y}" x2="${pL+uw}" y2="${y}" stroke="${grid}" stroke-width="0.6"/>`;
+    if(w>120)s+=`<text x="${pL-3}" y="${y}" dominant-baseline="central" text-anchor="end" font-size="6" fill="${txt}" font-family="Segoe UI" opacity=".7">${v>=1000?v/1000+'K':v}</text>`;
+  });
+  // línea 2025 — gris, fina
+  s+=`<path d="${path(pts2)}" fill="none" stroke="${c2stroke}" stroke-width="1.5" stroke-linejoin="miter"/>`;
+  // línea 2026 — acento, más gruesa
+  s+=`<path d="${path(pts1)}" fill="none" stroke="${acc}" stroke-width="2.5" stroke-linejoin="miter"/>`;
+  // puntos PBI: todos los puntos visibles, pequeños
+  pts1.forEach((p,i)=>{
+    s+=`<circle cx="${p.x}" cy="${p.y}" r="2.5" fill="${acc}"/>`;
+    s+=`<circle cx="${p.x}" cy="${p.y}" r="2.5" fill="white" stroke="${acc}" stroke-width="1.5"/>`;
+  });
+  // data label último punto
+  const last=pts1[n-1];
+  s+=`<circle cx="${last.x}" cy="${last.y}" r="4" fill="${acc}"/>`;
+  if(w>80)s+=`<text x="${last.x}" y="${last.y-7}" text-anchor="middle" font-size="7" font-weight="700" fill="${acc}" font-family="Segoe UI">${d1[n-1]}</text>`;
+  // labels eje X — meses
+  if(w>80){
+    [0,2,4,6,8,10,11].forEach(i=>{
+      const x=pL+Math.round(i/(n-1)*uw);
+      s+=`<text x="${x}" y="${pT+uH+10}" text-anchor="middle" dominant-baseline="central" font-size="6.5" fill="${txt}" font-family="Segoe UI">${months[i]}</text>`;
+    });
+  }
+  // eje X línea base
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${pL+uw}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;
   return s+'</svg>';
 }
 
-// FIX: TABLE PRO — alineación vertical corregida, headers y datos alineados
+// TABLA — fidelidad PBI: header con fondo, filas alternas, data bars, conditional formatting
 function svgTable(w,h){
   const {acc,dark}=cc();
-  const ink=dark?'#d8d8f0':'#111';
-  const mu=dark?'#5a5a88':'#999';
-  const hBg=dark?'rgba(122,123,255,.08)':'rgba(122,123,255,.06)';
-  const altBg=dark?'rgba(255,255,255,.02)':'rgba(240,240,248,.45)';
-  const bdC=dark?'#252538':'#e8e8f2';
+  const ink=dark?'#e0e0f0':'#252525';
+  const mu=dark?'#6868a0':'#666';
+  const hBg=dark?'rgba(255,255,255,.06)':'#f3f3f3';
+  const altBg=dark?'rgba(255,255,255,.025)':'#fafafa';
+  const bdC=dark?'#2a2a3e':'#e0e0e0';
   const rows=[
-    {n:'Producto A',real:842,bud:800,pct:18.4,yoy:12.4,desv:42},
-    {n:'Producto B',real:634,bud:680,pct:13.8,yoy:-4.2,desv:-46},
-    {n:'Producto C',real:521,bud:500,pct:11.4,yoy:8.1,desv:21},
-    {n:'Producto D',real:380,bud:420,pct:8.3,yoy:-1.8,desv:-40},
-    {n:'Producto E',real:290,bud:270,pct:6.3,yoy:5.5,desv:20},
+    {n:'Producto A',v:842,pct:24.1,delta:12.4},
+    {n:'Producto B',v:634,pct:18.2,delta:-3.8},
+    {n:'Producto C',v:521,pct:14.9,delta:7.2},
+    {n:'Producto D',v:380,pct:10.9,delta:-1.4},
+    {n:'Producto E',v:290,pct:8.3,delta:5.1},
   ];
-  const hdrH=18;
-  const totalRowH=h-hdrH-4;
-  const rowH=Math.max(14,Math.floor(totalRowH/rows.length));
-  const tableH=hdrH+rows.length*rowH+4;
-  // Anchuras de columnas
-  const cProd=Math.floor(w*.28);
-  const cReal=Math.floor(w*.14);
-  const cBud=Math.floor(w*.13);
-  const cPct=Math.floor(w*.11);
-  const cYoY=Math.floor(w*.15);
-  const cDesv=Math.max(20,w-cProd-cReal-cBud-cPct-cYoY);
-  const cols=[0,cProd,cProd+cReal,cProd+cReal+cBud,cProd+cReal+cBud+cPct,cProd+cReal+cBud+cPct+cYoY];
+  const maxV=842;
+  const hdrH=Math.max(14,Math.round(h*0.1));
+  const rowH=Math.max(12,Math.floor((h-hdrH)/rows.length));
+  const cName=Math.floor(w*0.32);
+  const cBar=Math.floor(w*0.26);
+  const cVal=Math.floor(w*0.16);
+  const cPct=Math.floor(w*0.13);
+  const cDelta=w-cName-cBar-cVal-cPct;
+  const fs=Math.max(6.5,Math.min(9,rowH*0.5));
   let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
-  // Header background
-  s+=`<rect x="0" y="0" width="${w}" height="${hdrH}" fill="${hBg}" rx="2"/>`;
-  // FIX: headers centrados verticalmente con dominantBaseline
-  const hdrs=['PRODUCTO','VENTAS','PPTO','% TOT','YoY','Δ €'];
-  hdrs.forEach((h2,i)=>{
-    const x=i===0?6:(cols[i]+(i===1?cReal:i===2?cBud:i===3?cPct:i===4?cYoY:cDesv)/2);
-    const anchor=i===0?'start':'middle';
-    s+=`<text x="${x}" y="${hdrH/2}" dominant-baseline="central" text-anchor="${anchor}" font-size="6.5" font-weight="700" fill="${mu}" font-family="Segoe UI" letter-spacing=".3">${h2}</text>`;
+  // header
+  s+=`<rect x="0" y="0" width="${w}" height="${hdrH}" fill="${hBg}"/>`;
+  s+=`<line x1="0" y1="${hdrH}" x2="${w}" y2="${hdrH}" stroke="${bdC}" stroke-width="0.8"/>`;
+  const hdrs=[['Producto',cName,'start',6],['Ventas',cBar+cVal,'middle',cName+cBar/2],['% Total',cPct,'middle',cName+cBar+cVal+cPct/2],['Var.',cDelta,'middle',cName+cBar+cVal+cPct+cDelta/2]];
+  hdrs.forEach(([lbl,,anchor,x])=>{
+    s+=`<text x="${x}" y="${hdrH/2}" dominant-baseline="central" text-anchor="${anchor}" font-size="${Math.max(6,fs*0.8)}" font-weight="600" fill="${mu}" font-family="Segoe UI" letter-spacing="0.2">${lbl.toUpperCase()}</text>`;
   });
-  s+=`<line x1="0" y1="${hdrH}" x2="${w}" y2="${hdrH}" stroke="${bdC}" stroke-width=".8"/>`;
   rows.forEach((r,i)=>{
-    const y=hdrH+4+i*rowH;
-    const midY=y+rowH/2;  // FIX: usar dominant-baseline para alineación perfecta
-    const fs=Math.max(7,Math.min(9.5,rowH*.56));
-    const posYoY=r.yoy>0;const posDesv=r.desv>0;
+    const y=hdrH+i*rowH;
+    const midY=y+rowH/2;
     if(i%2===0)s+=`<rect x="0" y="${y}" width="${w}" height="${rowH}" fill="${altBg}"/>`;
-    // FIX: micro-bar centrada verticalmente
-    const maxReal=842;const barMaxW=cReal-8;const barW=Math.max(2,Math.round((r.real/maxReal)*barMaxW));
-    const barH=Math.max(3,Math.round(rowH*0.28));
-    const barY=midY-barH/2;
-    s+=`<rect x="${cols[1]+2}" y="${barY}" width="${barW}" height="${barH}" rx="1" fill="${acc}" opacity=".2"/>`;
-    // FIX: todos los textos con dominant-baseline="central" para alineación vertical perfecta
-    s+=`<text x="6" y="${midY}" dominant-baseline="central" font-size="${fs}" fill="${ink}" font-family="Segoe UI" font-weight="500">${r.n}</text>`;
-    s+=`<text x="${cols[1]+cReal/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${fs}" font-weight="700" fill="${ink}" font-family="Segoe UI">${r.real}K</text>`;
-    s+=`<text x="${cols[2]+cBud/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${fs}" fill="${mu}" font-family="Segoe UI">${r.bud}K</text>`;
-    s+=`<text x="${cols[3]+cPct/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${fs}" fill="${mu}" font-family="Segoe UI">${r.pct}%</text>`;
-    // YoY badge
-    const yclr=posYoY?'#4a9e6a':'#c05050';
-    const ybg=posYoY?(dark?'rgba(75,158,106,.18)':'rgba(107,201,140,.12)'):(dark?'rgba(192,80,80,.18)':'rgba(232,128,128,.12)');
-    const badgeH=Math.max(10,Math.round(rowH*0.62));const badgeY=midY-badgeH/2;
-    s+=`<rect x="${cols[4]+2}" y="${badgeY}" width="${cYoY-4}" height="${badgeH}" rx="2" fill="${ybg}"/>`;
-    s+=`<text x="${cols[4]+cYoY/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${Math.max(6,fs*.85)}" font-weight="700" fill="${yclr}" font-family="Segoe UI">${posYoY?'▲':'▼'} ${Math.abs(r.yoy).toFixed(1)}%</text>`;
-    const dclr=posDesv?'#4a9e6a':'#c05050';
-    s+=`<text x="${cols[5]+cDesv/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${Math.max(6,fs*.85)}" font-weight="700" fill="${dclr}" font-family="Segoe UI">${posDesv?'+':''}${r.desv}K</text>`;
-    if(i<rows.length-1)s+=`<line x1="0" y1="${y+rowH}" x2="${w}" y2="${y+rowH}" stroke="${bdC}" stroke-width=".4"/>`;
+    // nombre
+    s+=`<text x="6" y="${midY}" dominant-baseline="central" font-size="${fs}" fill="${ink}" font-family="Segoe UI">${r.n}</text>`;
+    // data bar estilo PBI
+    const barMaxW=cBar-8;
+    const barW=Math.max(2,Math.round(r.v/maxV*barMaxW));
+    const barH=Math.max(4,Math.round(rowH*0.35));
+    s+=`<rect x="${cName+2}" y="${midY-barH/2}" width="${barMaxW}" height="${barH}" rx="0" fill="${dark?'rgba(255,255,255,.06)':'#ebebeb'}"/>`;
+    s+=`<rect x="${cName+2}" y="${midY-barH/2}" width="${barW}" height="${barH}" rx="0" fill="${acc}" opacity="${i===0?1:0.7}"/>`;
+    // valor
+    s+=`<text x="${cName+cBar+cVal-4}" y="${midY}" dominant-baseline="central" text-anchor="end" font-size="${fs}" font-weight="${i===0?700:400}" fill="${ink}" font-family="Segoe UI">${r.v}K</text>`;
+    // %
+    s+=`<text x="${cName+cBar+cVal+cPct/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${fs}" fill="${mu}" font-family="Segoe UI">${r.pct}%</text>`;
+    // delta badge — conditional formatting PBI
+    const pos=r.delta>0;
+    const badgeW=Math.max(24,Math.round(cDelta*0.7));
+    const badgeH=Math.max(9,Math.round(rowH*0.55));
+    const bx=cName+cBar+cVal+cPct+(cDelta-badgeW)/2;
+    const by=midY-badgeH/2;
+    s+=`<rect x="${bx}" y="${by}" width="${badgeW}" height="${badgeH}" rx="2" fill="${pos?(dark?'rgba(107,201,140,.2)':'#e8f5e9'):(dark?'rgba(232,128,128,.2)':'#fce8e8')}"/>`;
+    s+=`<text x="${bx+badgeW/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${Math.max(6,fs*0.82)}" font-weight="700" fill="${pos?'#2e7d32':'#c62828'}" font-family="Segoe UI">${pos?'▲':'▼'} ${Math.abs(r.delta)}%</text>`;
+    if(i<rows.length-1)s+=`<line x1="0" y1="${y+rowH}" x2="${w}" y2="${y+rowH}" stroke="${bdC}" stroke-width="0.4"/>`;
   });
   return s+'</svg>';
 }
 
-// FIX: WATERFALL — margen inferior para labels, spacing mejorado
+// CASCADA — fidelidad PBI: rx=0, conectores punteados, colores pos/neg/total PBI exactos
 function svgWaterfall(w,h){
-  const {acc,pos,neg,grid,axis,txt,dark}=cc();
+  const {acc,dark}=cc();
+  const posC=dark?'#5cc98a':'#107c41';
+  const negC=dark?'#e87070':'#d13438';
+  const totC=acc;
+  const connC=dark?'#444460':'#bbbbcc';
+  const grid=dark?'#252535':'#f0f0f0';
+  const axis=dark?'#3a3a55':'#d0d0d0';
+  const txt=dark?'#6a6a90':'#666';
   const data=[
-    {l:'Ene',v:580,b:0,t:true},
-    {l:'+Ventas',v:312,b:580},
-    {l:'+Cross',v:168,b:892},
-    {l:'-Dev.',v:-98,b:1060},
-    {l:'-Gtos',v:-62,b:962},
-    {l:'Total',v:900,b:0,t:true},
+    {l:'Inicio',v:580,b:0,total:true},
+    {l:'Ventas',v:312,b:580,pos:true},
+    {l:'Upsell',v:168,b:892,pos:true},
+    {l:'Devol.',v:-98,b:1060,pos:false},
+    {l:'Costes',v:-162,b:962,pos:false},
+    {l:'Final',v:800,b:0,total:true},
   ];
   const maxV=1100;
-  // FIX: pB aumentado para que labels no se corten
-  const pL=6,pR=8,pT=18,pB=20;
+  const pL=6,pR=8,pT=20,pB=22;
   const uw=w-pL-pR,uH=h-pT-pB;
-  const bw=Math.max(4,Math.floor(uw/data.length*.6));
-  const sp2=Math.max(2,Math.floor((uw-bw*data.length)/(data.length-1)));
+  const bw=Math.max(5,Math.floor(uw/data.length*0.58));
+  const gap2=Math.max(2,Math.floor((uw-bw*data.length)/(data.length-1)));
+  const scaleY=v=>pT+Math.round((1-v/maxV)*uH*0.9);
   let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
-  [.25,.5,.75].forEach(v=>{
-    const y=pT+Math.round((1-v)*uH*.9);
-    s+=`<line x1="${pL}" y1="${y}" x2="${w-pR}" y2="${y}" stroke="${grid}" stroke-width=".8"/>`;
+  // grid
+  [250,500,750,1000].forEach(v=>{
+    const y=scaleY(v);
+    s+=`<line x1="${pL}" y1="${y}" x2="${pL+uw}" y2="${y}" stroke="${grid}" stroke-width="0.6"/>`;
+    if(w>100&&v<maxV)s+=`<text x="${pL-2}" y="${y}" dominant-baseline="central" text-anchor="end" font-size="5.5" fill="${txt}" font-family="Segoe UI">${v>=1000?v/1000+'K':v}</text>`;
   });
   let prevTopY=null;
+  let prevX2=0;
   data.forEach((d,i)=>{
-    const x=pL+i*(bw+sp2);
-    const bh=Math.max(3,Math.round(Math.abs(d.v)/maxV*uH*.9));
-    const base=pT+Math.round((1-d.b/maxV)*uH*.9);
-    const y=d.t?pT+Math.round((1-d.v/maxV)*uH*.9):(d.v>0?base-bh:base);
-    const col=d.t?acc:(d.v>0?pos:neg);
-    if(prevTopY!==null&&!d.t){
-      s+=`<line x1="${x-sp2}" y1="${prevTopY}" x2="${x+bw}" y2="${prevTopY}" stroke="${dark?'#3a3a5c':'#cccce0'}" stroke-width=".8" stroke-dasharray="2,2"/>`;
+    const x=pL+i*(bw+gap2);
+    const x2=x+bw;
+    const absH=Math.max(3,Math.round(Math.abs(d.v)/maxV*uH*0.9));
+    const baseY=scaleY(d.b);
+    const y=d.total?scaleY(d.v):(d.pos?baseY-absH:baseY);
+    const col=d.total?totC:(d.pos?posC:negC);
+    // conector punteado entre barras
+    if(prevTopY!==null&&i>0){
+      s+=`<line x1="${prevX2}" y1="${prevTopY}" x2="${x}" y2="${prevTopY}" stroke="${connC}" stroke-width="0.8" stroke-dasharray="2,2"/>`;
     }
-    s+=`<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="2.5" fill="${col}" opacity="${d.t?1:.88}"/>`;
-    // Valor encima
-    const absV=Math.abs(d.v);
-    const vLabel=absV>=1000?`${(absV/1000).toFixed(1)}K`:`${absV}`;
-    if(bw>14){
-      s+=`<text x="${x+bw/2}" y="${y-4}" text-anchor="middle" font-size="${Math.max(6,Math.min(8,bw*.55))}" font-weight="${d.t?700:600}" fill="${d.t?acc:(d.v>0?pos:neg)}" font-family="Segoe UI">${d.v>0&&!d.t?'+':''}${d.v<0?'-':''}${vLabel}</text>`;
+    // barra — rx=0 PBI style
+    s+=`<rect x="${x}" y="${y}" width="${bw}" height="${absH}" rx="0" fill="${col}"/>`;
+    // valor encima si cabe
+    const labelV=Math.abs(d.v);
+    const vlbl=labelV>=1000?`${(labelV/1000).toFixed(1)}K`:`${labelV}`;
+    if(bw>12){
+      const ly=d.v<0?y+absH+8:y-5;
+      s+=`<text x="${x+bw/2}" y="${ly}" text-anchor="middle" font-size="${Math.max(5.5,Math.min(7.5,bw*0.5))}" font-weight="600" fill="${col}" font-family="Segoe UI">${d.v>0&&!d.total?'+':''}${d.v<0?'−':''}${vlbl}</text>`;
     }
-    // FIX: label abajo — posicionado desde h-4 (siempre visible)
-    s+=`<text x="${x+bw/2}" y="${h-5}" text-anchor="middle" dominant-baseline="auto" font-size="${Math.max(5.5,Math.min(7.5,bw*.68))}" fill="${d.t?acc:txt}" font-weight="${d.t?700:400}" font-family="Segoe UI">${d.l}</text>`;
-    prevTopY=d.t?null:(d.v>0?y:y+bh);
+    // label eje X
+    s+=`<text x="${x+bw/2}" y="${h-5}" text-anchor="middle" font-size="${Math.max(5.5,Math.min(7,bw*0.6))}" fill="${d.total?col:txt}" font-weight="${d.total?700:400}" font-family="Segoe UI">${d.l}</text>`;
+    prevTopY=d.total?null:(d.pos?y:y+absH);
+    prevX2=x2;
   });
-  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${w-pR}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${pL+uw}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;
   return s+'</svg>';
 }
 
-// FUNNEL — 
+// FUNNEL — fidelidad PBI: trapecios centrados, etiquetas de conversión, colores PBI
 function svgFunnel(w,h){
   const {acc,txt,dark}=cc();
   const stages=[
@@ -1239,354 +1791,327 @@ function svgFunnel(w,h){
   ];
   const total=stages[0].n;
   const n=stages.length;
-  const FILL=dark?'#7F77DD':'#6B68D4';
-  const LIGHT=dark?'rgba(127,119,221,0.18)':'rgba(107,104,212,0.15)';
-  const DROP_TXT=dark?'#F09595':'#A32D2D';
-  const DROP_BG=dark?'rgba(192,80,80,0.2)':'#FCEBEB';
-  const DROP_BD=dark?'rgba(240,149,149,0.4)':'#F09595';
-  // layout
-  const kpiH=Math.round(h*0.38);
-  const chartH=h-kpiH;
-  const colW=w/n;
-  const maxBarH=chartH*0.82;
-  const baseY=kpiH+chartH*0.90;
-  const heights=stages.map(st=>Math.max(6,Math.round(st.n/total*maxBarH)));
-  const fs=Math.max(6.5,Math.min(9,colW*0.1));
+  const pL=8,pR=8,pT=8,pB=8;
+  const uw=w-pL-pR,uH=h-pT-pB;
+  const stageH=Math.floor(uH/n);
+  const gap=2;
+  const inkC=dark?'#d8d8f0':'#252525';
+  const muC=dark?'#6a6a90':'#888';
   let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
-
-  // KPI header per column — sin cambios
   stages.forEach((st,i)=>{
-    const cx=i*colW+colW/2;
-    const convR=i===0?null:Math.round(st.n/stages[i-1].n*100);
-    const nStr=st.n>=1000?(st.n/1000).toFixed(1)+'K':st.n;
-    if(i>0)s+=`<line x1="${i*colW}" y1="0" x2="${i*colW}" y2="${kpiH-4}" stroke="${dark?'rgba(255,255,255,0.08)':'rgba(0,0,0,0.07)'}" stroke-width="0.5"/>`;
-    s+=`<text x="${cx}" y="10" text-anchor="middle" dominant-baseline="hanging" font-size="${Math.max(6,fs*0.85)}" font-weight="500" fill="${txt}" font-family="Segoe UI" opacity="0.7">${st.l}</text>`;
-    s+=`<text x="${cx}" y="${Math.round(kpiH*0.22)}" text-anchor="middle" dominant-baseline="hanging" font-size="${Math.max(10,Math.min(18,colW*0.22))}" font-weight="500" fill="${dark?'#d8d8f0':'#111'}" font-family="Segoe UI">${nStr}</text>`;
-    if(convR!==null){
-      const delta=convR-[70,40,35,18][i-1];
-      const dclr=delta>=0?(dark?'#5fd494':'#3B6D11'):(dark?'#F09595':'#A32D2D');
-      s+=`<text x="${cx}" y="${Math.round(kpiH*0.55)}" text-anchor="middle" dominant-baseline="hanging" font-size="${Math.max(6,fs*0.82)}" fill="${txt}" font-family="Segoe UI" opacity="0.65">conv. target ${[70,40,35,18][i-1]}%</text>`;
-      s+=`<text x="${cx}" y="${Math.round(kpiH*0.72)}" text-anchor="middle" dominant-baseline="hanging" font-size="${Math.max(6,fs*0.88)}" font-weight="700" fill="${dclr}" font-family="Segoe UI">${delta>=0?'▲':'▼'} ${Math.abs(delta)}%</text>`;
+    const pct=st.n/total;
+    const w1=Math.max(uw*0.18,uw*pct);
+    const nextPct=i<n-1?stages[i+1].n/total:pct*0.7;
+    const w2=Math.max(uw*0.18,uw*nextPct);
+    const x1=(uw-w1)/2+pL;
+    const x2=(uw-w2)/2+pL;
+    const y=pT+i*(stageH+gap);
+    const bh=stageH-gap;
+    // trapecio PBI
+    const opacity=1-i*0.12;
+    s+=`<path d="M${x1},${y} L${x1+w1},${y} L${x2+w2},${y+bh} L${x2},${y+bh} Z" fill="${acc}" opacity="${opacity}"/>`;
+    // label nombre izquierda
+    const cy=y+bh/2;
+    const nStr=st.n>=1000?(st.n/1000).toFixed(1)+'K':String(st.n);
+    const fs=Math.max(6.5,Math.min(8.5,stageH*0.35));
+    // número dentro si la barra es suficientemente ancha
+    if(w1>40){
+      s+=`<text x="${pL+uw/2}" y="${cy}" dominant-baseline="central" text-anchor="middle" font-size="${fs}" font-weight="700" fill="rgba(255,255,255,0.92)" font-family="Segoe UI">${nStr}</text>`;
     }
-    s+=`<line x1="${i*colW+2}" y1="${kpiH-1}" x2="${(i+1)*colW-2}" y2="${kpiH-1}" stroke="${dark?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.08)'}" stroke-width="0.5"/>`;
+    // label etapa a la izquierda
+    s+=`<text x="${x1-5}" y="${cy}" dominant-baseline="central" text-anchor="end" font-size="${Math.max(6,fs*0.88)}" fill="${inkC}" font-family="Segoe UI">${st.l}</text>`;
+    // tasa conversión entre etapas
+    if(i<n-1){
+      const conv=Math.round(stages[i+1].n/st.n*100);
+      s+=`<text x="${pL+uw+4}" y="${y+stageH}" dominant-baseline="central" font-size="${Math.max(5.5,fs*0.78)}" fill="${conv<40?'#c62828':'#2e7d32'}" font-weight="700" font-family="Segoe UI">${conv}%</text>`;
+    }
   });
-
-  // bezier connectors — sin cambios
-  for(let i=0;i<n-1;i++){
-    const bx1=i*colW+colW*0.05,bw1=colW*0.9;
-    const bx2=(i+1)*colW+colW*0.05;
-    const h1=heights[i],h2=heights[i+1];
-    const y1t=baseY-h1,y2t=baseY-h2;
-    const cx1=bx1+bw1,cx2=bx2;
-    const dx=cx2-cx1;
-    const path=`M${cx1},${y1t} C${cx1+dx*0.5},${y1t} ${cx2-dx*0.05},${y2t} ${cx2},${y2t} L${cx2},${baseY} C${cx2-dx*0.05},${baseY} ${cx1+dx*0.5},${baseY} ${cx1},${baseY} Z`;
-    s+=`<path d="${path}" fill="${LIGHT}"/>`;
-  }
-
-  // bars — sin cambios
-  stages.forEach((st,i)=>{
-    const bx=i*colW+colW*0.05,bw2=colW*0.9;
-    const bh=heights[i],by=baseY-bh;
-    s+=`<rect x="${bx}" y="${by}" width="${bw2}" height="${bh}" rx="3" fill="${FILL}"/>`;
-    const pctTot=Math.round(st.n/total*100);
-    if(bh>14)s+=`<text x="${bx+bw2/2}" y="${baseY-5}" text-anchor="middle" dominant-baseline="auto" font-size="${Math.max(6,Math.min(10,bw2*0.16))}" font-weight="500" fill="rgba(255,255,255,0.88)" font-family="Segoe UI">${pctTot}%</text>`;
-  });
-
-  // FIX: drop pill badges — encima de las barras, en cápsula
-  for(let i=0;i<n-1;i++){
-    const drop=Math.round((1-stages[i+1].n/stages[i].n)*100);
-    const label=`↓ ${drop}%`;
-    const cx=i*colW+colW;
-    // posición: justo encima de la barra más alta de las dos adyacentes
-    const topY=baseY-Math.max(heights[i],heights[i+1]);
-    const pillW=Math.max(34,fs*5.2);
-    const pillH=Math.max(13,fs*1.8);
-    const pillR=pillH/2;
-    const px=cx-pillW/2;
-    const py=topY-pillH-5; // 5px por encima del top de la barra
-    // sombra sutil
-    s+=`<rect x="${px+1}" y="${py+2}" width="${pillW}" height="${pillH}" rx="${pillR}" fill="${dark?'rgba(0,0,0,0.25)':'rgba(0,0,0,0.07)'}"/>`;
-    // píldora
-    s+=`<rect x="${px}" y="${py}" width="${pillW}" height="${pillH}" rx="${pillR}" fill="${DROP_BG}" stroke="${DROP_BD}" stroke-width="0.5"/>`;
-    // texto
-    s+=`<text x="${cx}" y="${py+pillH/2}" text-anchor="middle" dominant-baseline="central" font-size="${Math.max(6,fs*0.92)}" font-weight="700" fill="${DROP_TXT}" font-family="Segoe UI">${label}</text>`;
-    // línea punteada conectora
-    const lineTop=py+pillH+2;
-    const lineBot=topY-2;
-    if(lineBot>lineTop+2)s+=`<line x1="${cx}" y1="${lineTop}" x2="${cx}" y2="${lineBot}" stroke="${DROP_BD}" stroke-width="0.5" stroke-dasharray="2,2"/>`;
-  }
-
   return s+'</svg>';
 }
 
-// AREA — green annotation, median reference line
+// ÁREA — fidelidad PBI: gradiente suave, línea base limpia, puntos solo en hover simulado (último), eje X con fechas
 function svgArea(w,h,uid){
-  const {acc,line2,grid,axis,txt,dark}=cc();
-  const n=12,pL=12,pR=18,pT=14,pB=14,uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
-
-  const d1=[.35,.52,.44,.68,.57,.78,.65,.84,.72,.90,.80,.95];
-  const d2=[.60,.55,.68,.50,.72,.60,.76,.62,.80,.68,.82,.72];
-
-  const cv=d=>d.map((v,i)=>({
-    x:pL+Math.round(i/(n-1)*uw),
-    y:pT+Math.round((1-v)*uH*.88)
-  }));
-
-  const c1=cv(d1),c2=cv(d2);
-
-  const mk=c=>'M'+c.map(p=>`${p.x},${p.y}`).join('L');
-  const mkA=c=>mk(c)+`L${c[n-1].x},${pT+uH}L${c[0].x},${pT+uH}Z`;
-
+  const {acc,grid,axis,txt,dark}=cc();
+  const n=12;
+  const pL=8,pR=10,pT=16,pB=18;
+  const uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
+  const months=['E','F','M','A','M','J','J','A','S','O','N','D'];
+  const d1=[280,350,310,430,390,510,470,580,530,660,600,720];
+  const maxV=800;
+  const pts=d1.map((v,i)=>({x:pL+Math.round(i/(n-1)*uw),y:pT+Math.round((1-v/maxV)*uH*0.88)}));
+  const pathLine='M'+pts.map(p=>`${p.x},${p.y}`).join('L');
+  const pathArea=pathLine+`L${pts[n-1].x},${pT+uH}L${pts[0].x},${pT+uH}Z`;
   let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
-
-  s+=`<defs>
-    <linearGradient id="a1${uid}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="${acc}" stop-opacity="${dark?.45:.38}"/>
-      <stop offset="60%" stop-color="${acc}" stop-opacity="${dark?.12:.06}"/>
-      <stop offset="100%" stop-color="${acc}" stop-opacity="0"/>
-    </linearGradient>
-    <linearGradient id="a2${uid}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="${line2}" stop-opacity="${dark?.3:.22}"/>
-      <stop offset="100%" stop-color="${line2}" stop-opacity="0"/>
-    </linearGradient>
-  </defs>`;
-
-  // Grid lines
-  [.25,.5,.75].forEach(v=>{
-    const y=pT+Math.round((1-v)*uH*.88);
-    s+=`<line x1="${pL}" y1="${y}" x2="${w-pR}" y2="${y}" stroke="${grid}" stroke-width="1"/>`;
+  s+=`<defs><linearGradient id="ag${uid}" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="${acc}" stop-opacity="${dark?0.5:0.35}"/>
+    <stop offset="85%" stop-color="${acc}" stop-opacity="${dark?0.04:0.02}"/>
+  </linearGradient></defs>`;
+  // grid
+  [200,400,600,800].forEach(v=>{
+    const y=pT+Math.round((1-v/maxV)*uH*0.88);
+    if(y>pT&&y<pT+uH){
+      s+=`<line x1="${pL}" y1="${y}" x2="${pL+uw}" y2="${y}" stroke="${grid}" stroke-width="0.6"/>`;
+      if(w>100)s+=`<text x="${pL-2}" y="${y}" dominant-baseline="central" text-anchor="end" font-size="6" fill="${txt}" font-family="Segoe UI" opacity="0.7">${v>=1000?v/1000+'K':v}</text>`;
+    }
   });
-
-  // Median line
-  const medY=pT+Math.round((1-.60)*uH*.88);
-  s+=`<line x1="${pL}" y1="${medY}" x2="${w-pR}" y2="${medY}" stroke="${dark?'rgba(180,180,220,.25)':'rgba(100,100,180,.18)'}" stroke-width="1.2" stroke-dasharray="3,4"/>`;
-
-  if(w>130){
-    s+=`<text x="${pL}" y="${medY-3}" font-size="6.5" fill="${txt}" font-family="Segoe UI" opacity=".65">Media</text>`;
+  // área + línea — rx=0, sin suavizado (PBI por defecto no suaviza)
+  s+=`<path d="${pathArea}" fill="url(#ag${uid})"/>`;
+  s+=`<path d="${pathLine}" fill="none" stroke="${acc}" stroke-width="2" stroke-linejoin="miter"/>`;
+  // último punto destacado
+  const last=pts[n-1];
+  s+=`<circle cx="${last.x}" cy="${last.y}" r="3.5" fill="${acc}"/>`;
+  s+=`<circle cx="${last.x}" cy="${last.y}" r="3.5" fill="white" stroke="${acc}" stroke-width="2"/>`;
+  if(w>80)s+=`<text x="${last.x}" y="${last.y-8}" text-anchor="middle" font-size="7" font-weight="700" fill="${acc}" font-family="Segoe UI">${d1[n-1]}</text>`;
+  // eje X
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${pL+uw}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;
+  if(w>80){
+    [0,3,6,9,11].forEach(i=>{
+      const x=pL+Math.round(i/(n-1)*uw);
+      s+=`<text x="${x}" y="${pT+uH+10}" text-anchor="middle" dominant-baseline="central" font-size="6.5" fill="${txt}" font-family="Segoe UI">${months[i]}</text>`;
+    });
   }
-
-  // Area + lines
-  s+=`<path d="${mkA(c1)}" fill="url(#a1${uid})"/>`;
-  s+=`<path d="${mk(c2)}" fill="none" stroke="${line2}" stroke-width="1.8" stroke-linejoin="round" stroke-dasharray="5,3" opacity=".6"/>`;
-  s+=`<path d="${mk(c1)}" fill="none" stroke="${acc}" stroke-width="2.8" stroke-linejoin="round"/>`;
-
-  const peak=c1[n-1];
-
-  // Punto destacado
-  s+=`<circle cx="${peak.x}" cy="${peak.y}" r="5" fill="${acc}"/>`;
-  s+=`<circle cx="${peak.x}" cy="${peak.y}" r="10" fill="${acc}" opacity=".15"/>`;
-
-  // 🟢 LABEL MEJORADO (compacto + bien posicionado)
-  if(w>100){
-
-    const label = "+27%";
-
-    const fontSize = 7;
-    const paddingX = 4;
-    const paddingY = 2;
-
-    const lbW = label.length * 4.8 + paddingX * 2;
-    const lbH = fontSize + paddingY * 2;
-
-    let lbX = peak.x - lbW / 2;
-    let lbY = peak.y - lbH - 6;
-
-    // límites
-    if(lbX + lbW > w - pR){
-      lbX = w - pR - lbW;
-    }
-    if(lbX < pL){
-      lbX = pL;
-    }
-
-    // Fondo
-    s+=`
-      <rect 
-        x="${lbX}" 
-        y="${lbY}" 
-        width="${lbW}" 
-        height="${lbH}" 
-        rx="3" 
-        fill="${dark ? '#5FCF87' : '#7EDC9A'}"
-      />
-    `;
-
-    // Texto
-    s+=`
-      <text 
-        x="${lbX + lbW/2}" 
-        y="${lbY + lbH/2}" 
-        text-anchor="middle" 
-        dominant-baseline="central"
-        font-size="${fontSize}" 
-        font-weight="700" 
-        fill="#ffffff"
-        font-family="Segoe UI"
-      >
-        ${label}
-      </text>
-    `;
-  }
-
-  // Axis
-  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${w-pR}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
-
   return s+'</svg>';
 }
 
-// MATRIX heatmap (sin cambios, funciona bien)
+// MATRIX — fidelidad PBI: headers col/fila, celdas con intensidad de color, fila totales
 function svgMatrix(w,h){
   const {acc,txt,dark}=cc();
-  const rows=3,cols=4,cw2=Math.floor((w-8)/cols),rh2=Math.floor((h-16)/rows);
-  const vals=[[.90,.58,.28,.72],[.38,.86,.62,.18],[.71,.32,.78,.52]];
+  const ink=dark?'#e0e0f0':'#252525';
+  const mu=dark?'#6868a0':'#888';
+  const hBg=dark?'rgba(255,255,255,.06)':'#f3f3f3';
+  const bdC=dark?'#2a2a3e':'#e0e0e0';
+  const rowLabels=['Norte','Sur','Este','Oeste'];
+  const colLabels=['T1','T2','T3','T4'];
+  const vals=[[812,748,695,920],[634,580,612,701],[521,498,544,615],[380,412,395,440]];
+  const totals=vals.map(r=>r.reduce((a,b)=>a+b,0));
+  const maxVal=920;
+  const hdrH=Math.max(12,Math.round(h*0.12));
+  const lblW=Math.max(24,Math.round(w*0.2));
+  const totW=Math.max(24,Math.round(w*0.14));
+  const dataW=w-lblW-totW;
+  const nc=colLabels.length;
+  const nr=rowLabels.length;
+  const cw=Math.floor(dataW/nc);
+  const rh=Math.max(10,Math.floor((h-hdrH)/nr));
+  const fs=Math.max(6,Math.min(8,rh*0.42));
   let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
-  s+=`<rect x="0" y="0" width="${w}" height="14" fill="${dark?'rgba(255,255,255,.04)':'#f2f2f4'}" rx="2"/>`;
-  ['Q1','Q2','Q3','Q4'].forEach((l,i)=>s+=`<text x="${4+i*cw2+cw2/2}" y="7" dominant-baseline="central" text-anchor="middle" font-size="7" font-weight="700" fill="${txt}" font-family="Segoe UI">${l}</text>`);
-  vals.forEach((row,ri)=>{
-    row.forEach((v,ci)=>{
-      const x=4+ci*cw2,y=16+ri*rh2;
-      s+=`<rect x="${x}" y="${y}" width="${cw2-3}" height="${rh2-3}" rx="2" fill="${acc}" opacity="${.1+v*.78}"/>`;
-      const fs=Math.max(7,Math.min(rh2*.38,11));
-      s+=`<text x="${x+cw2/2}" y="${y+rh2/2}" text-anchor="middle" dominant-baseline="central" font-size="${fs}" font-weight="700" fill="${v>.5?'#fff':(dark?'#c0c0e0':'#555')}" font-family="Segoe UI">${Math.round(v*100)}</text>`;
-    });
+  // header row
+  s+=`<rect x="0" y="0" width="${w}" height="${hdrH}" fill="${hBg}"/>`;
+  s+=`<line x1="0" y1="${hdrH}" x2="${w}" y2="${hdrH}" stroke="${bdC}" stroke-width="0.8"/>`;
+  colLabels.forEach((l,i)=>{
+    s+=`<text x="${lblW+i*cw+cw/2}" y="${hdrH/2}" dominant-baseline="central" text-anchor="middle" font-size="${Math.max(6,fs*0.85)}" font-weight="600" fill="${mu}" font-family="Segoe UI">${l}</text>`;
   });
+  s+=`<text x="${lblW+dataW+totW/2}" y="${hdrH/2}" dominant-baseline="central" text-anchor="middle" font-size="${Math.max(6,fs*0.85)}" font-weight="600" fill="${mu}" font-family="Segoe UI">Total</text>`;
+  // data rows
+  vals.forEach((row,ri)=>{
+    const y=hdrH+ri*rh;
+    const midY=y+rh/2;
+    // row label
+    s+=`<text x="${lblW-4}" y="${midY}" dominant-baseline="central" text-anchor="end" font-size="${fs}" fill="${ink}" font-family="Segoe UI">${rowLabels[ri]}</text>`;
+    row.forEach((v,ci)=>{
+      const x=lblW+ci*cw;
+      const intensity=v/maxVal;
+      s+=`<rect x="${x+1}" y="${y+1}" width="${cw-2}" height="${rh-2}" rx="0" fill="${acc}" opacity="${0.05+intensity*0.55}"/>`;
+      s+=`<text x="${x+cw/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${fs}" font-weight="${intensity>0.8?600:400}" fill="${intensity>0.65?acc:ink}" font-family="Segoe UI">${v}</text>`;
+    });
+    // total col
+    const tot=totals[ri];
+    s+=`<rect x="${lblW+dataW}" y="${y}" width="${totW}" height="${rh}" fill="${dark?'rgba(255,255,255,.03)':'rgba(0,0,0,.02)'}"/>`;
+    s+=`<text x="${lblW+dataW+totW/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${fs}" font-weight="600" fill="${ink}" font-family="Segoe UI">${(tot/1000).toFixed(1)}K</text>`;
+    if(ri<nr-1)s+=`<line x1="0" y1="${y+rh}" x2="${w}" y2="${y+rh}" stroke="${bdC}" stroke-width="0.4"/>`;
+  });
+  s+=`<line x1="${lblW+dataW}" y1="${hdrH}" x2="${lblW+dataW}" y2="${h}" stroke="${bdC}" stroke-width="0.6"/>`;
   return s+'</svg>';
 }
 
-// FIX: COLUMN — labels eje X sin clipping, margen inferior garantizado
+// COLUMNAS — fidelidad PBI: rx=0, línea objetivo, data label solo en seleccionado, ejes limpios
 function svgColumn(w,h){
   const {acc,ghost,grid,axis,txt,dark}=cc();
-  const vals=[64,82,71,97,78,91,85,68,94,88];
-  const n=vals.length,max=Math.max(...vals);
-  const lblH=12; // espacio reservado para labels eje X
-  const pL=8,pR=8,pT=20,pB=lblH+4;
+  const vals=[64,82,71,97,78,91,85,68,94,88,76,83];
+  const months=['E','F','M','A','M','J','J','A','S','O','N','D'];
+  const n=vals.length;
+  const maxV=Math.ceil(Math.max(...vals)/20)*20;
+  const target=85;
+  const lblH=14;
+  const valH=12;
+  const pL=8,pR=6,pT=valH+4,pB=lblH+4;
   const uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
-  const bw=Math.max(4,Math.floor(uw/n*.62));
+  const bw=Math.max(4,Math.floor(uw/n*0.62));
   const gap2=Math.max(1,Math.floor((uw-bw*n)/(n-1)));
-  const peak=vals.indexOf(max);
+  const peak=vals.indexOf(Math.max(...vals));
+  const scaleY=v=>pT+Math.round((1-v/maxV)*uH*0.9);
   let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
-  const targetY=pT+Math.round((1-85/max)*uH*.9);
-  s+=`<line x1="${pL}" y1="${targetY}" x2="${w-pR}" y2="${targetY}" stroke="${acc}" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>`;
-  if(w>120)s+=`<text x="${w-pR+2}" y="${targetY}" dominant-baseline="central" font-size="6.5" fill="${acc}" font-family="Segoe UI" opacity=".7">T</text>`;
-  [.25,.5,.75].forEach(v=>{const y=pT+Math.round((1-v)*uH*.9);s+=`<line x1="${pL}" y1="${y}" x2="${w-pR}" y2="${y}" stroke="${grid}" stroke-width="1"/>`;});
-  vals.forEach((v,i)=>{
-    const bh=Math.max(3,Math.round(v/max*uH*.9));const x=pL+i*(bw+gap2);const y=pT+uH-bh;
-    const hi=i===peak;
-    s+=`<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="2" fill="${hi?acc:ghost}" opacity="${hi?1:.7}"/>`;
-    if(hi){s+=`<text x="${x+bw/2}" y="${y-4}" text-anchor="middle" dominant-baseline="auto" font-size="${Math.max(6,Math.min(9,bw*.52))}" font-weight="700" fill="${acc}" font-family="Segoe UI">${v}</text>`;}
-    // FIX: labels eje X posicionados en zona reservada (h-pB+4), siempre visibles
-    const lbl=['En','Fe','Ma','Ab','Ma','Ju','Jl','Ag','Se','Oc'][i]||'';
-    if(bw>6)s+=`<text x="${x+bw/2}" y="${pT+uH+lblH/2+3}" text-anchor="middle" dominant-baseline="central" font-size="${Math.max(5.5,Math.min(7,bw*.55))}" fill="${txt}" font-family="Segoe UI">${lbl}</text>`;
-  });
-  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${w-pR}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
-  return s+'</svg>';
-}
-
-// FIX: LOLLIPOP — recentrado, espacio derecho para valores
-function svgLollypop(w,h){
-  const {acc,ghost,grid,axis,txt,dark}=cc();
-  const data=[
-    {l:'Zona Norte',v:92},{l:'Zona Sur',v:78},{l:'Zona Este',v:85},
-    {l:'Zona Oeste',v:61},{l:'Nacional',v:97},{l:'Europa',v:54},
-  ];
-  const n=data.length;
-  // FIX: pR ampliado para valores, pL ajustado con min/max
-  const pL=Math.max(55,Math.min(75,w*0.36));
-  const pR=36,pT=10,pB=10;
-  const uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
-  const rh=uH/n,max=100;
-  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
-  [.25,.5,.75,1].forEach(v=>{const x=pL+Math.round(v*uw);s+=`<line x1="${x}" y1="${pT}" x2="${x}" y2="${pT+uH}" stroke="${grid}" stroke-width="1"/>`;});
-  data.forEach((d,i)=>{
-    const cy=pT+i*rh+rh/2;
-    const x=pL+Math.round(d.v/max*uw);
-    const hi=i===4;
-    s+=`<text x="${pL-5}" y="${cy}" dominant-baseline="central" text-anchor="end" font-size="${Math.max(7,Math.min(9,rh*.42))}" fill="${txt}" font-family="Segoe UI" font-weight="${hi?600:400}">${d.l}</text>`;
-    s+=`<line x1="${pL}" y1="${cy}" x2="${x}" y2="${cy}" stroke="${hi?acc:ghost}" stroke-width="${hi?2:1.4}" stroke-linecap="round"/>`;
-    s+=`<circle cx="${x}" cy="${cy}" r="${hi?5:4}" fill="${hi?acc:ghost}"/>`;
-    if(hi)s+=`<circle cx="${x}" cy="${cy}" r="9" fill="${acc}" opacity=".16"/>`;
-    // FIX: valor siempre a la derecha del círculo, cabe en pR
-    s+=`<text x="${x+9}" y="${cy}" dominant-baseline="central" font-size="${Math.max(7,rh*.36)}" font-weight="${hi?700:500}" fill="${hi?acc:txt}" font-family="Segoe UI">${d.v}%</text>`;
-  });
-  s+=`<line x1="${pL}" y1="${pT}" x2="${pL}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
-  return s+'</svg>';
-}
-
-// FIX: DUMBBELL — etiquetas en ambos extremos
-function svgDumbbell(w,h){
-  const {acc,ghost,grid,axis,txt,dark}=cc();
-  const data=[
-    {l:'Producto A',a:58,b:82},{l:'Producto B',a:72,b:68},
-    {l:'Producto C',a:45,b:71},{l:'Producto D',a:81,b:89},
-    {l:'Producto E',a:38,b:55},{l:'Producto F',a:63,b:60},
-  ];
-  const n=data.length;
-  const pL=Math.max(60,Math.min(80,w*0.34));
-  const pR=34,pT=16,pB=10;
-  const uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
-  const rh=uH/n,max=100;
-  const c2=dark?'#666688':'#c0c0d8';
-  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
-  // Legend
-  s+=`<circle cx="${pL}" cy="${pT-5}" r="3.5" fill="${c2}"/><text x="${pL+7}" y="${pT-5}" dominant-baseline="central" font-size="7" fill="${txt}" font-family="Segoe UI">Ant.</text>`;
-  s+=`<circle cx="${pL+46}" cy="${pT-5}" r="3.5" fill="${acc}"/><text x="${pL+53}" y="${pT-5}" dominant-baseline="central" font-size="7" fill="${txt}" font-family="Segoe UI">Act.</text>`;
-  [.25,.5,.75,1].forEach(v=>{const x=pL+Math.round(v*uw);s+=`<line x1="${x}" y1="${pT}" x2="${x}" y2="${pT+uH}" stroke="${grid}" stroke-width="1"/>`;});
-  data.forEach((d,i)=>{
-    const cy=pT+i*rh+rh/2;
-    const xa=pL+Math.round(d.a/max*uw),xb=pL+Math.round(d.b/max*uw);
-    const improved=d.b>d.a;
-    s+=`<text x="${pL-5}" y="${cy}" dominant-baseline="central" text-anchor="end" font-size="${Math.max(7,rh*.36)}" fill="${txt}" font-family="Segoe UI">${d.l}</text>`;
-    s+=`<line x1="${Math.min(xa,xb)}" y1="${cy}" x2="${Math.max(xa,xb)}" y2="${cy}" stroke="${improved?acc:c2}" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>`;
-    // FIX: etiqueta valor en círculo izquierdo (ant.)
-    s+=`<circle cx="${xa}" cy="${cy}" r="4.5" fill="${c2}"/>`;
-    s+=`<text x="${xa}" y="${cy}" dominant-baseline="central" text-anchor="middle" font-size="5.5" font-weight="700" fill="#fff" font-family="Segoe UI">${d.a}</text>`;
-    // FIX: etiqueta valor en círculo derecho (act.)
-    s+=`<circle cx="${xb}" cy="${cy}" r="5" fill="${improved?acc:'#e88080'}"/>`;
-    s+=`<text x="${xb}" y="${cy}" dominant-baseline="central" text-anchor="middle" font-size="5.5" font-weight="700" fill="#fff" font-family="Segoe UI">${d.b}</text>`;
-    // Delta externo si hay espacio
-    const deltaX=improved?Math.max(xa,xb)+10:Math.min(xa,xb)-9;
-    const deltaAnchor=improved?'start':'end';
-    if(Math.abs(xb-xa)>8&&deltaX>pL&&deltaX<pL+uw+pR-4){
-      s+=`<text x="${deltaX}" y="${cy}" dominant-baseline="central" text-anchor="${deltaAnchor}" font-size="7" font-weight="700" fill="${improved?acc:'#e88080'}" font-family="Segoe UI">${improved?'+':''}${d.b-d.a}</text>`;
+  // grid horizontal
+  [maxV*0.25,maxV*0.5,maxV*0.75,maxV].forEach(v=>{
+    const y=scaleY(v);
+    if(y>pT){
+      s+=`<line x1="${pL}" y1="${y}" x2="${pL+uw}" y2="${y}" stroke="${grid}" stroke-width="0.6"/>`;
+      if(w>100&&v<maxV)s+=`<text x="${pL-2}" y="${y}" dominant-baseline="central" text-anchor="end" font-size="6" fill="${txt}" font-family="Segoe UI" opacity="0.7">${v}</text>`;
     }
   });
-  s+=`<line x1="${pL}" y1="${pT}" x2="${pL}" y2="${pT+uH}" stroke="${axis}" stroke-width="1"/>`;
+  // línea objetivo punteada — estilo PBI target line
+  const targetY=scaleY(target);
+  s+=`<line x1="${pL}" y1="${targetY}" x2="${pL+uw}" y2="${targetY}" stroke="${dark?'rgba(200,80,80,.7)':'#c62828'}" stroke-width="1" stroke-dasharray="4,3"/>`;
+  if(w>120)s+=`<text x="${pL+uw+2}" y="${targetY}" dominant-baseline="central" font-size="6" fill="${dark?'rgba(200,80,80,.8)':'#c62828'}" font-family="Segoe UI" font-weight="600">Obj</text>`;
+  // barras
+  vals.forEach((v,i)=>{
+    const bh=Math.max(2,Math.round(v/maxV*uH*0.9));
+    const x=pL+i*(bw+gap2);
+    const y=scaleY(v);
+    const hi=i===peak;
+    // rx=0 — PBI por defecto
+    s+=`<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="0" fill="${hi?acc:ghost}"/>`;
+    // data label solo en barra máxima
+    if(hi&&bw>6)s+=`<text x="${x+bw/2}" y="${y-4}" text-anchor="middle" font-size="${Math.max(6,Math.min(8,bw*0.55))}" font-weight="700" fill="${acc}" font-family="Segoe UI">${v}</text>`;
+    // label eje X
+    if(bw>5)s+=`<text x="${x+bw/2}" y="${pT+uH+lblH/2+3}" text-anchor="middle" dominant-baseline="central" font-size="${Math.max(5.5,Math.min(7,bw*0.6))}" fill="${txt}" font-family="Segoe UI">${months[i]||''}</text>`;
+  });
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${pL+uw}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;
   return s+'</svg>';
 }
 
-// FIX: SLOPE — valores en inicio/fin y nombres de región
-function svgSlope(w,h){
-  const {acc,ghost,grid,txt,dark}=cc();
+// LOLLIPOP — fidelidad PBI: tallo fino, círculo limpio, valor alineado derecha
+function svgLollypop(w,h){
+  const {acc,ghost,axis,txt,dark}=cc();
+  const grid=dark?'#252535':'#f0f0f0';
   const data=[
-    {l:'Región A',a:45,b:78,pos:true},
-    {l:'Región B',a:72,b:65,pos:false},
-    {l:'Región C',a:38,b:82,pos:true},
-    {l:'Región D',a:85,b:91,pos:true},
-    {l:'Región E',a:55,b:48,pos:false},
+    {l:'Zona Norte',v:812},{l:'Europa',v:698},{l:'Nacional',v:654},
+    {l:'Zona Este',v:521},{l:'Zona Sur',v:463},{l:'Zona Oeste',v:312},
   ];
-  // FIX: pL y pR amplios para labels de región y valores
-  const pL=52,pR=52,pT=26,pB=14;
-  const uw=Math.max(10,w-pL-pR),uH=h-pT-pB,max=100;
-  const xL=pL,xR=w-pR;
+  const maxV=900;
+  const n=data.length;
+  const lblW=Math.max(52,Math.min(72,w*0.35));
+  const pR=38,pT=8,pB=8;
+  const pL=lblW+8;
+  const uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
+  const rowH=uH/n;
+  const r=Math.max(3.5,Math.min(5.5,rowH*0.22));
+  const fs=Math.max(7,Math.min(9,rowH*0.38));
   let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
-  s+=`<text x="${xL}" y="${pT-8}" text-anchor="middle" font-size="8.5" font-weight="700" fill="${txt}" font-family="Segoe UI">2025</text>`;
-  s+=`<text x="${xR}" y="${pT-8}" text-anchor="middle" font-size="8.5" font-weight="700" fill="${txt}" font-family="Segoe UI">2026</text>`;
-  s+=`<line x1="${xL}" y1="${pT}" x2="${xL}" y2="${pT+uH}" stroke="${txt}" stroke-width="1.2" opacity=".3"/>`;
-  s+=`<line x1="${xR}" y1="${pT}" x2="${xR}" y2="${pT+uH}" stroke="${txt}" stroke-width="1.2" opacity=".3"/>`;
+  // grid vertical punteado
+  [0.25,0.5,0.75,1].forEach(v=>{
+    const x=pL+Math.round(v*uw);
+    s+=`<line x1="${x}" y1="${pT}" x2="${x}" y2="${pT+uH}" stroke="${grid}" stroke-width="0.6" stroke-dasharray="2,3"/>`;
+  });
   data.forEach((d,i)=>{
-    const yA=pT+Math.round((1-d.a/max)*uH*.92);
-    const yB=pT+Math.round((1-d.b/max)*uH*.92);
-    const col=d.pos?acc:(dark?'#4a4a68':'#b0b0c8');
+    const cy=pT+i*rowH+rowH/2;
+    const xEnd=pL+Math.round(d.v/maxV*uw);
+    const hi=i===0;
+    // label categoría
+    s+=`<text x="${pL-6}" y="${cy}" dominant-baseline="central" text-anchor="end" font-size="${fs}" fill="${hi?acc:txt}" font-weight="${hi?600:400}" font-family="Segoe UI">${d.l}</text>`;
+    // línea base gris muy fina
+    s+=`<line x1="${pL}" y1="${cy}" x2="${pL+uw}" y2="${cy}" stroke="${dark?'rgba(255,255,255,.05)':'rgba(0,0,0,.05)'}" stroke-width="1"/>`;
+    // tallo
+    s+=`<line x1="${pL}" y1="${cy}" x2="${xEnd}" y2="${cy}" stroke="${hi?acc:ghost}" stroke-width="${hi?2:1.5}" stroke-linecap="round"/>`;
+    // círculo — sin relleno blanco interior para mayor fidelidad PBI
+    s+=`<circle cx="${xEnd}" cy="${cy}" r="${hi?r+0.5:r}" fill="${hi?acc:ghost}"/>`;
+    // valor
+    s+=`<text x="${xEnd+r+5}" y="${cy}" dominant-baseline="central" font-size="${Math.max(6.5,fs*0.88)}" font-weight="${hi?700:400}" fill="${hi?acc:txt}" font-family="Segoe UI">${d.v}</text>`;
+  });
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${pL+uw}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;
+  return s+'</svg>';
+}
+
+// DUMBBELL — fidelidad PBI: círculos claros antes/después, delta anotado, leyenda compacta
+function svgDumbbell(w,h){
+  const {acc,txt,dark}=cc();
+  const grid=dark?'#252535':'#f0f0f0';
+  const axis=dark?'#3a3a55':'#d0d0d0';
+  const prevC=dark?'#5a5a80':'#c0c0d8';
+  const data=[
+    {l:'Producto A',a:580,b:812},{l:'Producto B',a:720,b:685},
+    {l:'Producto C',a:450,b:710},{l:'Producto D',a:810,b:890},
+    {l:'Producto E',a:380,b:550},{l:'Producto F',a:630,b:598},
+  ];
+  const maxV=950;
+  const n=data.length;
+  const lblW=Math.max(52,Math.min(70,w*0.33));
+  const pL=lblW+8,pR=8,pT=20,pB=6;
+  const uw=Math.max(10,w-pL-pR),uH=h-pT-pB;
+  const rowH=uH/n;
+  const r=Math.max(3.5,Math.min(5,rowH*0.22));
+  const fs=Math.max(6.5,Math.min(8.5,rowH*0.36));
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  // leyenda
+  if(w>100){
+    s+=`<circle cx="${pL}" cy="10" r="${r}" fill="${prevC}"/>`;
+    s+=`<text x="${pL+r+4}" y="10" dominant-baseline="central" font-size="7" fill="${txt}" font-family="Segoe UI">Anterior</text>`;
+    s+=`<circle cx="${pL+62}" cy="10" r="${r}" fill="${acc}"/>`;
+    s+=`<text x="${pL+62+r+4}" y="10" dominant-baseline="central" font-size="7" fill="${txt}" font-family="Segoe UI">Actual</text>`;
+  }
+  // grid
+  [0.25,0.5,0.75,1].forEach(v=>{
+    const x=pL+Math.round(v*uw);
+    s+=`<line x1="${x}" y1="${pT}" x2="${x}" y2="${pT+uH}" stroke="${grid}" stroke-width="0.6" stroke-dasharray="2,3"/>`;
+  });
+  data.forEach((d,i)=>{
+    const cy=pT+i*rowH+rowH/2;
+    const xa=pL+Math.round(d.a/maxV*uw);
+    const xb=pL+Math.round(d.b/maxV*uw);
+    const improved=d.b>d.a;
+    const lineC=improved?acc:prevC;
+    // label
+    s+=`<text x="${pL-6}" y="${cy}" dominant-baseline="central" text-anchor="end" font-size="${fs}" fill="${txt}" font-family="Segoe UI">${d.l}</text>`;
+    // conector
+    s+=`<line x1="${Math.min(xa,xb)}" y1="${cy}" x2="${Math.max(xa,xb)}" y2="${cy}" stroke="${lineC}" stroke-width="2" opacity="0.5"/>`;
+    // círculo anterior — hueco con borde
+    s+=`<circle cx="${xa}" cy="${cy}" r="${r}" fill="${dark?'#1c1c2c':'white'}" stroke="${prevC}" stroke-width="1.5"/>`;
+    // círculo actual — sólido
+    s+=`<circle cx="${xb}" cy="${cy}" r="${r}" fill="${improved?acc:dark?'#e08080':'#d13438'}"/>`;
+    // delta
+    const delta=d.b-d.a;
+    const dStr=(delta>0?'+':'')+delta;
+    const dx=improved?Math.max(xa,xb)+r+5:Math.min(xa,xb)-r-5;
+    const anchor=improved?'start':'end';
+    if(Math.abs(xb-xa)>6&&dx>pL-4&&dx<w-2){
+      s+=`<text x="${dx}" y="${cy}" dominant-baseline="central" text-anchor="${anchor}" font-size="${Math.max(6,fs*0.82)}" font-weight="700" fill="${improved?acc:dark?'#e08080':'#d13438'}" font-family="Segoe UI">${dStr}</text>`;
+    }
+  });
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${pL+uw}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;
+  return s+'</svg>';
+}
+
+// SLOPE — fidelidad PBI: ejes verticales limpios, años en header, línea destacada, valores en ambos extremos
+function svgSlope(w,h){
+  const {acc,txt,dark}=cc();
+  const posC=acc;
+  const negC=dark?'#5a5a80':'#b0b0c8';
+  const axisC=dark?'#3a3a55':'#d0d0d0';
+  const data=[
+    {l:'Región A',a:450,b:780,pos:true},
+    {l:'Región B',a:720,b:650,pos:false},
+    {l:'Región C',a:380,b:820,pos:true},
+    {l:'Región D',a:850,b:910,pos:true},
+    {l:'Región E',a:550,b:480,pos:false},
+  ];
+  const maxV=1000;
+  const pL=54,pR=54,pT=22,pB=8;
+  const uH=h-pT-pB;
+  const xL=pL,xR=w-pR;
+  const scaleY=v=>pT+Math.round((1-v/maxV)*uH*0.9);
+  let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
+  // headers año — estilo PBI
+  s+=`<text x="${xL}" y="${pT-10}" text-anchor="middle" font-size="8" font-weight="700" fill="${txt}" font-family="Segoe UI">2025</text>`;
+  s+=`<text x="${xR}" y="${pT-10}" text-anchor="middle" font-size="8" font-weight="700" fill="${txt}" font-family="Segoe UI">2026</text>`;
+  // ejes verticales
+  s+=`<line x1="${xL}" y1="${pT}" x2="${xL}" y2="${pT+uH}" stroke="${axisC}" stroke-width="1"/>`;
+  s+=`<line x1="${xR}" y1="${pT}" x2="${xR}" y2="${pT+uH}" stroke="${axisC}" stroke-width="1"/>`;
+  data.forEach((d,i)=>{
+    const yA=scaleY(d.a);
+    const yB=scaleY(d.b);
     const hi=i===3;
-    s+=`<line x1="${xL}" y1="${yA}" x2="${xR}" y2="${yB}" stroke="${col}" stroke-width="${hi?2.2:1.4}" opacity="${hi?0.9:0.55}"/>`;
-    s+=`<circle cx="${xL}" cy="${yA}" r="${hi?4.5:3.5}" fill="${col}" opacity="${hi?1:.75}"/>`;
-    s+=`<circle cx="${xR}" cy="${yB}" r="${hi?4.5:3.5}" fill="${col}" opacity="${hi?1:.75}"/>`;
-    // FIX: valor izquierda (2025)
-    s+=`<text x="${xL-7}" y="${yA}" dominant-baseline="central" text-anchor="end" font-size="${Math.max(7,hi?8.5:7.5)}" font-weight="${hi?700:500}" fill="${col}" font-family="Segoe UI">${d.a}</text>`;
-    // FIX: nombre de región a la izquierda del valor
-    s+=`<text x="${xL-22}" y="${yA}" dominant-baseline="central" text-anchor="end" font-size="${Math.max(5.5,hi?7:6)}" fill="${txt}" font-family="Segoe UI" opacity="${hi?1:.7}">${d.l}</text>`;
-    // FIX: valor derecha (2026)
-    s+=`<text x="${xR+7}" y="${yB}" dominant-baseline="central" font-size="${Math.max(7,hi?8.5:7.5)}" font-weight="${hi?700:500}" fill="${col}" font-family="Segoe UI">${d.b}</text>`;
+    const col=d.pos?posC:negC;
+    // línea
+    s+=`<line x1="${xL}" y1="${yA}" x2="${xR}" y2="${yB}" stroke="${col}" stroke-width="${hi?2.5:1.5}" opacity="${hi?1:0.55}"/>`;
+    // puntos en extremos
+    s+=`<circle cx="${xL}" cy="${yA}" r="${hi?4:2.5}" fill="${col}" opacity="${hi?1:0.7}"/>`;
+    s+=`<circle cx="${xR}" cy="${yB}" r="${hi?4:2.5}" fill="${col}" opacity="${hi?1:0.7}"/>`;
+    // valor izquierda
+    s+=`<text x="${xL-6}" y="${yA}" dominant-baseline="central" text-anchor="end" font-size="${Math.max(6.5,hi?8:7)}" font-weight="${hi?700:400}" fill="${col}" font-family="Segoe UI">${d.a}</text>`;
+    // nombre región — más a la izquierda
+    if(xL-6>22)s+=`<text x="${xL-22}" y="${yA}" dominant-baseline="central" text-anchor="end" font-size="${Math.max(5.5,hi?7:6)}" fill="${txt}" font-family="Segoe UI" opacity="${hi?1:0.7}">${d.l}</text>`;
+    // valor derecha
+    s+=`<text x="${xR+6}" y="${yB}" dominant-baseline="central" font-size="${Math.max(6.5,hi?8:7)}" font-weight="${hi?700:400}" fill="${col}" font-family="Segoe UI">${d.b}</text>`;
   });
   return s+'</svg>';
 }
@@ -1617,74 +2142,698 @@ function svgKpiBars(w,h,uid){
   return s+'</svg>';
 }
 
+// ── NUEVOS RENDERERS ──────────────────────────────────────────
+// Helpers compartidos
+function _svgOpen(w,h){return`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;}
+function _axisBottom(pL,pT,uw,uH,axis){return`<line x1="${pL}" y1="${pT+uH}" x2="${pL+uw}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;}
+function _grid(pL,pT,uw,uH,grid,steps=[0.25,0.5,0.75]){return steps.map(v=>`<line x1="${pL}" y1="${pT+Math.round((1-v)*uH*0.9)}" x2="${pL+uw}" y2="${pT+Math.round((1-v)*uH*0.9)}" stroke="${grid}" stroke-width="0.6"/>`).join('');}
+
+// BARRAS APILADAS
+function svgBarStacked(w,h){
+  const {acc,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';const axis=dark?'#3a3a55':'#d0d0d0';const txt=dark?'#6a6a90':'#888';
+  const data=[{a:480,b:320},{a:360,b:280},{a:420,b:250},{a:310,b:190}];
+  const maxV=820;const lblW=Math.max(44,Math.min(64,w*0.32));
+  const pL=lblW+6,pR=8,pT=6,pB=6,uw=w-pL-pR,uH=h-pT-pB;
+  const labels=['Zona A','Zona B','Zona C','Zona D'];
+  const n=data.length,rowH=uH/n,bh=Math.max(6,Math.floor(rowH*0.55));
+  const fs=Math.max(7,Math.min(9,rowH*0.36));
+  let s=_svgOpen(w,h);
+  data.forEach((d,i)=>{
+    const cy=pT+i*rowH+rowH/2;
+    const w1=Math.round(d.a/maxV*uw),w2=Math.round(d.b/maxV*uw);
+    s+=`<text x="${pL-5}" y="${cy}" dominant-baseline="central" text-anchor="end" font-size="${fs}" fill="${txt}" font-family="Segoe UI">${labels[i]}</text>`;
+    s+=`<rect x="${pL}" y="${cy-bh/2}" width="${w1}" height="${bh}" rx="0" fill="${acc}"/>`;
+    s+=`<rect x="${pL+w1}" y="${cy-bh/2}" width="${w2}" height="${bh}" rx="0" fill="${c2}"/>`;
+  });
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${pL+uw}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;
+  return s+'</svg>';
+}
+
+// BARRAS AGRUPADAS
+function svgBarGrouped(w,h){
+  const {acc,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';const axis=dark?'#3a3a55':'#d0d0d0';const txt=dark?'#6a6a90':'#888';
+  const data=[{a:480,b:320},{a:360,b:430},{a:420,b:250}];
+  const maxV=500;const lblW=Math.max(44,Math.min(60,w*0.3));
+  const pL=lblW+6,pR=8,pT=6,pB=6,uw=w-pL-pR,uH=h-pT-pB;
+  const labels=['Zona A','Zona B','Zona C'];
+  const n=data.length,rowH=uH/n;const bh=Math.max(4,Math.floor(rowH*0.28));const gap=Math.max(2,Math.floor(rowH*0.06));
+  const fs=Math.max(7,Math.min(9,rowH*0.3));
+  let s=_svgOpen(w,h);
+  data.forEach((d,i)=>{
+    const cy=pT+i*rowH+rowH/2;
+    const w1=Math.round(d.a/maxV*uw),w2=Math.round(d.b/maxV*uw);
+    s+=`<text x="${pL-5}" y="${cy}" dominant-baseline="central" text-anchor="end" font-size="${fs}" fill="${txt}" font-family="Segoe UI">${labels[i]}</text>`;
+    s+=`<rect x="${pL}" y="${cy-bh-gap/2}" width="${w1}" height="${bh}" rx="0" fill="${acc}"/>`;
+    s+=`<rect x="${pL}" y="${cy+gap/2}" width="${w2}" height="${bh}" rx="0" fill="${c2}"/>`;
+  });
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${pL+uw}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;
+  return s+'</svg>';
+}
+
+// BARRAS 100%
+function svgBar100(w,h){
+  const {acc,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';const c3=dark?'#3a3a58':'#9898cc';
+  const axis=dark?'#3a3a55':'#d0d0d0';const txt=dark?'#6a6a90':'#888';
+  const data=[{a:0.5,b:0.3,c:0.2},{a:0.4,b:0.35,c:0.25},{a:0.6,b:0.25,c:0.15},{a:0.45,b:0.4,c:0.15}];
+  const lblW=Math.max(44,Math.min(60,w*0.3));
+  const pL=lblW+6,pR=8,pT=6,pB=6,uw=w-pL-pR,uH=h-pT-pB;
+  const labels=['Norte','Sur','Este','Oeste'];
+  const n=data.length,rowH=uH/n,bh=Math.max(6,Math.floor(rowH*0.52));
+  const fs=Math.max(7,Math.min(9,rowH*0.36));
+  let s=_svgOpen(w,h);
+  s+=`<line x1="${pL+uw}" y1="${pT}" x2="${pL+uw}" y2="${pT+uH}" stroke="${acc}" stroke-width="0.8" stroke-dasharray="3,2" opacity=".5"/>`;
+  data.forEach((d,i)=>{
+    const cy=pT+i*rowH+rowH/2;
+    const w1=Math.round(d.a*uw),w2=Math.round(d.b*uw),w3=Math.round(d.c*uw);
+    s+=`<text x="${pL-5}" y="${cy}" dominant-baseline="central" text-anchor="end" font-size="${fs}" fill="${txt}" font-family="Segoe UI">${labels[i]}</text>`;
+    s+=`<rect x="${pL}" y="${cy-bh/2}" width="${w1}" height="${bh}" rx="0" fill="${acc}"/>`;
+    s+=`<rect x="${pL+w1}" y="${cy-bh/2}" width="${w2}" height="${bh}" rx="0" fill="${c2}"/>`;
+    s+=`<rect x="${pL+w1+w2}" y="${cy-bh/2}" width="${w3}" height="${bh}" rx="0" fill="${c3}"/>`;
+  });
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${pL+uw}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;
+  return s+'</svg>';
+}
+
+// COLUMNAS APILADAS
+function svgColumnStacked(w,h){
+  const {acc,grid,axis,txt,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';
+  const vals=[[55,32],[70,28],[48,40],[82,20],[65,30]];
+  const months=['E','M','M','J','S'];const maxV=110;
+  const pL=6,pR=6,pT=16,pB=16,uw=w-pL-pR,uH=h-pT-pB;
+  const n=vals.length,bw=Math.max(4,Math.floor(uw/n*0.62)),gap2=Math.max(1,Math.floor((uw-bw*n)/(n-1)));
+  const scaleH=v=>Math.round(v/maxV*uH*0.9);
+  let s=_svgOpen(w,h)+_grid(pL,pT,uw,uH,grid);
+  vals.forEach((v,i)=>{
+    const x=pL+i*(bw+gap2);const h1=scaleH(v[0]);const h2=scaleH(v[1]);
+    const y1=pT+uH-h1;const y2=y1-h2;
+    s+=`<rect x="${x}" y="${y1}" width="${bw}" height="${h1}" rx="0" fill="${acc}"/>`;
+    s+=`<rect x="${x}" y="${y2}" width="${bw}" height="${h2}" rx="0" fill="${c2}"/>`;
+    s+=`<text x="${x+bw/2}" y="${pT+uH+9}" text-anchor="middle" dominant-baseline="central" font-size="6" fill="${txt}" font-family="Segoe UI">${months[i]}</text>`;
+  });
+  s+=_axisBottom(pL,pT,uw,uH,axis);return s+'</svg>';
+}
+
+// COLUMNAS AGRUPADAS
+function svgColumnGrouped(w,h){
+  const {acc,grid,axis,txt,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';
+  const vals=[[55,42],[70,58],[48,62],[72,45]];
+  const maxV=80;
+  const pL=6,pR=6,pT=16,pB=16,uw=w-pL-pR,uH=h-pT-pB;
+  const n=vals.length,grpW=Math.floor(uw/n);const bw=Math.max(3,Math.floor(grpW*0.35));const gap2=2;
+  const scaleH=v=>Math.max(2,Math.round(v/maxV*uH*0.9));
+  const labels=['T1','T2','T3','T4'];
+  let s=_svgOpen(w,h)+_grid(pL,pT,uw,uH,grid);
+  vals.forEach((v,i)=>{
+    const cx=pL+i*grpW+grpW/2;const h1=scaleH(v[0]);const h2=scaleH(v[1]);
+    const x1=cx-bw-gap2/2;const x2=cx+gap2/2;
+    s+=`<rect x="${x1}" y="${pT+uH-h1}" width="${bw}" height="${h1}" rx="0" fill="${acc}"/>`;
+    s+=`<rect x="${x2}" y="${pT+uH-h2}" width="${bw}" height="${h2}" rx="0" fill="${c2}"/>`;
+    s+=`<text x="${cx}" y="${pT+uH+9}" text-anchor="middle" dominant-baseline="central" font-size="6.5" fill="${txt}" font-family="Segoe UI">${labels[i]}</text>`;
+  });
+  s+=_axisBottom(pL,pT,uw,uH,axis);return s+'</svg>';
+}
+
+// COLUMNAS 100%
+function svgColumn100(w,h){
+  const {acc,grid,axis,txt,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';const c3=dark?'#3a3a58':'#9898cc';
+  const vals=[[0.5,0.3,0.2],[0.35,0.4,0.25],[0.6,0.25,0.15],[0.45,0.35,0.2],[0.55,0.3,0.15]];
+  const months=['E','M','M','J','S'];
+  const pL=6,pR=6,pT=8,pB=16,uw=w-pL-pR,uH=h-pT-pB;
+  const n=vals.length,bw=Math.max(4,Math.floor(uw/n*0.62)),gap2=Math.max(1,Math.floor((uw-bw*n)/(n-1)));
+  const fullH=uH*0.9;
+  let s=_svgOpen(w,h);
+  s+=`<line x1="${pL}" y1="${pT+uH-fullH}" x2="${pL+uw}" y2="${pT+uH-fullH}" stroke="${acc}" stroke-width="0.8" stroke-dasharray="3,2" opacity=".4"/>`;
+  vals.forEach((v,i)=>{
+    const x=pL+i*(bw+gap2);const h1=Math.round(v[0]*fullH);const h2=Math.round(v[1]*fullH);const h3=Math.round(v[2]*fullH);
+    const base=pT+uH;
+    s+=`<rect x="${x}" y="${base-h1}" width="${bw}" height="${h1}" rx="0" fill="${acc}"/>`;
+    s+=`<rect x="${x}" y="${base-h1-h2}" width="${bw}" height="${h2}" rx="0" fill="${c2}"/>`;
+    s+=`<rect x="${x}" y="${base-h1-h2-h3}" width="${bw}" height="${h3}" rx="0" fill="${c3}"/>`;
+    s+=`<text x="${x+bw/2}" y="${pT+uH+9}" text-anchor="middle" dominant-baseline="central" font-size="6" fill="${txt}" font-family="Segoe UI">${months[i]}</text>`;
+  });
+  s+=_axisBottom(pL,pT,uw,uH,axis);return s+'</svg>';
+}
+
+// ÁREA APILADA
+function svgAreaStacked(w,h,uid){
+  const {acc,grid,axis,txt,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';
+  const n=8,pL=6,pR=8,pT=12,pB=14,uw=w-pL-pR,uH=h-pT-pB;
+  const d1=[0.3,0.4,0.35,0.5,0.45,0.6,0.55,0.65];
+  const d2=[0.2,0.25,0.22,0.28,0.3,0.25,0.32,0.28];
+  const pts1=d1.map((v,i)=>({x:pL+Math.round(i/(n-1)*uw),y:pT+Math.round((1-v)*uH*0.88)}));
+  const pts2=d1.map((v,i)=>({x:pL+Math.round(i/(n-1)*uw),y:pT+Math.round((1-(v+d2[i]))*uH*0.88)}));
+  const base=pT+uH;
+  const path1='M'+pts1.map(p=>`${p.x},${p.y}`).join('L')+`L${pts1[n-1].x},${base}L${pts1[0].x},${base}Z`;
+  const path2='M'+pts2.map(p=>`${p.x},${p.y}`).join('L')+'L'+[...pts1].reverse().map(p=>`${p.x},${p.y}`).join('L')+'Z';
+  let s=_svgOpen(w,h)+_grid(pL,pT,uw,uH,grid);
+  s+=`<path d="${path1}" fill="${acc}" opacity="0.7"/>`;
+  s+=`<path d="${path2}" fill="${c2}" opacity="0.6"/>`;
+  s+=`<polyline points="${pts2.map(p=>`${p.x},${p.y}`).join(' ')}" fill="none" stroke="${c2}" stroke-width="1.5"/>`;
+  s+=`<polyline points="${pts1.map(p=>`${p.x},${p.y}`).join(' ')}" fill="none" stroke="${acc}" stroke-width="1.8"/>`;
+  s+=_axisBottom(pL,pT,uw,uH,axis);return s+'</svg>';
+}
+
+// ÁREA 100%
+function svgArea100(w,h,uid){
+  const {acc,grid,axis,txt,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';
+  const n=8,pL=6,pR=8,pT=8,pB=14,uw=w-pL-pR,uH=h-pT-pB;
+  const split=([.55,.52,.58,.50,.62,.55,.60,.65]);
+  const base=pT+uH*0.9;
+  const pts1=split.map((v,i)=>({x:pL+Math.round(i/(n-1)*uw),y:pT+Math.round((1-v)*uH*0.9)}));
+  const topY=pT;
+  const path1='M'+pts1.map(p=>`${p.x},${p.y}`).join('L')+`L${pts1[n-1].x},${base}L${pts1[0].x},${base}Z`;
+  const path2=`M${pL},${topY}L${pL+uw},${topY}L${pts1[n-1].x},${pts1[n-1].y}`+'L'+[...pts1].reverse().map(p=>`${p.x},${p.y}`).join('L')+'Z';
+  let s=_svgOpen(w,h);
+  s+=`<rect x="${pL}" y="${pT}" width="${uw}" height="${uH*0.9}" fill="${c2}" opacity="0.6"/>`;
+  s+=`<path d="${path1}" fill="${acc}" opacity="0.85"/>`;
+  s+=`<polyline points="${pts1.map(p=>`${p.x},${p.y}`).join(' ')}" fill="none" stroke="${acc}" stroke-width="1.8"/>`;
+  s+=`<line x1="${pL}" y1="${topY}" x2="${pL+uw}" y2="${topY}" stroke="${acc}" stroke-width="0.8" stroke-dasharray="3,2" opacity=".4"/>`;
+  s+=_axisBottom(pL,pT,uw,uH,axis);return s+'</svg>';
+}
+
+// COMBO: COLUMNAS APILADAS + LÍNEAS
+function svgComboStacked(w,h,uid){
+  const {acc,grid,axis,txt,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';const lineC='#a3223e';
+  const vals=[[55,32],[70,28],[48,40],[82,20],[65,30]];
+  const line=[72,80,65,88,75];const months=['E','M','M','J','S'];const maxV=110;
+  const pL=6,pR=6,pT=16,pB=16,uw=w-pL-pR,uH=h-pT-pB;
+  const n=vals.length,bw=Math.max(4,Math.floor(uw/n*0.62)),gap2=Math.max(1,Math.floor((uw-bw*n)/(n-1)));
+  const scaleH=v=>Math.round(v/maxV*uH*0.9);const scaleY=v=>pT+Math.round((1-v/maxV)*uH*0.9);
+  const cx=i=>pL+i*(bw+gap2)+bw/2;
+  let s=_svgOpen(w,h)+_grid(pL,pT,uw,uH,grid);
+  vals.forEach((v,i)=>{
+    const x=pL+i*(bw+gap2);const h1=scaleH(v[0]);const h2=scaleH(v[1]);const y1=pT+uH-h1;
+    s+=`<rect x="${x}" y="${y1}" width="${bw}" height="${h1}" rx="0" fill="${acc}"/>`;
+    s+=`<rect x="${x}" y="${y1-h2}" width="${bw}" height="${h2}" rx="0" fill="${c2}"/>`;
+    s+=`<text x="${cx(i)}" y="${pT+uH+9}" text-anchor="middle" dominant-baseline="central" font-size="6" fill="${txt}" font-family="Segoe UI">${months[i]}</text>`;
+  });
+  const linePts=line.map((v,i)=>({x:cx(i),y:scaleY(v)}));
+  s+=`<polyline points="${linePts.map(p=>`${p.x},${p.y}`).join(' ')}" fill="none" stroke="${lineC}" stroke-width="2" stroke-linejoin="miter"/>`;
+  linePts.forEach(p=>{s+=`<circle cx="${p.x}" cy="${p.y}" r="2.5" fill="white" stroke="${lineC}" stroke-width="1.5"/>`;});
+  s+=_axisBottom(pL,pT,uw,uH,axis);return s+'</svg>';
+}
+
+// COMBO: COLUMNAS AGRUPADAS + LÍNEAS
+function svgComboGrouped(w,h,uid){
+  const {acc,grid,axis,txt,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';const lineC='#a3223e';
+  const vals=[[55,42],[70,58],[48,62],[72,45]];
+  const line=[72,80,65,88];const maxV=80;
+  const pL=6,pR=6,pT=16,pB=16,uw=w-pL-pR,uH=h-pT-pB;
+  const n=vals.length,grpW=Math.floor(uw/n);const bw=Math.max(3,Math.floor(grpW*0.35));const gap2=2;
+  const scaleH=v=>Math.max(2,Math.round(v/maxV*uH*0.9));const scaleY=v=>pT+Math.round((1-v/maxV)*uH*0.9);
+  const cx=i=>pL+i*grpW+grpW/2;
+  const labels=['T1','T2','T3','T4'];
+  let s=_svgOpen(w,h)+_grid(pL,pT,uw,uH,grid);
+  vals.forEach((v,i)=>{
+    const c=cx(i);const h1=scaleH(v[0]);const h2=scaleH(v[1]);
+    s+=`<rect x="${c-bw-gap2/2}" y="${pT+uH-h1}" width="${bw}" height="${h1}" rx="0" fill="${acc}"/>`;
+    s+=`<rect x="${c+gap2/2}" y="${pT+uH-h2}" width="${bw}" height="${h2}" rx="0" fill="${c2}"/>`;
+    s+=`<text x="${c}" y="${pT+uH+9}" text-anchor="middle" dominant-baseline="central" font-size="6.5" fill="${txt}" font-family="Segoe UI">${labels[i]}</text>`;
+  });
+  const linePts=line.map((v,i)=>({x:cx(i),y:scaleY(v)}));
+  s+=`<polyline points="${linePts.map(p=>`${p.x},${p.y}`).join(' ')}" fill="none" stroke="${lineC}" stroke-width="2" stroke-linejoin="miter"/>`;
+  linePts.forEach(p=>{s+=`<circle cx="${p.x}" cy="${p.y}" r="2.5" fill="white" stroke="${lineC}" stroke-width="1.5"/>`;});
+  s+=_axisBottom(pL,pT,uw,uH,axis);return s+'</svg>';
+}
+
+// CINTAS (RIBBON)
+function svgRibbon(w,h){
+  const {acc,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';const c3=dark?'#3a3a58':'#9898cc';
+  const axis=dark?'#3a3a55':'#d0d0d0';const txt=dark?'#6a6a90':'#888';
+  const pL=6,pR=6,pT=8,pB=16,uw=w-pL-pR,uH=h-pT-pB;
+  const periods=4;const bw=Math.floor(uw/periods);
+  const data=[[50,30,20],[42,38,20],[60,22,18],[35,45,20]];
+  const labels=['T1','T2','T3','T4'];const maxV=100;
+  // Posiciones de ribbons por categoría a través del tiempo
+  const ranks=[[0,0,1,2],[1,1,0,0],[2,2,2,1]]; // rank de cada categoría en cada periodo
+  const colors=[acc,c2,c3];
+  let s=_svgOpen(w,h);
+  // Barras apiladas por periodo
+  data.forEach((d,i)=>{
+    const x=pL+i*bw+2;const bwi=bw-4;
+    let yOff=pT+uH;
+    [0,1,2].forEach(ci=>{
+      const bhi=Math.round(d[ci]/maxV*uH*0.9);
+      yOff-=bhi;
+      s+=`<rect x="${x}" y="${yOff}" width="${bwi}" height="${bhi}" rx="0" fill="${colors[ci]}" opacity="0.8"/>`;
+    });
+    s+=`<text x="${x+bwi/2}" y="${pT+uH+9}" text-anchor="middle" dominant-baseline="central" font-size="6.5" fill="${txt}" font-family="Segoe UI">${labels[i]}</text>`;
+  });
+  // Líneas de conexión (ribbon effect) entre periodos
+  [0,1,2].forEach(ci=>{
+    for(let i=0;i<periods-1;i++){
+      const x1=pL+i*bw+bw-2;const x2=pL+(i+1)*bw+2;
+      let cum1=0,cum2=0;
+      for(let j=0;j<ci;j++){cum1+=data[i][j];cum2+=data[i+1][j];}
+      const y1top=pT+uH-Math.round((cum1+data[i][ci])/maxV*uH*0.9);
+      const y1bot=pT+uH-Math.round(cum1/maxV*uH*0.9);
+      const y2top=pT+uH-Math.round((cum2+data[i+1][ci])/maxV*uH*0.9);
+      const y2bot=pT+uH-Math.round(cum2/maxV*uH*0.9);
+      s+=`<path d="M${x1},${y1top} C${(x1+x2)/2},${y1top} ${(x1+x2)/2},${y2top} ${x2},${y2top} L${x2},${y2bot} C${(x1+x2)/2},${y2bot} ${(x1+x2)/2},${y1bot} ${x1},${y1bot} Z" fill="${colors[ci]}" opacity="0.3"/>`;
+    }
+  });
+  s+=`<line x1="${pL}" y1="${pT+uH}" x2="${pL+uw}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;
+  return s+'</svg>';
+}
+
+// DISPERSIÓN (SCATTER)
+function svgScatter(w,h){
+  const {acc,grid,axis,txt,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';
+  const pL=14,pR=8,pT=8,pB=16,uw=w-pL-pR,uH=h-pT-pB;
+  const pts1=[{x:0.2,y:0.3,r:3},{x:0.45,y:0.65,r:4},{x:0.6,y:0.4,r:3},{x:0.75,y:0.8,r:3.5},{x:0.35,y:0.55,r:2.5},{x:0.85,y:0.6,r:3}];
+  const pts2=[{x:0.3,y:0.8,r:2.5},{x:0.55,y:0.35,r:3},{x:0.7,y:0.55,r:2},{x:0.15,y:0.6,r:3},{x:0.5,y:0.2,r:2.5}];
+  // trend line
+  const trendY1=pT+uH*0.75;const trendY2=pT+uH*0.1;
+  let s=_svgOpen(w,h)+_grid(pL,pT,uw,uH,grid,[0.25,0.5,0.75]);
+  s+=`<line x1="${pL}" y1="${trendY1}" x2="${pL+uw}" y2="${trendY2}" stroke="${acc}" stroke-width="1" stroke-dasharray="3,3" opacity=".4"/>`;
+  pts2.forEach(p=>{s+=`<circle cx="${pL+p.x*uw}" cy="${pT+p.y*uH*0.9}" r="${p.r}" fill="${c2}" opacity="0.7"/>`;});
+  pts1.forEach(p=>{s+=`<circle cx="${pL+p.x*uw}" cy="${pT+p.y*uH*0.9}" r="${p.r}" fill="${acc}" opacity="0.85"/>`;});
+  // ejes
+  s+=_axisBottom(pL,pT,uw,uH,axis);
+  s+=`<line x1="${pL}" y1="${pT}" x2="${pL}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;
+  return s+'</svg>';
+}
+
+// ANILLOS (DONUT)
+function svgDonut(w,h,uid){
+  const {acc,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';const c3=dark?'#3a3a58':'#9898cc';const c4=dark?'#2a2a48':'#b8b8e0';
+  const cx2=w/2,cy2=h/2,R=Math.min(w,h)*0.38,r=R*0.58;
+  const slices=[{pct:0.38,c:acc},{pct:0.28,c:c2},{pct:0.20,c:c3},{pct:0.14,c:c4}];
+  let s=_svgOpen(w,h);
+  let startAngle=-Math.PI/2;
+  slices.forEach((sl,i)=>{
+    const end=startAngle+sl.pct*2*Math.PI;
+    const x1=cx2+R*Math.cos(startAngle),y1=cy2+R*Math.sin(startAngle);
+    const x2=cx2+R*Math.cos(end),y2=cy2+R*Math.sin(end);
+    const xi1=cx2+r*Math.cos(end),yi1=cy2+r*Math.sin(end);
+    const xi2=cx2+r*Math.cos(startAngle),yi2=cy2+r*Math.sin(startAngle);
+    const large=sl.pct>0.5?1:0;
+    s+=`<path d="M${x1.toFixed(1)},${y1.toFixed(1)} A${R},${R} 0 ${large},1 ${x2.toFixed(1)},${y2.toFixed(1)} L${xi1.toFixed(1)},${yi1.toFixed(1)} A${r},${r} 0 ${large},0 ${xi2.toFixed(1)},${yi2.toFixed(1)} Z" fill="${sl.c}"/>`;
+    startAngle=end;
+  });
+  // valor central
+  s+=`<text x="${cx2}" y="${cy2}" dominant-baseline="central" text-anchor="middle" font-size="${Math.max(8,Math.min(14,R*0.35))}" font-weight="700" fill="${dark?'#e0e0f0':'#252525'}" font-family="Segoe UI">38%</text>`;
+  return s+'</svg>';
+}
+
+// MAPA DE ÁRBOL (TREEMAP)
+function svgTreemap(w,h){
+  const {acc,dark}=cc();
+  const c2=dark?'#555575':'#c0c0d8';const c3=dark?'#3a3a58':'#9898cc';const c4=dark?'#2a2a48':'#b8b8e0';
+  const ink=dark?'#e0e0f0':'#fff';const mu=dark?'#c0c0e0':'rgba(255,255,255,0.7)';
+  const gap=2;
+  const tiles=[
+    {x:0,y:0,w:0.55,h:0.6,c:acc,l:'Producto A',v:'42%'},
+    {x:0.55+gap/w,y:0,w:0.45-gap/w,h:0.35,c:c2,l:'Producto B',v:'28%'},
+    {x:0.55+gap/w,y:0.35+gap/h,w:0.45-gap/w,h:0.25-gap/h,c:c3,l:'Producto C',v:'18%'},
+    {x:0,y:0.6+gap/h,w:0.35,h:0.4-gap/h,c:c3,l:'D',v:'8%'},
+    {x:0.35+gap/w,y:0.6+gap/h,w:0.2,h:0.4-gap/h,c:c4,l:'E',v:'4%'},
+    {x:0.55+gap/w*2,y:0.6+gap/h,w:0.45-gap/w*2,h:0.4-gap/h,c:c4,l:'F',v:''},
+  ];
+  let s=_svgOpen(w,h);
+  tiles.forEach(t=>{
+    const tx=t.x*w,ty=t.y*h,tw=t.w*w-gap,th=t.h*h-gap;
+    s+=`<rect x="${tx}" y="${ty}" width="${tw}" height="${th}" rx="0" fill="${t.c}"/>`;
+    if(tw>20&&th>14){
+      s+=`<text x="${tx+6}" y="${ty+th/2-4}" font-size="${Math.max(7,Math.min(11,Math.min(tw,th)*0.2))}" font-weight="700" fill="${ink}" font-family="Segoe UI">${t.l}</text>`;
+      if(t.v&&th>22)s+=`<text x="${tx+6}" y="${ty+th/2+8}" font-size="${Math.max(6,Math.min(9,Math.min(tw,th)*0.16))}" fill="${mu}" font-family="Segoe UI">${t.v}</text>`;
+    }
+  });
+  return s+'</svg>';
+}
+
 function renderChart(type,w,h,uid){
   if(w<10||h<10)return'';
-  const map={bar:()=>svgBar(w,h),line:()=>svgLine(w,h,uid),table:()=>svgTable(w,h),waterfall:()=>svgWaterfall(w,h),funnel:()=>svgFunnel(w,h),area:()=>svgArea(w,h,uid),matrix:()=>svgMatrix(w,h),column:()=>svgColumn(w,h),lollypop:()=>svgLollypop(w,h),dumbbell:()=>svgDumbbell(w,h),slope:()=>svgSlope(w,h)};
-  return (map[type]||map.bar)();
+  const map={
+    'bar':()=>svgBar(w,h),
+    'bar-stacked':()=>svgBarStacked(w,h),
+    'bar-grouped':()=>svgBarGrouped(w,h),
+    'bar-100':()=>svgBar100(w,h),
+    'column':()=>svgColumn(w,h),
+    'column-stacked':()=>svgColumnStacked(w,h),
+    'column-grouped':()=>svgColumnGrouped(w,h),
+    'column-100':()=>svgColumn100(w,h),
+    'line':()=>svgLine(w,h,uid),
+    'area':()=>svgArea(w,h,uid),
+    'area-stacked':()=>svgAreaStacked(w,h,uid),
+    'area-100':()=>svgArea100(w,h,uid),
+    'combo-stacked':()=>svgComboStacked(w,h,uid),
+    'combo-grouped':()=>svgComboGrouped(w,h,uid),
+    'ribbon':()=>svgRibbon(w,h),
+    'waterfall':()=>svgWaterfall(w,h),
+    'funnel':()=>svgFunnel(w,h),
+    'scatter':()=>svgScatter(w,h),
+    'donut':()=>svgDonut(w,h,uid),
+    'treemap':()=>svgTreemap(w,h),
+    'table':()=>svgTable(w,h),
+    'matrix':()=>svgMatrix(w,h),
+    'lollypop':()=>svgLollypop(w,h),
+    'dumbbell':()=>svgDumbbell(w,h),
+    'slope':()=>svgSlope(w,h),
+  };
+  return (map[type]||map['bar'])();
 }
 
 // ═══════════════════════════════════════════
 // FIX: PATTERN OVERLAY — colores theme-aware
 // ═══════════════════════════════════════════
 let _lpk='';
+// ── GESTALT OVERLAYS ────────────────────────────────────────────────────────
+function buildGestaltSVG(principle,L,sz){
+  const {cx,cw,ys,hdrH,ftH,kpiH,mainH,secH,m,gap}=L;
+  const B={
+    hdr:  ys.hdr !==undefined?{x:cx,y:ys.hdr, w:cw,h:hdrH} :null,
+    ftop: ys.ftop!==undefined?{x:cx,y:ys.ftop,w:cw,h:ftH}  :null,
+    kpi:  ys.kpi !==undefined?{x:cx,y:ys.kpi, w:cw,h:kpiH} :null,
+    main: ys.main!==undefined?{x:cx,y:ys.main,w:cw,h:mainH}:null,
+    sec:  ys.sec !==undefined?{x:cx,y:ys.sec, w:cw,h:secH} :null,
+  };
+  const allBlocks=Object.values(B).filter(Boolean);
+  const tfs=Math.max(10,Math.min(13,sz.w*.009));
+  const open=`<svg style="position:absolute;top:0;left:0;width:${sz.w}px;height:${sz.h}px;pointer-events:none" viewBox="0 0 ${sz.w} ${sz.h}" xmlns="http://www.w3.org/2000/svg">`;
+
+  // helpers
+  const lbl=(x,y,txt,col,anchor='start')=>{
+    const bw=Math.max(50,txt.length*5.5+14);
+    const bh=tfs+8;
+    const bx=anchor==='end'?x-bw:anchor==='middle'?x-bw/2:x;
+    return`<rect x="${bx}" y="${y-bh/2}" width="${bw}" height="${bh}" rx="${bh/2}" fill="${col}" opacity=".92"/>
+<text x="${bx+bw/2}" y="${y}" dominant-baseline="central" text-anchor="middle" font-size="${tfs}" font-weight="700" fill="white" font-family="Segoe UI">${txt}</text>`;
+  };
+
+  // ── 1. PROXIMIDAD ────────────────────────────────────────────────────────
+  // Visualiza los gaps entre bloques como líneas con medida
+  // Verde si gap consistente, naranja si hay inconsistencia
+  if(principle==='proximidad'){
+    let s=open;
+    // gaps entre bloques consecutivos
+    const ordered=allBlocks.slice().sort((a,b)=>a.y-b.y);
+    const gaps=[];
+    for(let i=0;i<ordered.length-1;i++){
+      const top=ordered[i],bot=ordered[i+1];
+      const gapPx=bot.y-(top.y+top.h);
+      gaps.push(gapPx);
+    }
+    const consistent=gaps.length>0&&gaps.every(g=>Math.abs(g-gaps[0])<=2);
+    const gapCol=consistent?'#3FBF7F':'#f97316';
+
+    // línea de margen superior
+    if(m.t>0){
+      s+=`<line x1="${cx}" y1="0" x2="${cx+cw}" y2="0" stroke="#3FBF7F" stroke-width="1" opacity=".4"/>`;
+      s+=`<line x1="${cx}" y1="${m.t}" x2="${cx+cw}" y2="${m.t}" stroke="#3FBF7F" stroke-width="1.2" stroke-dasharray="4,3"/>`;
+      s+=lbl(cx+cw/2,m.t/2,`Margen ${m.t}px`,'#3FBF7F','middle');
+    }
+    // gaps entre bloques
+    for(let i=0;i<ordered.length-1;i++){
+      const top=ordered[i],bot=ordered[i+1];
+      const y1=top.y+top.h, y2=bot.y;
+      const gapPx=y2-y1;
+      const midY=(y1+y2)/2;
+      // zona del gap coloreada
+      s+=`<rect x="${cx}" y="${y1}" width="${cw}" height="${gapPx}" fill="${gapCol}" opacity=".12"/>`;
+      // líneas de delimitación
+      s+=`<line x1="${cx}" y1="${y1}" x2="${cx+cw}" y2="${y1}" stroke="${gapCol}" stroke-width="1.5" stroke-dasharray="5,3"/>`;
+      s+=`<line x1="${cx}" y1="${y2}" x2="${cx+cw}" y2="${y2}" stroke="${gapCol}" stroke-width="1.5" stroke-dasharray="5,3"/>`;
+      // cota con flecha
+      const ax=cx+cw*0.85;
+      s+=`<line x1="${ax}" y1="${y1+2}" x2="${ax}" y2="${midY-tfs/2-6}" stroke="${gapCol}" stroke-width="1" marker-end="url(#gArrow)"/>`;
+      s+=`<line x1="${ax}" y1="${y2-2}" x2="${ax}" y2="${midY+tfs/2+6}" stroke="${gapCol}" stroke-width="1" marker-start="url(#gArrowRev)"/>`;
+      s+=lbl(ax,midY,`${Math.round(gapPx)}px`,gapCol,'end');
+    }
+    // advertencia si inconsistente
+    if(!consistent&&gaps.length>1){
+      s+=lbl(cx+cw/2,m.t+20,'⚠ Gaps inconsistentes — rompe la proximidad','#f97316','middle');
+    }
+    s+=`<defs>
+      <marker id="gArrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 Z" fill="${gapCol}"/></marker>
+      <marker id="gArrowRev" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse"><path d="M0,0 L0,6 L6,3 Z" fill="${gapCol}"/></marker>
+    </defs>`;
+    return s+'</svg>';
+  }
+
+  // ── 2. JERARQUÍA ─────────────────────────────────────────────────────────
+  // Numera los bloques por nivel, detecta inversiones
+  if(principle==='jerarquia'){
+    let s=open;
+    const levels=[
+      {b:B.hdr,  n:'①',lbl:'Header · contexto',     w:3,col:'#3FBF7F'},
+      {b:B.ftop, n:'②',lbl:'Filtros · control',      w:2,col:'#3FBF7F'},
+      {b:B.kpi,  n:'②',lbl:'KPIs · métricas clave',  w:2.5,col:'#4DAFD1'},
+      {b:B.main, n:'③',lbl:'Zona A · principal',      w:2,col:'#7a7bff'},
+      {b:B.sec,  n:'④',lbl:'Zona B · detalle',        w:1.5,col:'#E88ACF'},
+    ].filter(l=>l.b);
+    // detectar inversión: sec más alto que main
+    const mainH2=B.main?.h||0, secH2=B.sec?.h||0;
+    const inverted=secH2>mainH2*1.1;
+    levels.forEach(({b,n,lbl:lbTxt,w,col})=>{
+      s+=`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="6" fill="${col}" fill-opacity=".1" stroke="${col}" stroke-width="${w}" stroke-opacity=".7"/>`;
+      // badge número en esquina sup-izq
+      const r=tfs+8;
+      s+=`<circle cx="${b.x+r/2+8}" cy="${b.y+r/2+8}" r="${r/2}" fill="${col}"/>`;
+      s+=`<text x="${b.x+r/2+8}" y="${b.y+r/2+8}" dominant-baseline="central" text-anchor="middle" font-size="${tfs-1}" font-weight="800" fill="white" font-family="Segoe UI">${n}</text>`;
+      s+=`<text x="${b.x+r+14}" y="${b.y+r/2+8}" dominant-baseline="central" font-size="${tfs}" font-weight="700" fill="${col}" font-family="Segoe UI">${lbTxt}</text>`;
+    });
+    if(inverted){
+      const iy=B.sec.y+B.sec.h/2;
+      s+=lbl(cx+cw/2,iy,'⚠ Jerarquía invertida: Zona B supera a Zona A','#f97316','middle');
+    }
+    return s+'</svg>';
+  }
+
+  // ── 3. SEMEJANZA ─────────────────────────────────────────────────────────
+  // Colorea los grupos por tipo visual — muestra qué percibe el ojo como familia
+  if(principle==='semejanza'){
+    let s=open;
+    const groups=[
+      {b:B.hdr,  col:'#4DAFD1',lbl:'Zona de contexto'},
+      {b:B.ftop, col:'#F2C66D',lbl:'Zona de control'},
+      {b:B.kpi,  col:'#3FBF7F',lbl:'Zona de métricas'},
+      {b:B.main, col:'#7a7bff',lbl:'Zona principal'},
+      {b:B.sec,  col:'#E88ACF',lbl:'Zona de detalle'},
+    ].filter(g=>g.b);
+    groups.forEach(({b,col,lbl:lbTxt})=>{
+      // fill semitransparente
+      s+=`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="8" fill="${col}" fill-opacity=".18"/>`;
+      s+=`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="8" fill="none" stroke="${col}" stroke-width="2" stroke-opacity=".6"/>`;
+      // etiqueta centrada
+      s+=lbl(b.x+b.w/2,b.y+b.h/2,lbTxt,col,'middle');
+    });
+    // leyenda inferior
+    const ly=sz.h-m.b-10;
+    let lx=cx;
+    groups.forEach(({col,lbl:lbTxt})=>{
+      s+=`<circle cx="${lx+6}" cy="${ly}" r="4" fill="${col}"/>`;
+      s+=`<text x="${lx+14}" y="${ly}" dominant-baseline="central" font-size="${tfs-1}" fill="${col}" font-family="Segoe UI" font-weight="600">${lbTxt}</text>`;
+      lx+=lbTxt.length*5.5+24;
+    });
+    return s+'</svg>';
+  }
+
+  // ── 4. CIERRE ────────────────────────────────────────────────────────────
+  // Muestra el espacio negativo: márgenes y gaps como áreas medidas
+  if(principle==='cierre'){
+    let s=open;
+    const totalArea=sz.w*sz.h;
+    const contentArea=allBlocks.reduce((acc,b)=>acc+b.w*b.h,0);
+    const negArea=totalArea-contentArea;
+    const negPct=Math.round(negArea/totalArea*100);
+    const col=negPct<15?'#f97316':negPct>45?'#E27D73':'#3FBF7F';
+    // márgenes como rectángulos semitransparentes
+    const margins=[
+      {x:0,    y:0,    w:sz.w,     h:m.t,       lbl:`Margen top ${m.t}px`},
+      {x:0,    y:sz.h-m.b,w:sz.w, h:m.b,        lbl:`Margen bottom ${m.b}px`},
+      {x:0,    y:m.t,  w:m.l,      h:sz.h-m.t-m.b, lbl:`${m.l}px`},
+      {x:sz.w-m.r,y:m.t,w:m.r,    h:sz.h-m.t-m.b, lbl:`${m.r}px`},
+    ].filter(mg=>mg.h>2&&mg.w>2);
+    margins.forEach(mg=>{
+      s+=`<rect x="${mg.x}" y="${mg.y}" width="${mg.w}" height="${mg.h}" fill="${col}" fill-opacity=".2"/>`;
+      if(mg.w>20&&mg.h>12)s+=`<text x="${mg.x+mg.w/2}" y="${mg.y+mg.h/2}" dominant-baseline="central" text-anchor="middle" font-size="${Math.max(8,tfs-1)}" font-weight="700" fill="${col}" font-family="Segoe UI">${mg.lbl}</text>`;
+    });
+    // gaps entre bloques
+    const ordered2=allBlocks.slice().sort((a,b)=>a.y-b.y);
+    for(let i=0;i<ordered2.length-1;i++){
+      const top=ordered2[i],bot=ordered2[i+1];
+      const gapY=top.y+top.h, gapH=bot.y-gapY;
+      if(gapH>1){
+        s+=`<rect x="${cx}" y="${gapY}" width="${cw}" height="${gapH}" fill="${col}" fill-opacity=".25"/>`;
+        s+=`<text x="${cx+cw/2}" y="${gapY+gapH/2}" dominant-baseline="central" text-anchor="middle" font-size="${tfs-1}" font-weight="700" fill="${col}" font-family="Segoe UI">gap ${Math.round(gapH)}px</text>`;
+      }
+    }
+    // badge resumen
+    const badgeCol=negPct<15?'#f97316':negPct>45?'#E27D73':'#3FBF7F';
+    const badgeTxt=negPct<15?`⚠ Espacio negativo escaso: ${negPct}%`:negPct>45?`⚠ Espacio negativo excesivo: ${negPct}%`:`✓ Espacio negativo correcto: ${negPct}%`;
+    s+=lbl(cx+cw/2,m.t+20,badgeTxt,badgeCol,'middle');
+    return s+'</svg>';
+  }
+
+  // ── 5. FIGURA-FONDO ──────────────────────────────────────────────────────
+  // Muestra qué zonas destacan (figura) y cuáles se funden con el fondo
+  if(principle==='figura'){
+    let s=open;
+    // el canvas entero se oscurece — los bloques de contenido se "recortan" como figura
+    s+=`<rect x="0" y="0" width="${sz.w}" height="${sz.h}" fill="rgba(0,0,0,0.35)"/>`;
+    // cada bloque aparece "iluminado" — simula el efecto figura-fondo
+    const blockColors=[
+      {b:B.hdr,  col:'#fff',op:.12,label:'Header · figura primaria'},
+      {b:B.ftop, col:'#fff',op:.1, label:'Filtros · figura secundaria'},
+      {b:B.kpi,  col:'#7a7bff',op:.22,label:'KPIs · figura de atención'},
+      {b:B.main, col:'#fff',op:.14,label:'Zona A · figura principal'},
+      {b:B.sec,  col:'#fff',op:.08,label:'Zona B · figura de apoyo'},
+    ].filter(bc=>bc.b);
+    blockColors.forEach(({b,col,op,label})=>{
+      s+=`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="${S.st.br}" fill="${col}" fill-opacity="${op}"/>`;
+      s+=`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="${S.st.br}" fill="none" stroke="${col}" stroke-width="1.5" stroke-opacity=".5"/>`;
+      s+=`<text x="${b.x+12}" y="${b.y+12+tfs/2}" font-size="${tfs}" font-weight="700" fill="white" fill-opacity=".9" font-family="Segoe UI">${label}</text>`;
+    });
+    // fondo: etiqueta sobre áreas vacías
+    const fondoTxt='← Fondo — sin jerarquía visual';
+    s+=`<text x="${m.l/2}" y="${sz.h/2}" dominant-baseline="central" text-anchor="middle" font-size="${tfs-1}" fill="rgba(255,255,255,.4)" font-family="Segoe UI" transform="rotate(-90,${m.l/2},${sz.h/2})">${fondoTxt}</text>`;
+    return s+'</svg>';
+  }
+
+  return'';
+}
+
 function updatePatternOverlay(pat,L){
+  if(S.gestalt){updateGestaltOverlay(L);return;}
   const ov=document.getElementById('pat-overlay');if(!ov)return;
   const sz=L.sz;
-  ov.style.cssText=`position:absolute;top:0;left:0;width:${sz.w}px;height:${sz.h}px;pointer-events:none;z-index:30;overflow:visible`;
+  ov.style.cssText=`position:absolute;top:0;left:0;width:${sz.w}px;height:${sz.h}px;pointer-events:none;z-index:30`;
   if(pat==='none'){ov.innerHTML='';return;}
-  ov.innerHTML=buildPatternSVG(pat,L,sz);
+  const heatSVG=buildHeatSVG(pat,L,sz);
+  const badgeHTML=buildBadgeHTML(pat,L,sz);
+  ov.innerHTML=heatSVG+badgeHTML;
 }
-function buildPatternSVG(pat,L,sz){
-  const m=L.m;
-  const x1=L.cx+18,x2=L.cx+L.cw-18;
-  const y1=m.t+18,y2=sz.h-m.b-18,yMid=(y1+y2)*.5,xMid=L.cx+L.cw*.56;
-  // FIX: colores dinámicos según tema
-  const isDark=S.theme==='dark';
-  const ink=isDark?'rgba(200,200,255,0.9)':'rgba(20,20,40,0.85)';
-  const acZ='#7a7bff';
-  const acF='#7a7bff';
-  const tfs=Math.max(9,Math.min(13,sz.w*.009));
-  const defs=`<defs>
-    <marker id="arZ" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 Z" fill="${ink}" opacity=".9"/></marker>
-    <marker id="arZb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 Z" fill="${acZ}" opacity=".95"/></marker>
-    <marker id="arF" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 Z" fill="${ink}" opacity=".9"/></marker>
-    <marker id="arFb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 Z" fill="${acF}" opacity=".95"/></marker>
-    <filter id="glow"><feGaussianBlur stdDeviation="2.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-  </defs>`;
+
+// ── MANCHAS DE CALOR (SVG puro, sin texto) ──────────────────────────────────
+function buildHeatSVG(pat,L,sz){
+  const {cx,cw,ys,hdrH,ftH,kpiH,mainH,secH,m,gap}=L;
+  const orange='#f97316';
+
+  const defs=`<defs><filter id="pbl" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="22"/></filter></defs>`;
+
+  const zone=(x,y,w,h,intensity,del)=>{
+    if(h<=2||w<=2)return'';
+    const foB=(intensity*.12).toFixed(2);
+    const fo =(intensity*.18).toFixed(2);
+    return`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${orange}" fill-opacity="${foB}" filter="url(#pbl)" class="pat-zone" style="--delay:${del}s;--dur:.55s"/>
+<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${orange}" fill-opacity="${fo}" class="pat-zone" style="--delay:${del}s;--dur:.55s"/>`;
+  };
+
+  const B={
+    hdr:  ys.hdr !==undefined?{x:cx,y:ys.hdr, w:cw,h:hdrH} :null,
+    kpi:  ys.kpi !==undefined?{x:cx,y:ys.kpi, w:cw,h:kpiH} :null,
+    main: ys.main!==undefined?{x:cx,y:ys.main,w:cw,h:mainH}:null,
+    sec:  ys.sec !==undefined?{x:cx,y:ys.sec, w:cw,h:secH} :null,
+  };
+
+  let s=`<svg style="position:absolute;top:0;left:0;width:${sz.w}px;height:${sz.h}px;pointer-events:none" viewBox="0 0 ${sz.w} ${sz.h}" xmlns="http://www.w3.org/2000/svg">${defs}`;
+
   if(pat==='Z'){
-    const len1=x2-x1,len2=Math.hypot(x2-x1,y2-y1),len3=x2-x1;
-    return`<svg width="${sz.w}" height="${sz.h}" xmlns="http://www.w3.org/2000/svg">${defs}
-      <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y1}" stroke="${ink}" stroke-width="2.5" stroke-linecap="round" opacity=".85" marker-end="url(#arZ)" class="pat-line" style="--len:${len1};stroke-dasharray:${len1};--delay:0.1s;--dur:0.55s"/>
-      <line x1="${x2}" y1="${y1}" x2="${x1}" y2="${y2}" stroke="${ink}" stroke-width="1.6" stroke-linecap="round" opacity="${isDark?.4:.35}" stroke-dasharray="8,5" class="pat-line" style="--len:${Math.round(len2*2)};stroke-dasharray:${Math.round(len2*2)};--delay:0.72s;--dur:0.42s"/>
-      <line x1="${x1}" y1="${y2}" x2="${x2}" y2="${y2}" stroke="${acZ}" stroke-width="2.5" stroke-linecap="round" opacity=".85" marker-end="url(#arZb)" class="pat-line" style="--len:${len3};stroke-dasharray:${len3};--delay:1.22s;--dur:0.55s"/>
-      <circle cx="${x1}" cy="${y1}" r="7" fill="${ink}" opacity="${isDark?.2:.12}" class="pat-dot" style="--delay:0.05s"/>
-      <circle cx="${x1}" cy="${y1}" r="5" fill="${ink}" opacity="${isDark?.95:.8}" class="pat-dot" style="--delay:0.05s" filter="url(#glow)"/>
-      <circle cx="${x2}" cy="${y1}" r="4" fill="${ink}" opacity="${isDark?.65:.5}" class="pat-dot" style="--delay:0.7s"/>
-      <circle cx="${x1}" cy="${y2}" r="4" fill="${ink}" opacity="${isDark?.65:.5}" class="pat-dot" style="--delay:1.2s"/>
-      <circle cx="${x2}" cy="${y2}" r="7" fill="${acZ}" opacity="${isDark?.25:.18}" class="pat-dot" style="--delay:1.6s"/>
-      <circle cx="${x2}" cy="${y2}" r="5" fill="${acZ}" opacity=".95" class="pat-dot" style="--delay:1.6s" filter="url(#glow)"/>
-      <text x="${x1+10}" y="${y1-10}" font-size="${tfs}" font-weight="700" fill="${ink}" font-family="Segoe UI" class="pat-lbl" style="--delay:0.15s">① Inicio · KPIs</text>
-      <text x="${x2-10}" y="${y1-10}" font-size="${tfs}" font-weight="700" fill="${ink}" font-family="Segoe UI" text-anchor="end" class="pat-lbl" style="--delay:0.75s">②</text>
-      <text x="${x1+10}" y="${y2+tfs+6}" font-size="${tfs}" font-weight="700" fill="${ink}" font-family="Segoe UI" class="pat-lbl" style="--delay:1.3s">③</text>
-      <text x="${x2-10}" y="${y2+tfs+6}" font-size="${tfs+1}" font-weight="700" fill="${acZ}" font-family="Segoe UI" text-anchor="end" class="pat-lbl" style="--delay:1.65s">④ CTA / Acción</text>
-    </svg>`;
+    const z1y=B.hdr?.y??B.kpi?.y??m.t;
+    const z1h=(hdrH||0)+(hdrH&&kpiH?gap:0)+(kpiH||0);
+    if(z1h>0) s+=zone(cx,z1y,cw,z1h,1,'.05');
+    if(B.main) s+=zone(B.main.x,B.main.y,Math.round(B.main.w*.55),B.main.h,.38,'.3');
+    if(B.sec)  s+=zone(B.sec.x+Math.round(B.sec.w*.35),B.sec.y,Math.round(B.sec.w*.65),B.sec.h,.88,'.55');
+    else if(B.main) s+=zone(B.main.x+Math.round(B.main.w*.45),B.main.y+Math.round(B.main.h*.55),Math.round(B.main.w*.55),Math.round(B.main.h*.4),.82,'.55');
   }
-  if(pat==='F'){
-    const lenH=x2-x1,lenV=y2-y1,lenM=xMid-x1,y3=y1+(y2-y1)*.72;
-    return`<svg width="${sz.w}" height="${sz.h}" xmlns="http://www.w3.org/2000/svg">${defs}
-      <line x1="${x1}" y1="${y1}" x2="${x1}" y2="${y2}" stroke="${ink}" stroke-width="1.2" opacity="${isDark?.3:.2}" stroke-dasharray="6,4" class="pat-line" style="--len:${Math.round(lenV*2)};stroke-dasharray:${Math.round(lenV*2)};--delay:0.08s;--dur:0.4s"/>
-      <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y1}" stroke="${ink}" stroke-width="2.5" stroke-linecap="round" opacity=".85" marker-end="url(#arF)" class="pat-line" style="--len:${lenH};stroke-dasharray:${lenH};--delay:0.12s;--dur:0.55s"/>
-      <line x1="${x1}" y1="${yMid}" x2="${xMid}" y2="${yMid}" stroke="${acF}" stroke-width="2.2" stroke-linecap="round" opacity=".85" marker-end="url(#arFb)" class="pat-line" style="--len:${lenM};stroke-dasharray:${lenM};--delay:0.72s;--dur:0.42s"/>
-      <line x1="${x1}" y1="${y3}" x2="${x1+lenM*.62}" y2="${y3}" stroke="${ink}" stroke-width="1.7" stroke-linecap="round" opacity="${isDark?.55:.45}" marker-end="url(#arF)" class="pat-line" style="--len:${Math.round(lenM*.62)};stroke-dasharray:${Math.round(lenM*.62)};--delay:1.2s;--dur:0.3s"/>
-      <circle cx="${x1}" cy="${y1}" r="7" fill="${ink}" opacity="${isDark?.2:.12}" class="pat-dot" style="--delay:0.05s"/>
-      <circle cx="${x1}" cy="${y1}" r="5" fill="${ink}" opacity="${isDark?.95:.8}" class="pat-dot" style="--delay:0.05s" filter="url(#glow)"/>
-      <circle cx="${x1}" cy="${yMid}" r="4" fill="${acF}" opacity="${isDark?.75:.6}" class="pat-dot" style="--delay:0.72s"/>
-      <circle cx="${x1}" cy="${y3}" r="3.5" fill="${ink}" opacity="${isDark?.55:.4}" class="pat-dot" style="--delay:1.18s"/>
-      <text x="${x1+10}" y="${y1-10}" font-size="${tfs}" font-weight="700" fill="${ink}" font-family="Segoe UI" class="pat-lbl" style="--delay:0.2s">① Escaneo completo</text>
-      <text x="${x1+10}" y="${yMid-9}" font-size="${tfs}" font-weight="700" fill="${acF}" font-family="Segoe UI" class="pat-lbl" style="--delay:0.78s">② Lectura secundaria</text>
-      <text x="${x1+10}" y="${y3-9}" font-size="${tfs}" font-weight="700" fill="${ink}" opacity="${isDark?.75:.6}" font-family="Segoe UI" class="pat-lbl" style="--delay:1.24s">③ Detalle</text>
-    </svg>`;
-  }return'';
+  else if(pat==='F'){
+    const z1y=B.hdr?.y??B.kpi?.y??m.t;
+    const z1h=(hdrH||0)+(ftH?ftH+gap:0)+(kpiH?kpiH+gap:0);
+    if(z1h>0) s+=zone(cx,z1y,cw,Math.max(0,z1h-gap),1,'.05');
+    if(B.main) s+=zone(B.main.x,B.main.y,Math.round(B.main.w*.65),B.main.h,.52,'.3');
+    if(B.sec)  s+=zone(B.sec.x,B.sec.y,Math.round(B.sec.w*.38),B.sec.h,.26,'.55');
+  }
+  else if(pat==='layer-cake'){
+    const layers=[];
+    if(B.hdr)  layers.push({...B.hdr, i:1});
+    if(B.kpi)  layers.push({...B.kpi, i:.72});
+    if(B.main) layers.push({...B.main,i:.38});
+    if(B.sec)  layers.push({...B.sec, i:.16});
+    if(layers.length===0&&B.main){
+      [1,.65,.32,.14].forEach((intensity,idx)=>{
+        const bH=Math.round(B.main.h/4);
+        const fy=B.main.y+idx*bH;
+        const fh=idx===3?B.main.h-3*bH:bH;
+        layers.push({x:B.main.x,y:fy,w:B.main.w,h:fh,i:intensity});
+      });
+    }
+    const dels=['.05','.22','.4','.58'];
+    layers.forEach((l,i)=>{ if(l.h>0) s+=zone(l.x,l.y,l.w,l.h,l.i,dels[i]||'.6'); });
+  }
+
+  return s+'</svg>';
+}
+
+// ── BADGES HTML (div reales, tipografía nativa, ancho automático) ────────────
+function buildBadgeHTML(pat,L,sz){
+  const {cx,cw,ys,hdrH,ftH,kpiH,mainH,secH,m,gap}=L;
+  const B={
+    hdr:  ys.hdr !==undefined?{x:cx,y:ys.hdr, w:cw,h:hdrH} :null,
+    kpi:  ys.kpi !==undefined?{x:cx,y:ys.kpi, w:cw,h:kpiH} :null,
+    main: ys.main!==undefined?{x:cx,y:ys.main,w:cw,h:mainH}:null,
+    sec:  ys.sec !==undefined?{x:cx,y:ys.sec, w:cw,h:secH} :null,
+  };
+  const pad=12;
+  // estilo base de cada badge
+  const bs=`position:absolute;display:flex;align-items:center;gap:6px;background:#f97316;border-radius:999px;padding:0 12px 0 4px;height:28px;box-shadow:0 2px 8px rgba(249,115,22,.35);pointer-events:none`;
+  // círculo del número
+  const cs=`width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white;font-family:'Segoe UI',sans-serif;flex-shrink:0`;
+  // texto del label
+  const ts=`font-size:12px;font-weight:700;color:white;font-family:'Segoe UI',sans-serif;white-space:nowrap`;
+
+  const mkBadge=(x,y,num,lbl,del)=>
+    `<div style="${bs};left:${x+pad}px;top:${y+pad}px;animation:fadePat .3s ease ${parseFloat(del)+.12}s both">
+      <div style="${cs}">${num}</div>
+      <span style="${ts}">${lbl}</span>
+    </div>`;
+
+  let html='';
+
+  if(pat==='Z'){
+    const z1y=B.hdr?.y??B.kpi?.y??m.t;
+    const z1h=(hdrH||0)+(hdrH&&kpiH?gap:0)+(kpiH||0);
+    if(z1h>0) html+=mkBadge(cx,z1y,'1','Alta atención','.05');
+    if(B.main) html+=mkBadge(B.main.x,B.main.y,'2','Media','.3');
+    if(B.sec)  html+=mkBadge(B.sec.x+Math.round(B.sec.w*.35),B.sec.y,'4','CTA · Acción','.55');
+    else if(B.main) html+=mkBadge(B.main.x+Math.round(B.main.w*.45),B.main.y+Math.round(B.main.h*.55),'4','CTA · Acción','.55');
+  }
+  else if(pat==='F'){
+    const z1y=B.hdr?.y??B.kpi?.y??m.t;
+    if((hdrH||0)+(kpiH||0)>0) html+=mkBadge(cx,z1y,'1','Escaneo completo','.05');
+    if(B.main) html+=mkBadge(B.main.x,B.main.y,'2','Lectura secundaria','.3');
+    if(B.sec)  html+=mkBadge(B.sec.x,B.sec.y,'3','Periferia','.55');
+  }
+  else if(pat==='layer-cake'){
+    const layers=[];
+    if(B.hdr)  layers.push({...B.hdr, n:'1',lbl:'Alta atención', del:'.05'});
+    if(B.kpi)  layers.push({...B.kpi, n:'2',lbl:'Atención media',del:'.22'});
+    if(B.main) layers.push({...B.main,n:'3',lbl:'Lectura leve',  del:'.4'});
+    if(B.sec)  layers.push({...B.sec, n:'4',lbl:'Periferia',     del:'.58'});
+    if(layers.length===0&&B.main){
+      [['1','Alta atención','.05'],['2','Atención media','.22'],['3','Lectura leve','.4'],['4','Periferia','.58']].forEach(([n,lbl,del],idx)=>{
+        const bH=Math.round(B.main.h/4);
+        const fy=B.main.y+idx*bH;
+        layers.push({x:B.main.x,y:fy,w:B.main.w,h:idx===3?B.main.h-3*bH:bH,n,lbl,del});
+      });
+    }
+    layers.forEach(l=>{ if(l&&l.h>0) html+=mkBadge(l.x,l.y,l.n,l.lbl,l.del); });
+  }
+
+  return html;
 }
 
 // ═══════════════════════════════════════════
@@ -1756,8 +2905,8 @@ function renderPreview(){
     html+=card(L.cx,L.ys.hdr,L.cw,L.hdrH,`
       <div style="display:flex;align-items:center;height:100%;padding:0 ${hPad}px;gap:14px;font-family:'Segoe UI',sans-serif">
         <div style="flex:1;min-width:0">
-          <div style="font-size:${S.titleSize}px;font-weight:800;color:${ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.3px">${escHtml(dashTitle)}</div>
-          ${dashSubtitle?`<div style="font-size:${S.subtitleSize}px;font-weight:700;color:${ink};opacity:.75;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.1px">${escHtml(dashSubtitle)}</div>`:''}
+          <div style="font-size:${S.titleSize}px;font-weight:${S.titleBold?700:400};font-style:${S.titleItalic?'italic':'normal'};color:${ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.3px">${escHtml(dashTitle)}</div>
+          ${dashSubtitle?`<div style="font-size:${S.subtitleSize}px;font-weight:${S.subtitleBold?600:400};font-style:${S.subtitleItalic?'italic':'normal'};color:${ink};opacity:.75;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.1px">${escHtml(dashSubtitle)}</div>`:''}
           ${dashSub?`<div style="font-size:${S.subSize}px;color:${mu};margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(dashSub)}</div>`:''}
         </div>
         <div style="display:flex;gap:6px;flex-shrink:0">
@@ -1784,7 +2933,7 @@ function renderPreview(){
   if(z.kpi>0&&L.kpiH&&L.ys.kpi!==undefined){
     const kpiW=Math.floor((L.cw-(z.kpi-1)*gap)/z.kpi);
     for(let i=0;i<z.kpi;i++){
-      const kd=KD[i%KD.length];const kx=L.cx+i*(kpiW+gap);
+      const kd=S.kd[i%S.kd.length];const kx=L.cx+i*(kpiW+gap);
       const pad=Math.max(10,Math.round(kpiW*.07));
       const barC=kd.p?'#6bc98c':'#e88080';
       const valFs=Math.min(S.kpiValueSize,Math.round(L.kpiH*.38));
@@ -1824,8 +2973,8 @@ function renderPreview(){
         <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:${padV}px ${padH}px;box-sizing:border-box">
           <div style="display:flex;align-items:center;height:${hdrH}px;flex-shrink:0;margin-bottom:${Math.round(padV*.35)}px">
             <div style="flex:1;min-width:0">
-              <div style="font-size:${hdrFs}px;font-weight:700;color:${ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${VLABELS[vtype]}</div>
-              <div style="font-size:${Math.max(6,hdrFs*.75)}px;color:${mu};margin-top:2px">Análisis Comercial · 2026</div>
+              <div data-role="vtitle" data-k="${k}" style="font-size:${hdrFs}px;font-weight:700;color:${ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:text" title="Doble clic para editar">${escHtml(S.vTitles[k]||VLABELS[vtype])}</div>
+              <div data-role="vsubtitle" data-k="${k}" style="font-size:${Math.max(6,hdrFs*.75)}px;color:${mu};margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:text" title="Doble clic para editar subtítulo">${escHtml(S.vSubtitles[k]||'Análisis Comercial · 2026')}</div>
             </div>
             <div style="width:6px;height:6px;border-radius:50%;background:#7a7bff;margin-left:8px;opacity:.5"></div>
           </div>
@@ -1850,7 +2999,10 @@ function renderPreview(){
         ${(S.vDrill[k]||S.vTooltip[k])?`<div style="position:absolute;bottom:6px;left:8px;display:flex;gap:3px;z-index:4">${S.vDrill[k]?'<span style="padding:1px 6px;background:#ededff;border:.5px solid #c5c5ff;border-radius:20px;font-size:7px;font-weight:700;color:#5a5bcc;font-family:Segoe UI">Drill</span>':''} ${S.vTooltip[k]?'<span style="padding:1px 6px;background:#ededff;border:.5px solid #c5c5ff;border-radius:20px;font-size:7px;font-weight:700;color:#5a5bcc;font-family:Segoe UI">Tooltip</span>':''}</div>`:''}
         <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:${padV}px ${padH}px;box-sizing:border-box">
           <div style="display:flex;align-items:center;height:${hdrH}px;flex-shrink:0;margin-bottom:${Math.round(padV*.35)}px">
-            <div style="font-size:${hdrFs}px;font-weight:700;color:${ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1">${VLABELS[vtype]}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:${hdrFs}px;font-weight:700;color:${ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:text" data-role="vtitle" data-k="${k}" title="Doble clic para editar">${escHtml(S.vTitles[k]||VLABELS[vtype])}</div>
+              ${L.secH>60?`<div data-role="vsubtitle" data-k="${k}" style="font-size:${Math.max(6,hdrFs*.75)}px;color:${mu};margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:text" title="Doble clic para editar subtítulo">${escHtml(S.vSubtitles[k]||'Análisis Comercial · 2026')}</div>`:''}
+            </div>
           </div>
           <div style="flex:1;min-height:0;overflow:hidden">${renderChart(vtype,Math.max(10,chartW),Math.max(10,chartH),uid3)}</div>
         </div>
@@ -1927,11 +3079,50 @@ function renderPreview(){
   }
 
   dp.innerHTML=html;
-  dp.querySelectorAll('.vsl').forEach(el=>{el.addEventListener('click',()=>{const k=el.dataset.k;S.vt[k]=((S.vt[k]||0)+1)%VTYPES.length;renderControls();renderPreview()})});
+  dp.querySelectorAll('.vsl').forEach(el=>{el.addEventListener('click',(e)=>{if(e.target.closest('[data-role="vtitle"],[data-role="vsubtitle"]'))return;const k=el.dataset.k;S.vt[k]=((S.vt[k]||0)+1)%VTYPES.length;renderControls();renderPreview()})});
 
-  const patKey=`${S.pattern}_${Math.round(L.cx)}_${Math.round(L.cw)}_${sz.w}_${sz.h}`;
-  if(patKey!==_lpk){_lpk=patKey;updatePatternOverlay(S.pattern,L);}
-  else{const ov=document.getElementById('pat-overlay');if(ov){ov.style.width=sz.w+'px';ov.style.height=sz.h+'px';}}
+  // Títulos editables — doble clic activa input inline
+  dp.querySelectorAll('[data-role="vtitle"]').forEach(titleEl=>{
+    titleEl.addEventListener('dblclick',e=>{
+      e.stopPropagation();
+      const k=titleEl.dataset.k;
+      const current=S.vTitles[k]||VLABELS[gvt(k)];
+      const fs=titleEl.style.fontSize||'10px';
+      const inp=document.createElement('input');
+      inp.value=current;
+      inp.style.cssText=`width:100%;font-size:${fs};font-weight:700;color:inherit;background:rgba(122,123,255,.08);border:.5px solid #7a7bff;border-radius:3px;padding:1px 4px;font-family:'Segoe UI',sans-serif;outline:none`;
+      titleEl.replaceWith(inp);
+      inp.focus();inp.select();
+      const save=()=>{S.vTitles[k]=inp.value.trim()||'';renderControls();renderPreview();toast(`✓ Título actualizado`,true)};
+      inp.addEventListener('blur',save);
+      inp.addEventListener('keydown',ev=>{if(ev.key==='Enter'){ev.preventDefault();inp.blur()}if(ev.key==='Escape'){inp.removeEventListener('blur',save);renderPreview()}});
+    });
+  });
+
+  // Subtítulos editables — mismo patrón
+  dp.querySelectorAll('[data-role="vsubtitle"]').forEach(subEl=>{
+    subEl.addEventListener('dblclick',e=>{
+      e.stopPropagation();
+      const k=subEl.dataset.k;
+      const current=S.vSubtitles[k]||'Análisis Comercial · 2026';
+      const fs=subEl.style.fontSize||'8px';
+      const inp=document.createElement('input');
+      inp.value=current;
+      inp.style.cssText=`width:100%;font-size:${fs};font-weight:400;color:inherit;background:rgba(122,123,255,.08);border:.5px solid #7a7bff;border-radius:3px;padding:1px 4px;font-family:'Segoe UI',sans-serif;outline:none`;
+      subEl.replaceWith(inp);
+      inp.focus();inp.select();
+      const save=()=>{S.vSubtitles[k]=inp.value.trim()||'';renderPreview();toast(`✓ Subtítulo actualizado`,true)};
+      inp.addEventListener('blur',save);
+      inp.addEventListener('keydown',ev=>{if(ev.key==='Enter'){ev.preventDefault();inp.blur()}if(ev.key==='Escape'){inp.removeEventListener('blur',save);renderPreview()}});
+    });
+  });
+
+  const patKey=`${S.pattern}_${S.gestalt}_${Math.round(L.cx)}_${Math.round(L.cw)}_${sz.w}_${sz.h}`;
+  if(patKey!==_lpk){
+    _lpk=patKey;
+    if(S.gestalt) updateGestaltOverlay(L);
+    else updatePatternOverlay(S.pattern,L);
+  } else{const ov=document.getElementById('pat-overlay');if(ov){ov.style.width=sz.w+'px';ov.style.height=sz.h+'px';}}
 
   renderPBar();
 }
@@ -1947,11 +3138,57 @@ function renderPBar(){
     {c:'#4DAFD1',t:'Semejanza: tarjetas uniformes'},
     {c:'#F2C66D',t:`Patrón ${S.pattern==='none'?'libre':S.pattern}`},
     {c:'#E27D73',t:`Carga cognitiva: ${z.kpi+z.main+z.sec} elementos`},
-    {c:'#B8846B',t:`Filtros: ${z.filter==='none'?'ninguno':z.filter==='top'?'top':'sidebar'}`},
-    {c:g.show?'rgba(255,107,89,.9)':'var(--theme-bd)',t:`Grid: ${g.show?g.cols+' '+(g.dir==='horizontal'?'rows':g.dir==='vertical'?'cols':'col+row'):'oculto'}`},
-    {c:S.theme==='dark'?'#7a7bff':S.theme==='warm'?'#8c6840':'var(--p)',t:`Tema: ${THEMES[S.theme]?.n||S.theme}`},
   ];
-  document.getElementById('pbar').innerHTML=p.map(x=>`<div class="ptag"><div class="pdot" style="background:${x.c}"></div>${x.t}</div>`).join('<div style="width:.5px;height:12px;background:var(--theme-bd);flex-shrink:0"></div>');
+  const tags=p.map(x=>`<div class="ptag"><div class="pdot" style="background:${x.c}"></div>${x.t}</div>`).join('<div class="pbar-sep"></div>');
+
+  const GPRINCIPIOS=[
+    {id:'proximidad', label:'Proximidad', color:'#E88ACF'},
+    {id:'jerarquia',  label:'Jerarquía',  color:'#3FBF7F'},
+    {id:'semejanza',  label:'Semejanza',  color:'#4DAFD1'},
+    {id:'cierre',     label:'Cierre',     color:'#F2C66D'},
+    {id:'figura',     label:'Figura-fondo', color:'#E27D73'},
+  ];
+  const chips=GPRINCIPIOS.map(g=>{
+    const on=S.gestalt===g.id;
+    return`<button class="gchip ${on?'on':''}" onclick="toggleGestalt('${g.id}')" style="${on?'':`--p:${g.color}`}">
+      <div class="gchip-dot" style="background:${on?'#fff':g.color}"></div>${g.label}
+    </button>`;
+  }).join('');
+
+  document.getElementById('pbar').innerHTML=
+    tags+
+    '<div class="pbar-sep"></div>'+
+    `<span class="pbar-label">Gestalt</span>`+
+    chips;
+}
+
+function toggleGestalt(id){
+  // mutualmente excluyente con el patrón de lectura
+  if(S.gestalt===id){
+    S.gestalt='';
+  } else {
+    S.gestalt=id;
+    // si hay patrón activo, lo desactiva visualmente pero no lo borra de S
+  }
+  renderPBar();
+  const L=calcLayout();
+  updateGestaltOverlay(L);
+}
+
+function updateGestaltOverlay(L){
+  const ov=document.getElementById('pat-overlay');if(!ov)return;
+  const sz=L.sz;
+  ov.style.cssText=`position:absolute;top:0;left:0;width:${sz.w}px;height:${sz.h}px;pointer-events:none;z-index:30`;
+  if(!S.gestalt){
+    // si hay patrón activo, restaurarlo
+    if(S.pattern!=='none'){
+      ov.innerHTML=buildHeatSVG(S.pattern,L,sz)+buildBadgeHTML(S.pattern,L,sz);
+    } else {
+      ov.innerHTML='';
+    }
+    return;
+  }
+  ov.innerHTML=buildGestaltSVG(S.gestalt,L,sz);
 }
 
 // ═══════════════════════════════════════════
