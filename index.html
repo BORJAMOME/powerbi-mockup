@@ -929,7 +929,8 @@ function saveTemplateJSON(){
   const data=JSON.stringify(S,null,2);
   const blob=new Blob([data],{type:'application/json'});
   const a=document.createElement('a');
-const title=(document.getElementById('dash-title')?.value||'mockup').replace(/[^a-z0-9áéíóúñ\-_\s]/gi,'').trim().replace(/\s+/g,'_').substring(0,40)||'mockup';  a.download=`pbi_mockup_${title}.json`;
+  const title=(document.getElementById('dash-title')?.value||'mockup').replace(/[^a-z0-9áéíóúñ\-_\s]/gi,'').trim().replace(/\s+/g,'_').substring(0,40)||'mockup';
+  a.download=`pbi_mockup_${title}.json`;
   a.href=URL.createObjectURL(blob);a.click();
   toast('Plantilla guardada como JSON',true);
 }
@@ -961,14 +962,14 @@ function loadTemplateFile(e){
 // ZOOM
 // ═══════════════════════════════════════════
 function changeZoom(d){S.zoom=Math.max(0.25,Math.min(3,S.zoom+d));renderPreview()}
-ffunction fitZoom(){
+function fitZoom(){
   const sz=getCanvasSize();
   const co=document.getElementById('pco');
   const rect=co.getBoundingClientRect();
   if(!rect.width||!rect.height){S.zoom=1;renderPreview();return;}
   const availW=rect.width-48,availH=rect.height-48;
   const fitScale=Math.min(availW/sz.w,availH/sz.h,1);
-  S.zoom=Math.round(fitScale*100)/100; // redondeo a 2 decimales para UI limpia
+  S.zoom=Math.round(fitScale*100)/100;
   renderPreview();
 }
 function updateZoomUI(){
@@ -1975,12 +1976,13 @@ async function doDownload(){
   if(btn.classList.contains('ld'))return;
   btn.classList.add('ld');
   btn.innerHTML=`<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" opacity=".3"/><path d="M12 3a9 9 0 0 1 9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur=".8s" repeatCount="indefinite"/></path></svg> Exportando…`;
+  const psc=document.getElementById('psc');
+  const prev=psc.style.cssText;
   try{
-    const sz=getCanvasSize();const psc=document.getElementById('psc');const prev=psc.style.cssText;
+    const sz=getCanvasSize();
     psc.style.cssText=`width:${sz.w}px;height:${sz.h}px;transform:scale(1);transform-origin:top left;position:absolute;left:0;top:0`;
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const canvas=await html2canvas(document.getElementById('dp2'),{width:sz.w,height:sz.h,scale:2,useCORS:true,allowTaint:true,backgroundColor:getCbg(),logging:false,imageTimeout:0});
-    psc.style.cssText=prev;renderPreview();
     const a=document.createElement('a');
     const title=(document.getElementById('dash-title')?.value||'dashboard').replace(/[^a-z0-9áéíóúñ\-_\s]/gi,'').trim().replace(/\s+/g,'_').substring(0,40)||'dashboard';
     a.download=`pbi_mockup_${title}_${sz.w}x${sz.h}.png`;
@@ -1988,6 +1990,8 @@ async function doDownload(){
     toast('PNG exportado correctamente',true);
   }catch(e){console.error(e);toast('Error al exportar PNG',false)}
   finally{
+    psc.style.cssText=prev;
+    renderPreview();
     btn.classList.remove('ld');
     btn.innerHTML=`<svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7.5M3.5 6l3 3 3-3M1.5 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Exportar PNG`;
   }
@@ -1999,22 +2003,25 @@ async function doDownload(){
 async function doExportPDF(){
   const btn=document.getElementById('pdf-btn');
   btn.disabled=true;btn.textContent='…';
+  const psc=document.getElementById('psc');
+  const prev=psc.style.cssText;
   try{
-    const sz=getCanvasSize();const psc=document.getElementById('psc');const prev=psc.style.cssText;
+    const sz=getCanvasSize();
     psc.style.cssText=`width:${sz.w}px;height:${sz.h}px;transform:scale(1);transform-origin:top left;position:absolute;left:0;top:0`;
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     const canvas=await html2canvas(document.getElementById('dp2'),{width:sz.w,height:sz.h,scale:2,useCORS:true,allowTaint:true,backgroundColor:getCbg(),logging:false});
-    psc.style.cssText=prev;renderPreview();
     const imgData=canvas.toDataURL('image/png',1.0);
     const {jsPDF}=window.jspdf;
     const isPortrait=sz.h>sz.w;
     const pdf=new jsPDF({orientation:isPortrait?'portrait':'landscape',unit:'px',format:[sz.w,sz.h]});
     pdf.addImage(imgData,'PNG',0,0,sz.w,sz.h);
-    const title=(document.getElementById('dash-title')?.value||'dashboard').replace(/[^a-z0-9\-_\s]/gi,'_').trim().replace(/\s+/g,'_').substring(0,40)||'dashboard';
+    const title=(document.getElementById('dash-title')?.value||'dashboard').replace(/[^a-z0-9áéíóúñ\-_\s]/gi,'').trim().replace(/\s+/g,'_').substring(0,40)||'dashboard';
     pdf.save(`pbi_mockup_${title}.pdf`);
     toast('PDF exportado correctamente',true);
   }catch(e){console.error(e);toast('Error al exportar PDF',false)}
   finally{
+    psc.style.cssText=prev;
+    renderPreview();
     btn.disabled=false;
     btn.innerHTML=`<svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 5h6M4 7.5h4M4 10h3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg> PDF`;
   }
