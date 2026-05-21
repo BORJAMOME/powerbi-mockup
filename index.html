@@ -472,6 +472,15 @@ body.pres #credit{display:none}
 .credit-product{font-size:10.5px;font-weight:600;letter-spacing:-.1px;background:linear-gradient(90deg,#a78bfa,#7a7bff,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .credit-version{font-size:9px;font-weight:500;color:rgba(255,255,255,.35)}
 
+/* ── BG MODE SELECTOR (header / filtros) ── */
+.bgm-row{display:flex;gap:3px;margin-top:4px;margin-bottom:0}
+.bgm-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 3px 5px;border-radius:6px;border:.5px solid var(--theme-bd);background:var(--theme-sb);cursor:pointer;font-family:var(--fn);transition:all var(--tr)}
+.bgm-btn.on{background:var(--pl);border-color:var(--p)}
+.bgm-btn:hover:not(.on){border-color:var(--p);background:var(--theme-hover)}
+.bgm-btn .bgm-lbl{font-size:9px;font-weight:500;color:var(--theme-mu);transition:color var(--tr)}
+.bgm-btn.on .bgm-lbl{color:var(--p);font-weight:700}
+.bgm-custom-row{display:flex;align-items:center;gap:6px;margin-top:5px;padding:5px 8px;background:var(--theme-sb);border:.5px solid var(--theme-bd);border-radius:6px}
+
 /* ── VISUAL SLOTS ── */
 .vsl{position:absolute;cursor:pointer;overflow:hidden;transition:box-shadow var(--tr)}
 .vsl:hover{box-shadow:0 0 0 2px var(--p) inset}
@@ -1995,6 +2004,7 @@ body.pres #pres-bar{display:flex}
         <span id="em-banner-txt">Diseño libre · arrastra y redimensiona</span>
         <span id="em-sel-indicator" style="font-size:9px;color:rgba(255,255,255,.5);padding:0 6px;border-left:.5px solid rgba(255,255,255,.15);margin-left:2px;display:none"></span>
         <button id="em-del-btn" onclick="emDeleteSelected()" style="display:none;color:#ff7b7b;border-left:.5px solid rgba(255,255,255,.18);margin-left:4px">✕ Eliminar</button>
+        <button onclick="emAlignToNeighbor()" style="background:rgba(122,123,255,.2);border:.5px solid rgba(122,123,255,.45);color:#b0b0ff;border-radius:5px;padding:0 10px;height:22px;display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.02em"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" style="flex-shrink:0"><rect x="1" y="2" width="4" height="8" rx="1" fill="currentColor"/><rect x="7" y="4" width="4" height="4" rx="1" fill="currentColor" opacity=".5"/><line x1="1" y1="2" x2="11" y2="2" stroke="currentColor" stroke-width="1.2" opacity=".6"/><line x1="1" y1="10" x2="11" y2="10" stroke="currentColor" stroke-width="1.2" opacity=".6"/></svg>Alinear gráfico</button>
         <button onclick="resetVisualPositions()">Restablecer</button>
         <button onclick="toggleEditMode()">Salir · Esc</button>
       </div>
@@ -2611,6 +2621,7 @@ const TIPS={
   secV:'Zona B: gráficos secundarios (menor jerarquía visual).',
   br:'Radio de esquinas de tarjetas. 0 = angular corporativo. 8–12 = moderno.',
   cbg:'Color de fondo del canvas.',ccard:'Fondo de tarjetas.',cbord:'Borde de tarjetas.',
+  accentChart:'Color de acento principal aplicado en barras, líneas, áreas y donut de todos los gráficos.',
   gridGuide:'Guías de alineación estilo Figma. Color salmón para diferenciarlo del contenido.',
   gridDir:'Dirección de las guías: columnas, filas, o ambas.',
   gridCols:'Número de divisiones de la guía.',
@@ -2716,8 +2727,8 @@ let S={
   title:'Análisis Comercial · 2026',subtitle:'Análisis de ventas por canal y región',
   titleBold:true,titleItalic:false,subtitleBold:false,subtitleItalic:false,
   m:{t:24,b:24,l:24,r:24},gap:12,
-  z:{header:true,filter:'none',filterW:160,kpi:4,main:2,sec:2,tooltip:false,drillthrough:false,headerBg:true,filterBg:true},
-  st:{br:8,cbg:1,ccard:0,cbord:0,canvasRadius:3,bordActive:false},
+  z:{header:true,filter:'none',filterW:160,kpi:4,main:2,sec:2,tooltip:false,drillthrough:false,headerBg:'card',filterBg:'card',headerBgCustom:'',filterBgCustom:''},
+  st:{br:8,cbg:1,ccard:0,cbord:0,canvasRadius:3,bordActive:false,accentIdx:0,accentCustom:''},
   grid:{show:false,dir:'both',cols:3,gutter:16,margin:0},
   pattern:'None',theme:'light',zoom:1,vt:{},
   vDrill:{},
@@ -2834,6 +2845,13 @@ function applyTheme(id){
   const isDark=id==='dark';
   if(isDark){S.st.cbg=1;S.st.ccard=1;S.st.cbord=1;S.st.bordActive=true;}
   else{S.st.cbg=1;S.st.ccard=0;S.st.cbord=0;S.st.bordActive=false;}
+  // Normalizar bg mode fields si no existen
+  if(!S.z.headerBgCustom)S.z.headerBgCustom='';
+  if(!S.z.filterBgCustom)S.z.filterBgCustom='';
+  if(S.z.headerBg===true)S.z.headerBg='card';
+  if(S.z.headerBg===false)S.z.headerBg='none';
+  if(S.z.filterBg===true)S.z.filterBg='card';
+  if(S.z.filterBg===false)S.z.filterBg='none';
   renderThemePills();renderStyle();renderPreview();
 }
 // Theme pill config with gradient swatches
@@ -3096,6 +3114,113 @@ function renderMargins(){
     <div style="margin-top:7px" class="sp-chip">m ${m.t}/${m.b}/${m.l}/${m.r} &nbsp;·&nbsp; gap <strong>${S.gap}</strong>px</div>`;
 }
 
+
+// ═══════════════════════════════════════════════════════════════
+// BG MODE SELECTOR — header y filtros
+// mode: 'none' | 'card' | 'custom'
+// ═══════════════════════════════════════════════════════════════
+function bgModeSelector(modeKey, customKey, uid){
+  const mode = getNestedVal(S, modeKey) || 'none';
+  const customHex = getNestedVal(S, customKey) || '';
+  // Normalizar legacy boolean → string
+  const m = (mode===true)?'card':(mode===false)?'none':mode;
+
+  // Mini SVGs para cada modo
+  const svgNone=`<svg width="28" height="16" viewBox="0 0 28 16" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="26" height="14" rx="2" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="3,2" opacity=".4"/>
+    <line x1="5" y1="5" x2="23" y2="11" stroke="currentColor" stroke-width=".7" opacity=".25"/>
+    <line x1="5" y1="11" x2="23" y2="5" stroke="currentColor" stroke-width=".7" opacity=".25"/>
+  </svg>`;
+  const svgCard=`<svg width="28" height="16" viewBox="0 0 28 16" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="26" height="14" rx="2" fill="currentColor" opacity=".12"/>
+    <rect x="4" y="5" width="12" height="2.5" rx=".8" fill="currentColor" opacity=".5"/>
+    <rect x="4" y="9" width="8" height="1.5" rx=".5" fill="currentColor" opacity=".3"/>
+  </svg>`;
+  const svgCustom=customHex
+    ?`<svg width="28" height="16" viewBox="0 0 28 16" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="26" height="14" rx="2" fill="${customHex}"/>
+      <rect x="4" y="5" width="12" height="2.5" rx=".8" fill="#fff" opacity=".7"/>
+      <rect x="4" y="9" width="8" height="1.5" rx=".5" fill="#fff" opacity=".45"/>
+    </svg>`
+    :`<svg width="28" height="16" viewBox="0 0 28 16" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="grad-${uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#7a7bff"/></linearGradient></defs>
+      <rect x="1" y="1" width="26" height="14" rx="2" fill="url(#grad-${uid})" opacity=".7"/>
+      <circle cx="20" cy="8" r="3" fill="none" stroke="#fff" stroke-width="1" opacity=".9"/>
+      <line x1="22.1" y1="10.1" x2="24" y2="12" stroke="#fff" stroke-width="1" opacity=".9"/>
+    </svg>`;
+
+  const modes=[
+    {k:'none',  label:'Ninguno', svg:svgNone},
+    {k:'card',  label:'Tarjeta', svg:svgCard},
+    {k:'custom',label:'Custom',  svg:svgCustom},
+  ];
+
+  const pills=modes.map(({k,label,svg})=>{
+    const isOn=m===k;
+    return `<button class="bgm-btn${isOn?' on':''}" onclick="setBgMode('${modeKey}','${customKey}','${k}','${uid}')">
+      ${svg}
+      <span class="bgm-lbl">${label}</span>
+    </button>`;
+  }).join('');
+
+  const pickerRow=m==='custom'?`
+    <div class="bgm-custom-row">
+      <input type="color" class="cp-swatch" id="bgcp-${uid}" value="${customHex||'#f0f4ff'}"
+        oninput="applyBgCustomColor('${customKey}','${uid}')">
+      <input type="text" class="cp-hex" id="bgcp-${uid}-hex" maxlength="7"
+        value="${customHex}" placeholder="#RRGGBB"
+        oninput="applyBgCustomHex('${customKey}','${uid}',this.value)">
+      <button class="cp-clear" onclick="clearBgCustom('${modeKey}','${customKey}','${uid}')">Quitar</button>
+    </div>`:'';
+
+  return `<div class="bgm-row">${pills}</div>${pickerRow}`;
+}
+
+function getNestedVal(obj, path){
+  return path.split('.').reduce((o,k)=>o&&o[k]!==undefined?o[k]:null, obj);
+}
+function setNestedVal(obj, path, val){
+  const keys=path.split('.');
+  let cur=obj;
+  for(let i=0;i<keys.length-1;i++){if(cur[keys[i]]===undefined)cur[keys[i]]={};cur=cur[keys[i]];}
+  cur[keys[keys.length-1]]=val;
+}
+function setBgMode(modeKey, customKey, mode, uid){
+  setNestedVal(S, modeKey, mode);
+  if(mode==='custom'){
+    // Abrir el picker inmediatamente
+    setTimeout(()=>{
+      const inp=document.getElementById('bgcp-'+uid);
+      if(inp) inp.click();
+    },80);
+  }
+  renderZones(); renderPreview();
+}
+function applyBgCustomColor(customKey, uid){
+  const inp=document.getElementById('bgcp-'+uid);
+  if(!inp)return;
+  const hex=inp.value;
+  setNestedVal(S, customKey, hex);
+  const hexInp=document.getElementById('bgcp-'+uid+'-hex');
+  if(hexInp) hexInp.value=hex;
+  // Actualizar el mini-swatch del selector sin re-render completo del sidebar
+  const svgPreview=document.querySelector(`#bgcp-${uid}`)?.closest('.bgm-custom-row')?.previousSibling;
+  renderPreview();
+}
+function applyBgCustomHex(customKey, uid, val){
+  const clean=val.trim();
+  if(!/^#[0-9a-fA-F]{6}$/.test(clean))return;
+  setNestedVal(S, customKey, clean);
+  const picker=document.getElementById('bgcp-'+uid);
+  if(picker) picker.value=clean;
+  renderPreview();
+}
+function clearBgCustom(modeKey, customKey, uid){
+  setNestedVal(S, modeKey, 'none');
+  setNestedVal(S, customKey, '');
+  renderZones(); renderPreview();
+}
+
 // FIX: Zonas sin "Zonas especiales" — Tooltip y Drill solo en Tipo de Visuales
 function renderZones(){
   const z=S.z;
@@ -3104,9 +3229,9 @@ function renderZones(){
     <div class="trow"><span class="cl">Header ${tip('header')}</span>
       <label class="tg"><input type="checkbox" ${z.header?'checked':''} onchange="ss('z.header',this.checked)"><span class="tg-sl"></span></label>
     </div>
-    ${z.header?`<div class="trow" style="padding-left:10px;margin-top:-2px">
-      <span class="cl" style="font-size:10px;color:var(--theme-mu)">Fondo del header</span>
-      <label class="tg"><input type="checkbox" ${z.headerBg?'checked':''} onchange="ss('z.headerBg',this.checked)"><span class="tg-sl"></span></label>
+    ${z.header?`<div style="margin-left:10px;margin-top:2px;margin-bottom:4px">
+      <div style="font-size:10px;color:var(--theme-mu);font-weight:500;margin-bottom:4px">Fondo del header</div>
+      ${bgModeSelector('z.headerBg','z.headerBgCustom','hdr')}
     </div>`:''}
     <div style="height:4px"></div>
     <div class="sdiv">Zona de filtros ${tip('filter')}</div>
@@ -3130,10 +3255,13 @@ function renderZones(){
     </div>
     `:''}
     ${z.filter==='lateral'?spx('filterW','Ancho lateral',120,280,z.filterW,8,'z.filterW','filterW'):''}
-    ${z.filter==='none'?`<div style="font-size:9px;color:var(--theme-mu);padding:2px 0 4px;line-height:1.45;margin-top:-2px">Sin zona de filtros. Los usuarios no podrán interactuar con los datos directamente.</div>`:`<div class="trow" style="padding-left:10px;margin-top:-2px;margin-bottom:6px">
-      <span class="cl" style="font-size:10px;color:var(--theme-mu)">Fondo de la zona</span>
-      <label class="tg"><input type="checkbox" ${z.filterBg?'checked':''} onchange="ss('z.filterBg',this.checked)"><span class="tg-sl"></span></label>
-    </div>`}
+    ${z.filter==='none'
+      ?`<div style="font-size:9px;color:var(--theme-mu);padding:2px 0 4px;line-height:1.45;margin-top:-2px">Sin zona de filtros. Los usuarios no podrán interactuar con los datos directamente.</div>`
+      :`<div style="margin-left:10px;margin-top:2px;margin-bottom:6px">
+        <div style="font-size:10px;color:var(--theme-mu);font-weight:500;margin-bottom:4px">Fondo de la zona</div>
+        ${bgModeSelector('z.filterBg','z.filterBgCustom','flt')}
+      </div>`
+    }
     <div style="height:4px"></div>
     <div class="sdiv">Bloques de datos</div>
     ${sp('kpi','KPIs',0,6,z.kpi,'z.kpi','kpi')}
@@ -3220,7 +3348,10 @@ function renderStyle(){
     </div>
     <div style="${!st.bordActive?'opacity:.4;pointer-events:none':''}">
       ${swtB(bordArr,'cbord','cbordCustom','cp-bord',!st.bordActive)}
-    </div>`;
+    </div>
+    <div style="height:6px;border-top:.5px solid var(--theme-bd);margin:10px 0 6px"></div>
+    <div class="sdiv">Color de acento en gráficos <span class="tip-btn">?<span class="tip-box">Color principal que aplica en barras, líneas, áreas y donut de todos los gráficos del canvas.</span></span></div>
+    ${swtB(ACCENT_COLORS,'accentIdx','accentCustom','cp-accent')}`;
 }
 
 // ── Helpers del color picker ─────────────────────────────────
@@ -3243,10 +3374,8 @@ function applyCustomColor(customKey, pickerId){
   S.st[customKey]=hex;
   const hexInput=document.getElementById(pickerId+'-hex');
   if(hexInput) hexInput.value=hex;
+  if(customKey==='accentCustom') renderStyle();
   renderPreview();
-  // Actualizar el swatch custom sin re-render completo del sidebar
-  const sw=document.querySelector('.sw2-custom');
-  if(sw){ sw.style.background=hex; sw.title='Color personalizado: '+hex; }
 }
 function applyCustomHex(customKey, pickerId, val){
   const clean=val.trim();
@@ -3590,6 +3719,15 @@ function loadTemplateFile(e){
         if(!S.st.cbgCustom)S.st.cbgCustom='';
         if(!S.st.ccardCustom)S.st.ccardCustom='';
         if(!S.st.cbordCustom)S.st.cbordCustom='';
+        if(S.st.accentIdx===undefined)S.st.accentIdx=0;
+        if(!S.st.accentCustom)S.st.accentCustom='';
+        // Normalizar campos bg de header/filtros (legacy bool → string)
+        if(S.z.headerBg===true)S.z.headerBg='card';
+        if(S.z.headerBg===false)S.z.headerBg='none';
+        if(!S.z.headerBgCustom)S.z.headerBgCustom='';
+        if(S.z.filterBg===true)S.z.filterBg='card';
+        if(S.z.filterBg===false)S.z.filterBg='none';
+        if(!S.z.filterBgCustom)S.z.filterBgCustom='';
       }
       if(loaded.grid)Object.assign(S.grid,loaded.grid);
       if(loaded.gap!=null)S.gap=loaded.gap;
@@ -3710,12 +3848,32 @@ function calcScale(sz){
 }
 
 // ═══════════════════════════════════════════
+// ACCENT COLOR PALETTE
+// ═══════════════════════════════════════════
+const ACCENT_COLORS=[
+  {n:'Índigo',    h:'#7a7bff'},
+  {n:'Violeta',   h:'#9b59b6'},
+  {n:'Coral',     h:'#e05e52'},
+  {n:'Amber',     h:'#f59e0b'},
+  {n:'Esmeralda', h:'#10b981'},
+  {n:'Océano',    h:'#0ea5e9'},
+  {n:'Rosa',      h:'#ec4899'},
+  {n:'Pizarra',   h:'#475569'},
+];
+function getAccent(){
+  if(S.st&&S.st.accentCustom) return S.st.accentCustom;
+  const idx=(S.st&&S.st.accentIdx!==undefined)?S.st.accentIdx:0;
+  return ACCENT_COLORS[Math.min(idx,ACCENT_COLORS.length-1)].h;
+}
+
+// ═══════════════════════════════════════════
 // CHART COLOR CONTEXT (theme-aware)
 // ═══════════════════════════════════════════
 function cc(){
   const dark=S.theme==='dark';
+  const acc=getAccent();
   return{
-    acc:'#7a7bff',
+    acc,
     ghost:dark?'#363648':'#d4d4e8',
     grid:dark?'#252535':'#f0f0f8',
     axis:dark?'#3a3a55':'#e8e8f4',
@@ -5217,6 +5375,11 @@ function renderPreview(){
   const card=(x,y,w,h,inner='')=>
     `<div style="position:absolute;left:${x}px;top:${y}px;width:${w}px;height:${h}px;background:${ccard};border:.5px solid ${cbord};border-radius:${br}px;overflow:hidden;box-sizing:border-box">${inner}</div>`;
 
+  // ── Resolver color de fondo del panel de filtros (top + lateral) ──
+  const _fltModeGlobal=(S.z.filterBg===true)?'card':(S.z.filterBg===false)?'none':(S.z.filterBg||'none');
+  const lateralBg=_fltModeGlobal==='custom'?(S.z.filterBgCustom||ccard):_fltModeGlobal==='card'?ccard:cbg;
+  const lateralBord=_fltModeGlobal!=='none'?cbord:'transparent';
+
   if(L.fleft&&L.fsw){
     // El panel lateral empieza en el mismo nivel que los KPIs (o main si no hay KPIs),
     // nunca cubre el header — comportamiento real de Power BI
@@ -5225,33 +5388,52 @@ function renderPreview(){
     const fh=Math.max(24,Math.round(fyH*.092));const fs=Math.max(7,Math.min(9,L.fsw*.055));
     const filtros=[{l:'Región',v:'Madrid',a:true},{l:'Categoría',v:'Todos',a:false},{l:'Periodo',v:'Ene–Mar 2026',a:true},{l:'Segmento',v:'Todos',a:false},{l:'Canal',v:'Todos',a:false}];
     const nA=filtros.filter(f=>f.a).length;
+    const _hasCustomFlt2=_fltModeGlobal==='custom'&&S.z.filterBgCustom;
+    const fltTitleColor=_hasCustomFlt2?'rgba(255,255,255,0.65)':mu;
+    const fltBorderColor=_hasCustomFlt2?'rgba(255,255,255,0.18)':cbord;
+    const badgeBg=_hasCustomFlt2?'rgba(255,255,255,0.2)':'#ededff';
+    const badgeColor=_hasCustomFlt2?'rgba(255,255,255,0.9)':'#5a5bcc';
     let fhtml=`<div style="display:flex;flex-direction:column;height:100%;font-family:'Segoe UI',sans-serif">
-      <div style="padding:${Math.round(fh*.28)}px ${Math.round(L.fsw*.07)}px;border-bottom:.5px solid ${cbord}">
+      <div style="padding:${Math.round(fh*.28)}px ${Math.round(L.fsw*.07)}px;border-bottom:.5px solid ${fltBorderColor}">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:${nA?5:0}px">
-          <span style="font-size:${fs}px;font-weight:700;color:${mu};text-transform:uppercase;letter-spacing:.7px">Filtros</span>
-          ${nA?`<span style="background:#ededff;color:#5a5bcc;font-size:${Math.max(7,fs*.9)}px;font-weight:700;padding:1px 6px;border-radius:20px">${nA} activos</span>`:''}
+          <span style="font-size:${fs}px;font-weight:700;color:${fltTitleColor};text-transform:uppercase;letter-spacing:.7px">Filtros</span>
+          ${nA?`<span style="background:${badgeBg};color:${badgeColor};font-size:${Math.max(7,fs*.9)}px;font-weight:700;padding:1px 6px;border-radius:20px">${nA} activos</span>`:''}
         </div>
       </div>
       <div style="flex:1;overflow:hidden;padding:${Math.round(fh*.2)}px ${Math.round(L.fsw*.07)}px">`;
+    // Color de dropdown: si hay custom, usar overlay sobre el color del panel
+    const _hasCustomFlt=_fltModeGlobal==='custom'&&S.z.filterBgCustom;
+    const dropBg=_hasCustomFlt
+      ?'rgba(255,255,255,0.22)'
+      :(isDark?'rgba(255,255,255,.06)':cbg);
+    const dropBord=_hasCustomFlt
+      ?'rgba(255,255,255,0.35)'
+      :cbord;
     filtros.forEach(f=>{
       const isA=f.a;const dropH=Math.max(22,Math.round(fh*.7));
+      const thisDropBg=isA?(isDark?'rgba(122,123,255,.18)':'rgba(122,123,255,.12)'):dropBg;
+      const thisDropBord=isA?(isDark?'rgba(122,123,255,.4)':'rgba(122,123,255,.35)'):dropBord;
+      const labelColor=isA?(isDark?'#a0a0ff':'#5a5bcc'):(_hasCustomFlt?'rgba(255,255,255,0.6)':mu);
+      const valueColor=isA?(isDark?'#c0c0ff':'#2a2a3a'):(_hasCustomFlt?'rgba(255,255,255,0.85)':mu);
+      const chevColor=isA?(isDark?'#8888ee':'#7a7bff'):(_hasCustomFlt?'rgba(255,255,255,0.5)':mu);
       fhtml+=`<div style="margin-bottom:${Math.round(fh*.22)}px">
-        <div style="font-size:${Math.max(7,fs*.82)}px;font-weight:${isA?700:600};color:${isA?'#5a5bcc':mu};text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">${f.l}</div>
-        <div style="height:${dropH}px;background:${isA?(isDark?'rgba(122,123,255,.1)':'#f7f7ff'):cbg};border:.5px solid ${isA?(isDark?'rgba(122,123,255,.3)':'#c0c0ff'):cbord};border-radius:4px;display:flex;align-items:center;padding:0 8px;gap:4px">
-          <span style="font-size:${Math.max(7,fs)}px;color:${isA?(isDark?'#a0a0ff':'#2a2a3a'):mu};flex:1;font-weight:${isA?600:400};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.v}</span>
-          <span style="font-size:8px;color:${isA?(isDark?'#8888ee':'#7a7bff'):mu}">▾</span>
+        <div style="font-size:${Math.max(7,fs*.82)}px;font-weight:${isA?700:600};color:${labelColor};text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">${f.l}</div>
+        <div style="height:${dropH}px;background:${thisDropBg};border:.5px solid ${thisDropBord};border-radius:4px;display:flex;align-items:center;padding:0 8px;gap:4px">
+          <span style="font-size:${Math.max(7,fs)}px;color:${valueColor};flex:1;font-weight:${isA?600:400};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.v}</span>
+          <span style="font-size:8px;color:${chevColor}">▾</span>
         </div></div>`;
     });
     fhtml+=`</div></div>`;
-    html+=card(m.l,fyStart,L.fsw,fyH,fhtml);
+    html+=`<div style="position:absolute;left:${m.l}px;top:${fyStart}px;width:${L.fsw}px;height:${fyH}px;background:${lateralBg};border:.5px solid ${lateralBord};border-radius:${br}px;overflow:hidden;box-sizing:border-box">${fhtml}</div>`;
   }
 
   // ── HEADER ──
   if(z.header&&L.hdrH){
     const hPad=Math.max(12,Math.round(L.hdrH*.35));
     const btnFs=Math.max(8,Math.round(L.hdrH*.16));
-    const hdrBg=S.z.headerBg?ccard:'transparent';
-    const hdrBord=S.z.headerBg?cbord:'transparent';
+    const _hdrMode=(S.z.headerBg===true)?'card':(S.z.headerBg===false)?'none':(S.z.headerBg||'none');
+    const hdrBg=_hdrMode==='custom'?(S.z.headerBgCustom||ccard):_hdrMode==='card'?ccard:'transparent';
+    const hdrBord=_hdrMode!=='none'?cbord:'transparent';
     // Cuando hay filtro lateral, el header ocupa todo el ancho (uw) — el sidebar
     // solo arranca a nivel de KPIs/datos, nunca cubre el header
     const hdrX=m.l, hdrW=L.uw;
@@ -5263,13 +5445,9 @@ function renderPreview(){
       <div class="vsl-badge">Header</div>
       <div style="display:flex;align-items:center;height:100%;padding:0 ${hPad}px;gap:14px;font-family:'Segoe UI',sans-serif">
         <div style="flex:1;min-width:0">
-          <div data-role="vtitle" data-k="hdr-title" style="font-size:${S.titleSize}px;font-weight:${S.titleBold?700:400};font-style:${S.titleItalic?'italic':'normal'};color:${ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.3px;cursor:text" title="Doble clic para editar">${escHtml(dashTitle)}</div>
-          ${dashSubtitle?`<div data-role="vsubtitle" data-k="hdr-sub" style="font-size:${S.subtitleSize}px;font-weight:${S.subtitleBold?600:400};font-style:${S.subtitleItalic?'italic':'normal'};color:${ink};opacity:.75;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.1px;cursor:text" title="Doble clic para editar subtítulo">${escHtml(dashSubtitle)}</div>`:''}
-          ${dashSub?`<div style="font-size:${S.subSize}px;color:${mu};margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(dashSub)}</div>`:''}
-        </div>
-        <div style="display:flex;gap:6px;flex-shrink:0">
-          <div style="height:24px;padding:0 10px;border-radius:4px;background:${isDark?'rgba(255,255,255,.06)':CBGS[Math.min(st.cbg+1,CBGS.length-1)].h};border:.5px solid ${cbord};display:flex;align-items:center;font-size:${btnFs}px;color:${mu}">Exportar</div>
-          <div style="height:24px;padding:0 12px;border-radius:4px;background:#7a7bff;display:flex;align-items:center;font-size:${btnFs}px;color:#fff;font-weight:700">⟳ Actualizar</div>
+          <div data-role="vtitle" data-k="hdr-title" style="font-size:${S.titleSize}px;font-weight:${S.titleBold?700:400};font-style:${S.titleItalic?'italic':'normal'};color:${_hdrMode==='custom'&&S.z.headerBgCustom?(hexLuminance(S.z.headerBgCustom)<50?'#ffffff':ink):ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.3px;cursor:text" title="Doble clic para editar">${escHtml(dashTitle)}</div>
+          ${dashSubtitle?`<div data-role="vsubtitle" data-k="hdr-sub" style="font-size:${S.subtitleSize}px;font-weight:${S.subtitleBold?600:400};font-style:${S.subtitleItalic?'italic':'normal'};color:${_hdrMode==='custom'&&S.z.headerBgCustom?(hexLuminance(S.z.headerBgCustom)<50?'rgba(255,255,255,0.8)':ink):ink};opacity:.85;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.1px;cursor:text" title="Doble clic para editar subtítulo">${escHtml(dashSubtitle)}</div>`:''}
+          ${dashSub?`<div style="font-size:${S.subSize}px;color:${_hdrMode==='custom'&&S.z.headerBgCustom?(hexLuminance(S.z.headerBgCustom)<50?'rgba(255,255,255,0.55)':mu):mu};margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(dashSub)}</div>`:''}
         </div>
       </div></div>`;
   }
@@ -5277,15 +5455,24 @@ function renderPreview(){
   // ── FILTER TOP ──
   if(L.ftop&&L.ftH&&L.ys.ftop!==undefined){
     const fAlign=S.z.filter==='center'?'center':S.z.filter==='right'?'flex-end':'flex-start';
-    const filterBg=S.z.filterBg?ccard:cbg;
-    const filterBord=S.z.filterBg?cbord:'transparent';
-    const pillBg=S.z.filterBg?cbg:ccard;
-    const pillBord=S.z.filterBg?cbord:(isDark?'rgba(255,255,255,.1)':'rgba(0,0,0,.1)');
+    const filterBg=_fltModeGlobal==='custom'?(S.z.filterBgCustom||ccard):_fltModeGlobal==='card'?ccard:cbg;
+    const filterBord=_fltModeGlobal!=='none'?cbord:'transparent';
+    const _hasCustomFltTop=_fltModeGlobal==='custom'&&S.z.filterBgCustom;
+    // Pills: si hay custom → overlays blancos semitransparentes; si no → colores estándar
+    const pillBg=_hasCustomFltTop?'rgba(255,255,255,0.22)':(_fltModeGlobal!=='none'?cbg:ccard);
+    const pillBord=_hasCustomFltTop?'rgba(255,255,255,0.35)':(_fltModeGlobal!=='none'?cbord:(isDark?'rgba(255,255,255,.1)':'rgba(0,0,0,.1)'));
+    const pillTxt=_hasCustomFltTop?'rgba(255,255,255,0.85)':mu;
+    const pillChev=_hasCustomFltTop?'rgba(255,255,255,0.5)':mu;
     let fti=`<div style="display:flex;align-items:center;height:100%;gap:7px;padding:0 14px;font-family:'Segoe UI',sans-serif;justify-content:${fAlign}">`;
     ['Región','Periodo','Categoría','Segmento'].forEach((f,fi)=>{
-      fti+=`<div style="height:25px;min-width:72px;background:${fi===0?(isDark?'rgba(122,123,255,.12)':'#ededff'):pillBg};border:.5px solid ${fi===0?(isDark?'rgba(122,123,255,.3)':'#c5c5ff'):pillBord};border-radius:20px;display:flex;align-items:center;padding:0 9px;gap:4px;flex-shrink:0">
-        <span style="font-size:8.5px;color:${fi===0?(isDark?'#a0a0ff':'#5a5bcc'):mu};flex:1;font-weight:${fi===0?600:400}">${f}</span>
-        <span style="font-size:8px;color:${fi===0?(isDark?'#8888ee':'#8a8bdd'):mu}">▾</span></div>`;
+      const isActive=fi===0;
+      const pBg=isActive?(isDark?'rgba(122,123,255,.18)':'rgba(122,123,255,.18)'):pillBg;
+      const pBord=isActive?(isDark?'rgba(122,123,255,.4)':'rgba(122,123,255,.35)'):pillBord;
+      const pTxt=isActive?(isDark?'#a0a0ff':'#5a5bcc'):pillTxt;
+      const pChev=isActive?(isDark?'#8888ee':'#8a8bdd'):pillChev;
+      fti+=`<div style="height:25px;min-width:72px;background:${pBg};border:.5px solid ${pBord};border-radius:20px;display:flex;align-items:center;padding:0 9px;gap:4px;flex-shrink:0">
+        <span style="font-size:8.5px;color:${pTxt};flex:1;font-weight:${isActive?600:400}">${f}</span>
+        <span style="font-size:8px;color:${pChev}">▾</span></div>`;
     });
     fti+=`</div>`;
     const ftx=L.cx,fty=L.ys.ftop,ftw=L.cw,fth=L.ftH;
@@ -6394,6 +6581,72 @@ function resetVisualPositions(){
   clearEMSelection();
   renderPreview();
   toast('Layout restablecido al automático', true);
+}
+
+// ── ALINEAR GRÁFICO ──────────────────────────────────────────────────────────
+// Toma el visual seleccionado y lo iguala en Y y altura con su vecino lateral
+// (el que tiene más cerca por la izquierda o por la derecha).
+//
+// Algoritmo en dos pasos:
+//   1. Filtrar candidatos: solo visuales que se solapan verticalmente con el
+//      seleccionado (mismo rango Y). Esto garantiza que solo compita gente de
+//      la misma fila, no los de arriba o abajo.
+//   2. De esos candidatos, elegir el que tiene el gap horizontal más pequeño
+//      (distancia borde-a-borde, no centro-a-centro).
+//
+// Si el gráfico está tan descolocado que no solapa con nadie en Y, se amplía
+// la búsqueda a todos los visuales (fallback).
+function emAlignToNeighbor(){
+  const k = _em.selected;
+  if(!k){ toast('Selecciona primero el gráfico que quieres alinear', false); return; }
+  const el = document.querySelector('#dp2 .vsl[data-k="' + k + '"]');
+  if(!el) return;
+  const r = emReadRect(el);
+
+  const others = [...document.querySelectorAll('#dp2 .vsl')].filter(o => o !== el);
+  if(!others.length){ toast('No hay otros visuales en el canvas', false); return; }
+
+  // Paso 1: candidatos con solapamiento vertical (misma fila)
+  // Umbral: al menos el 25% de la altura del más pequeño se superpone
+  let candidates = others.filter(nb => {
+    const nr        = emReadRect(nb);
+    const overlapY  = Math.min(r.y + r.h, nr.y + nr.h) - Math.max(r.y, nr.y);
+    const threshold = Math.min(r.h, nr.h) * 0.25;
+    return overlapY >= threshold;
+  });
+
+  // Fallback: si nadie solapa, usar todos
+  if(!candidates.length) candidates = others;
+
+  // Paso 2: el más cercano horizontalmente (gap entre bordes)
+  let best = null, bestGap = Infinity;
+  candidates.forEach(nb => {
+    const nr      = emReadRect(nb);
+    const gapL    = Math.abs(r.x - (nr.x + nr.w));  // nb está a la izquierda
+    const gapR    = Math.abs(nr.x - (r.x + r.w));   // nb está a la derecha
+    const gap     = Math.min(gapL, gapR);
+    if(gap < bestGap){ bestGap = gap; best = nb; }
+  });
+
+  const nr = emReadRect(best);
+
+  // Igualar Y y altura → mismo top, mismo alto que el vecino lateral
+  el.style.top    = nr.y + 'px';
+  el.style.height = nr.h + 'px';
+  S.visuals[k] = { x: r.x, y: nr.y, w: r.w, h: nr.h, hasResize: true };
+
+  // Re-renderizar SVG interior si aplica
+  if(k.startsWith('main-') || k.startsWith('sec-')){
+    _emRefreshChart(el, k, r.w, nr.h);
+  }
+  renderEMHandles(el);
+
+  // Flash morado en el vecino de referencia
+  best.style.transition = 'box-shadow .1s ease';
+  best.style.boxShadow  = '0 0 0 2px rgba(122,123,255,.9) inset, 0 0 0 5px rgba(122,123,255,.2)';
+  setTimeout(() => { best.style.boxShadow = ''; best.style.transition = ''; }, 650);
+
+  toast('✓ Alineado con el vecino lateral', true);
 }
 
 function attachEMListeners(){
