@@ -23,13 +23,13 @@ Construir dashboards directamente en Power BI para luego rehacerlos implica:
 
 **PBI Mockup Creator** mueve esa iteración a una fase previa, rápida y sin fricción.
 
-💡 Diseñas primero → validas → luego construyes.
+Diseñas primero → validas → luego construyes.
 
 
 
 ## Características
 
-### 🧱 Canvas & Layout
+### Canvas & Layout
 - Presets de tamaño:
   - **16:9 (1280×720)**
   - **4:3 (1024×768)**
@@ -45,7 +45,7 @@ Construir dashboards directamente en Power BI para luego rehacerlos implica:
 
 
 
-### 🧩 Zonas del dashboard
+### Zonas del dashboard
 - **Header configurable**
   - Título y subtítulo editables
   - Tamaño de fuente configurable
@@ -74,7 +74,7 @@ Construir dashboards directamente en Power BI para luego rehacerlos implica:
 
 
 
-### 📈 Tipos de visuales (15+)
+### Tipos de visuales (15+)
 Intercambiables con un clic:
 
 - Barras  
@@ -95,7 +95,7 @@ Intercambiables con un clic:
 
 
 
-### 🎨 Estilo visual
+### Estilo visual
 - Fondo de canvas configurable  
 - Fondo de tarjetas configurable  
 - Bordes personalizables  
@@ -103,7 +103,7 @@ Intercambiables con un clic:
 
 
 
-### 📐 Guías de diseño
+### Guías de diseño
 - **Cuadrícula (grid system)**
   - Activable/desactivable
   - Alineación precisa
@@ -119,11 +119,11 @@ Intercambiables con un clic:
 
   - **Modo libre**
 
-✔️ Visualización del flujo directamente en el canvas
+Visualización del flujo directamente en el canvas
 
 
 
-### 🧠 Plantillas inteligentes
+### Plantillas inteligentes
 Arranque rápido con presets:
 
 - **C-Suite** → KPIs + tendencia + tabla pro  
@@ -134,7 +134,7 @@ Arranque rápido con presets:
 
 
 
-### 💾 Guardar & Cargar (JSON)
+### Guardar & Cargar (JSON)
 - Guarda toda la configuración como `.json`
 - Permite:
   - Reutilizar layouts
@@ -142,7 +142,7 @@ Arranque rápido con presets:
   - Compartir con equipo
 
 
-### 📤 Exportación
+### Exportación
 - Exportación a:
   - **PNG**
   - **PDF**
@@ -154,7 +154,7 @@ Arranque rápido con presets:
 
 
 
-## 🧠 Principios de diseño aplicados
+## Principios de diseño aplicados
 
 - Proximidad (Gestalt) → agrupación mediante spacing  
 - Semejanza → coherencia entre tarjetas  
@@ -165,7 +165,7 @@ Arranque rápido con presets:
 
 
 
-## 🎯 Casos de uso
+## Casos de uso
 
 - Diseño previo de dashboards Power BI  
 - Validación con clientes antes de desarrollo  
