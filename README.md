@@ -4,7 +4,7 @@
 
 Diseña, itera y valida la estructura visual de tus informes antes de construirlos en Power BI. Control total sobre layout, jerarquía, zonas, patrones de lectura y tipos de visuales — con exportación lista para compartir.
 
-Para visualizarlo: https://borjamoramendez.github.io/pbi-mockup-creator/
+Para visualizarlo: https://borjamome.github.io/powerbi-mockup/
 
 ## Demo
 
@@ -12,7 +12,7 @@ Para visualizarlo: https://borjamoramendez.github.io/pbi-mockup-creator/
 
 
 
-## ¿Por qué existe esta herramienta?
+## Por qué existe esta herramienta
 
 En proyectos de Business Intelligence, el mayor coste no está en los datos, sino en la iteración visual.
 
@@ -23,29 +23,27 @@ Construir dashboards directamente en Power BI para luego rehacerlos implica:
 
 **PBI Mockup Creator** mueve esa iteración a una fase previa, rápida y sin fricción.
 
-💡 Diseñas primero → validas → luego construyes.
+Diseñas primero, validas, luego construyes.
 
 
 
 ## Características
 
-### 🧱 Canvas & Layout
+### Canvas y Layout
 - Presets de tamaño:
-  - **16:9 (1280×720)**
-  - **4:3 (1024×768)**
+  - **16:9 (1280x720)**
+  - **4:3 (1024x768)**
   - **Carta**
   - **Tooltip**
   - **Móvil**
   - **Custom**
 - Márgenes configurables por lado (precisión de 1 px)
 - Gap entre bloques configurable
-- Control de:
-  - Radio del canvas
-  - Radio de tarjetas
+- Control de radio del canvas y de tarjetas
 
 
 
-### 🧩 Zonas del dashboard
+### Zonas del dashboard
 - **Header configurable**
   - Título y subtítulo editables
   - Tamaño de fuente configurable
@@ -63,7 +61,7 @@ Construir dashboards directamente en Power BI para luego rehacerlos implica:
 
 
 
-### 📊 Tarjetas KPI
+### Tarjetas KPI
 - Valor principal configurable (10–48 px)
 - Indicadores de tendencia (positivo / negativo)
 - Mini gráfico integrado:
@@ -74,28 +72,16 @@ Construir dashboards directamente en Power BI para luego rehacerlos implica:
 
 
 
-### 📈 Tipos de visuales (15+)
+### Tipos de visuales (15+)
 Intercambiables con un clic:
 
-- Barras  
-- Líneas  
-- Tabla  
-- Cascada  
-- Funnel  
-- Área  
-- Matriz  
-- Columnas  
-- Lollipop  
-- Dumbbell  
-- Slope  
-- Drill-through  
-- Tooltip  
+- Barras, Líneas, Tabla, Cascada, Funnel, Área, Matriz, Columnas, Lollipop, Dumbbell, Slope, Drill-through, Tooltip
 
-✔️ Pensados para cubrir el 95% de casos reales en Power BI
+Pensados para cubrir el 95% de casos reales en Power BI.
 
 
 
-### 🎨 Estilo visual
+### Estilo visual
 - Fondo de canvas configurable  
 - Fondo de tarjetas configurable  
 - Bordes personalizables  
@@ -103,69 +89,55 @@ Intercambiables con un clic:
 
 
 
-### 📐 Guías de diseño
+### Guías de diseño
 - **Cuadrícula (grid system)**
   - Activable/desactivable
   - Alineación precisa
 
 - **Patrones de lectura**
-  - **Patrón Z**
-    - Flujo natural: izquierda → derecha → diagonal → CTA
-    - KPIs arriba, acción abajo derecha
-
-  - **Patrón F**
-    - Escaneo digital típico
-    - Refuerzo en primera fila
-
+  - **Patrón Z** — Flujo natural: izquierda, derecha, diagonal, CTA. KPIs arriba, acción abajo derecha.
+  - **Patrón F** — Escaneo digital típico. Refuerzo en primera fila.
   - **Modo libre**
 
-✔️ Visualización del flujo directamente en el canvas
+Visualización del flujo directamente en el canvas.
 
 
 
-### 🧠 Plantillas inteligentes
+### Plantillas inteligentes
 Arranque rápido con presets:
 
-- **C-Suite** → KPIs + tendencia + tabla pro  
-- **Comercial** → Seguimiento de ventas  
-- **Analítico** → Deep dive de datos  
-- **Storytelling** → Narrativa visual  
-- **Operacional** → Monitorización diaria  
+- **C-Suite** — KPIs + tendencia + tabla pro  
+- **Comercial** — Seguimiento de ventas  
+- **Analítico** — Deep dive de datos  
+- **Storytelling** — Narrativa visual  
+- **Operacional** — Monitorización diaria  
 
 
 
-### 💾 Guardar & Cargar (JSON)
+### Guardar y Cargar (JSON)
 - Guarda toda la configuración como `.json`
-- Permite:
-  - Reutilizar layouts
-  - Versionar diseños
-  - Compartir con equipo
+- Permite reutilizar layouts, versionar diseños y compartir con equipo.
 
 
-### 📤 Exportación
-- Exportación a:
-  - **PNG**
-  - **PDF**
-- Resolución optimizada (2×)
-- Listo para:
-  - Presentaciones
-  - Documentación
-  - Validación con clientes
+### Exportación
+- Exportación a **PNG** y **PDF**
+- Resolución optimizada (2x)
+- Listo para presentaciones, documentación y validación con clientes.
 
 
 
-## 🧠 Principios de diseño aplicados
+## Principios de diseño aplicados
 
-- Proximidad (Gestalt) → agrupación mediante spacing  
-- Semejanza → coherencia entre tarjetas  
-- Jerarquía visual → Zona A vs Zona B  
-- Carga cognitiva → control de elementos visibles  
-- Patrones Z & F → navegación natural del usuario  
-- Consistencia → sistema visual uniforme  
+- Proximidad (Gestalt) — agrupación mediante spacing  
+- Semejanza — coherencia entre tarjetas  
+- Jerarquía visual — Zona A vs Zona B  
+- Carga cognitiva — control de elementos visibles  
+- Patrones Z y F — navegación natural del usuario  
+- Consistencia — sistema visual uniforme  
 
 
 
-## 🎯 Casos de uso
+## Casos de uso
 
 - Diseño previo de dashboards Power BI  
 - Validación con clientes antes de desarrollo  
@@ -181,4 +153,3 @@ Arranque rápido con presets:
 Especialista en Business Intelligence y visualización de datos  
 
 [LinkedIn](https://www.linkedin.com/in/borjamoramendez/)
-
