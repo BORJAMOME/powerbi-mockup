@@ -23,13 +23,13 @@ Construir dashboards directamente en Power BI para luego rehacerlos implica:
 
 **PBI Mockup Creator** mueve esa iteración a una fase previa, rápida y sin fricción.
 
-Diseñas primero, validas, luego construyes.
+💡 Diseñas primero → validas → luego construyes.
 
 
 
 ## Características
 
-### Canvas y Layout
+### 🧱 Canvas & Layout
 - Presets de tamaño:
   - **16:9 (1280x720)**
   - **4:3 (1024x768)**
@@ -99,7 +99,7 @@ Pensados para cubrir el 95% de casos reales en Power BI.
   - **Patrón F** — Escaneo digital típico. Refuerzo en primera fila.
   - **Modo libre**
 
-Visualización del flujo directamente en el canvas.
+✔️ Visualización del flujo directamente en el canvas
 
 
 
@@ -114,15 +114,20 @@ Arranque rápido con presets:
 
 
 
-### Guardar y Cargar (JSON)
+### 💾 Guardar & Cargar (JSON)
 - Guarda toda la configuración como `.json`
 - Permite reutilizar layouts, versionar diseños y compartir con equipo.
 
 
-### Exportación
-- Exportación a **PNG** y **PDF**
-- Resolución optimizada (2x)
-- Listo para presentaciones, documentación y validación con clientes.
+### 📤 Exportación
+- Exportación a:
+  - **PNG**
+  - **PDF**
+- Resolución optimizada (2×)
+- Listo para:
+  - Presentaciones
+  - Documentación
+  - Validación con clientes
 
 
 
