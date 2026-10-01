@@ -1,153 +1,73 @@
 # PBI Mockup Creator
 
-> **Herramienta avanzada de wireframing para dashboards de Power BI — en el navegador, sin instalación, sin dependencias.**
+> Diseña el layout de un dashboard de Power BI antes de construirlo. En el navegador, sin instalación y sin cuenta.
 
-Diseña, itera y valida la estructura visual de tus informes antes de construirlos en Power BI. Control total sobre layout, jerarquía, zonas, patrones de lectura y tipos de visuales — con exportación lista para compartir.
+**Abrir la herramienta:** https://borjamome.github.io/powerbi-mockup/
 
-Para visualizarlo: https://borjamome.github.io/powerbi-mockup/
+![Captura de PBI Mockup Creator](PBI_MockUp.png)
 
-## Demo
+## Por qué existe
 
-![PBI Mockup Creator screenshot](PBI_MockUp.png)
+En un proyecto de BI, lo caro no suele ser el modelo de datos, sino rehacer páginas. Si el layout se decide dentro de Power BI, cada cambio de opinión del cliente obliga a mover visuales, recalcular tamaños y volver a validar.
 
+Esta herramienta adelanta esa conversación: defines quién mira el dashboard y qué decide con él, montas la estructura en unos minutos, la revisas con criterios de percepción visual y llegas a Power BI con el plano ya aprobado.
 
+## Qué puedes hacer
 
-## Por qué existe esta herramienta
+**Empezar rápido**
+- 7 plantillas por área: Comercial, Financiero, RRHH, Marketing, Retail, C-Suite y E-commerce. Cada una trae layout, KPIs y títulos propios.
+- «Historia del dashboard»: eliges audiencia (C-Suite, Comercial, Analistas o Cliente), escribes la decisión y el dato clave, y la herramienta propone plantilla y patrón de lectura.
 
-En proyectos de Business Intelligence, el mayor coste no está en los datos, sino en la iteración visual.
+**Montar el layout**
+- Formatos de página: 16:9, 4:3, Carta, Tooltip, Móvil y tamaño personalizado.
+- Márgenes por lado, separación entre bloques, header, filtros (barra superior o lateral), de 0 a 6 KPIs y dos zonas de visuales (A principal, B secundaria).
+- Proporciones de altura por zona con deslizadores.
+- Diseño libre: arrastra, redimensiona con guías de ajuste, mueve con las flechas y alinea con el visual vecino.
 
-Construir dashboards directamente en Power BI para luego rehacerlos implica:
-- Tiempo perdido  
-- Fricción con stakeholders  
-- Decisiones de diseño tardías  
+**Elegir visuales**
+- 25 tipos agrupados como en el panel de Power BI: barras y columnas (apiladas, agrupadas, 100 %), líneas, áreas, combinados, cintas, cascada, embudo, dispersión, anillos, mapa de árbol, tabla, matriz, lollipop, dumbbell y slope.
+- Clic en un visual del lienzo para abrir su selector; Mayús + clic para rotar el tipo.
+- Doble clic en cualquier título, subtítulo o valor KPI para editarlo en el propio lienzo.
 
-**PBI Mockup Creator** mueve esa iteración a una fase previa, rápida y sin fricción.
+**Revisarlo con criterio**
+- Diagnóstico con cinco principios de la Gestalt (proximidad, jerarquía visual, semejanza, cierre y figura-fondo). Cada uno explica qué mide, enseña un ejemplo bien y mal aplicado, evalúa tu diseño y propone arreglos de un clic. La barra superior muestra cuántos principios están correctos.
+- Patrones de lectura Z, F y por capas superpuestos sobre el lienzo.
+- Cuadrícula de guía configurable y aviso de contraste entre fondo y tarjetas.
 
-Diseñas primero → validas → luego construyes.
+**Guardar y compartir**
+- El diseño se guarda solo en el navegador y se recupera al volver.
+- Deshacer y rehacer (Ctrl+Z / Ctrl+Y).
+- Exportación a PNG (2×) y a PDF de una página con el tamaño del canvas, sin guías ni marcas de edición.
+- Proyecto en `.json` para retomarlo en otro equipo o pasárselo a alguien.
+- Tres temas de interfaz (claro, oscuro y cálido) y modo presentación.
 
+## Atajos de teclado
 
+| Acción | Atajo |
+|---|---|
+| Deshacer / rehacer | Ctrl+Z / Ctrl+Y |
+| Exportar PNG / PDF | Ctrl+E / Ctrl+P |
+| Guardar / abrir proyecto | Ctrl+S / Ctrl+O |
+| Zoom / ajustar | Ctrl + / Ctrl − / Ctrl 0 |
+| Diseño libre · presentación · diagnóstico | E · P · G |
+| Ver todos los atajos | ? |
 
-## Características
+En Mac, Ctrl es ⌘.
 
-### Canvas & Layout
-- Presets de tamaño:
-  - **16:9 (1280x720)**
-  - **4:3 (1024x768)**
-  - **Carta**
-  - **Tooltip**
-  - **Móvil**
-  - **Custom**
-- Márgenes configurables por lado (precisión de 1 px)
-- Gap entre bloques configurable
-- Control de radio del canvas y de tarjetas
+## Principios en los que se apoya
 
+Proximidad para agrupar, semejanza entre tarjetas, jerarquía entre la zona A y la B, carga cognitiva (cuántos elementos compiten por la atención) y patrones de lectura para colocar arriba a la izquierda lo que más importa. Son los mismos criterios que aplico en mis proyectos de Power BI.
 
+## Cómo está hecha
 
-### Zonas del dashboard
-- **Header configurable**
-  - Título y subtítulo editables
-  - Tamaño de fuente configurable
-  - CTA / botón de acción
+Un único `index.html` con HTML, CSS y JavaScript sin framework ni paso de compilación. Los gráficos del lienzo son SVG generados en el momento; la exportación usa [html2canvas](https://html2canvas.hertzen.com/) y [jsPDF](https://github.com/parallax/jsPDF). Funciona con teclado, respeta la preferencia de movimiento reducido y en móvil avisa de que está pensada para pantalla grande.
 
-- **Zona de filtros**
-  - Sin filtros
-  - Arriba
-  - Lateral
+Para usarla en local basta con abrir `index.html` o servir la carpeta:
 
-- **Bloques de datos dinámicos**
-  - KPIs: 0–6
-  - Zona A (principal): 1–4 visuales
-  - Zona B (secundaria): 1–4 visuales
+```bash
+python -m http.server 8000
+```
 
+---
 
-
-### Tarjetas KPI
-- Valor principal configurable (10–48 px)
-- Indicadores de tendencia (positivo / negativo)
-- Mini gráfico integrado:
-  - **Sparkline**
-  - **Columnas**
-  - O sin gráfico
-- Diseño optimizado para lectura rápida (no compite con el dato)
-
-
-
-### Tipos de visuales (15+)
-Intercambiables con un clic:
-
-- Barras, Líneas, Tabla, Cascada, Funnel, Área, Matriz, Columnas, Lollipop, Dumbbell, Slope, Drill-through, Tooltip
-
-Pensados para cubrir el 95% de casos reales en Power BI.
-
-
-
-### Estilo visual
-- Fondo de canvas configurable  
-- Fondo de tarjetas configurable  
-- Bordes personalizables  
-- Sistema visual coherente  
-
-
-
-### Guías de diseño
-- **Cuadrícula (grid system)**
-  - Activable/desactivable
-  - Alineación precisa
-
-- **Patrones de lectura**
-  - **Patrón Z** — Flujo natural: izquierda, derecha, diagonal, CTA. KPIs arriba, acción abajo derecha.
-  - **Patrón F** — Escaneo digital típico. Refuerzo en primera fila.
-  - **Modo libre**
-
-Visualización del flujo directamente en el canvas
-
-
-
-### Plantillas inteligentes
-Arranque rápido con presets:
-
-- **C-Suite** — KPIs + tendencia + tabla pro  
-- **Comercial** — Seguimiento de ventas  
-- **Analítico** — Deep dive de datos  
-- **Storytelling** — Narrativa visual  
-- **Operacional** — Monitorización diaria  
-
-
-
-### 💾 Guardar & Cargar (JSON)
-- Guarda toda la configuración como `.json`
-- Permite reutilizar layouts, versionar diseños y compartir con equipo.
-
-
-### Exportación
-- Exportación a:
-  - **PNG**
-  - **PDF**
-- Resolución optimizada (2×)
-- Listo para:
-  - Presentaciones
-  - Documentación
-  - Validación con clientes
-
-
-
-## Principios de diseño aplicados
-
-- Proximidad (Gestalt) — agrupación mediante spacing  
-- Semejanza — coherencia entre tarjetas  
-- Jerarquía visual — Zona A vs Zona B  
-- Carga cognitiva — control de elementos visibles  
-- Patrones Z y F — navegación natural del usuario  
-- Consistencia — sistema visual uniforme  
-
-
-
-## Casos de uso
-
-- Diseño previo de dashboards Power BI  
-- Validación con clientes antes de desarrollo  
-- Documentación de layout  
-- Formación en diseño de dashboards  
-- Prototipado rápido en consultoría BI  
-
-[LinkedIn](https://www.linkedin.com/in/borjamoramendez/)
+Hecha por [Borja Mora Méndez](https://borjamora.es/), Data Analyst Junior · [LinkedIn](https://www.linkedin.com/in/borjamoramendez/)

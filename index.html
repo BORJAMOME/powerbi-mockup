@@ -1,14 +1,27 @@
-<!DOCTYPE html><html lang="es" data-theme="light"><head>
-
-
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Power BI Mockup Creator · v24 · Borja Mora</title>
+<title>PBI Mockup Creator · Diseña dashboards de Power BI antes de construirlos</title>
+<meta name="description" content="Herramienta gratuita para diseñar el layout de un dashboard de Power BI antes de construirlo: plantillas, zonas, KPIs, 25 tipos de visual, patrones de lectura, diagnóstico Gestalt y exportación a PNG y PDF. Creada por Borja Mora, Data Analyst Junior.">
+<meta name="author" content="Borja Mora Méndez">
+<meta name="theme-color" content="#7a7bff">
+<link rel="canonical" href="https://borjamome.github.io/powerbi-mockup/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Borja Mora · Portfolio">
+<meta property="og:title" content="PBI Mockup Creator · Diseña dashboards de Power BI antes de construirlos">
+<meta property="og:description" content="Plantillas, zonas, KPIs, patrones de lectura y diagnóstico Gestalt en el navegador. Sin instalación.">
+<meta property="og:url" content="https://borjamome.github.io/powerbi-mockup/">
+<meta property="og:image" content="https://borjamome.github.io/powerbi-mockup/PBI_MockUp.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%237a7bff'/%3E%3Crect x='7' y='7' width='18' height='4' rx='1.2' fill='%23fff'/%3E%3Crect x='7' y='14' width='8' height='11' rx='1.2' fill='%23fff' opacity='.85'/%3E%3Crect x='17' y='14' width='8' height='5' rx='1.2' fill='%23fff' opacity='.6'/%3E%3Crect x='17' y='21' width='8' height='4' rx='1.2' fill='%23fff' opacity='.4'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-JCQPNP4RED"></script>
 <script>
@@ -27,10 +40,13 @@
   --theme-ptb:#ffffff;
   --theme-cr:#111111;
   --theme-ink:#111111;
-  --theme-mu:#888888;
+  --theme-mu:#5a5a5a;
   --theme-bd:#e5e5e5;
   --theme-ow:#fbfbfb;
   --theme-hover:#f5f5fa;
+  --theme-field:#ffffff;
+  --p-ink:#4a4bcc;
+  --pos:#3c8a37;--neg:#a3223e;
   --theme-section-open:#f7f5f0;
   --theme-chart-grid:#f0f0f0;
   --theme-chart-axis:#e0e0e0;
@@ -44,7 +60,7 @@
 }
 [data-theme="dark"]{
   --theme-bg:#0c0c14;--theme-sb:#13131f;--theme-ptb:#10101a;
-  --theme-cr:#080810;--theme-ink:#e2e2f2;--theme-mu:#6868a0;
+  --theme-cr:#080810;--theme-ink:#e2e2f2;--theme-mu:#a3a3c4;--theme-field:#1a1a28;--p-ink:#b4b5ff;
   --theme-bd:#252538;--theme-ow:#1c1c2c;--theme-hover:#21212f;
   --theme-section-open:#1a1a28;
   --theme-chart-grid:#1e1e30;--theme-chart-axis:#2a2a42;--theme-chart-txt:#505078;
@@ -52,7 +68,7 @@
 }
 [data-theme="warm"]{
   --theme-bg:#cec8be;--theme-sb:#faf7f3;--theme-ptb:#faf7f3;
-  --theme-cr:#221c12;--theme-ink:#221c12;--theme-mu:#8c7a62;
+  --theme-cr:#221c12;--theme-ink:#221c12;--theme-mu:#6b5a44;--theme-field:#fffdf9;
   --theme-bd:#d9d0be;--theme-ow:#f4f0e8;--theme-hover:#ede7dc;
   --theme-section-open:#f0e9da;
   --theme-chart-grid:#ece5d8;--theme-chart-axis:#d4cabb;--theme-chart-txt:#a89070;
@@ -71,16 +87,15 @@ body.pres #sb{transform:translateX(calc(-1 * var(--sb) - 2px));margin-left:calc(
 .em-hd{position:relative;padding:13px 16px 12px 15px}
 .em-hd::before{content:'';position:absolute;left:0;top:0;width:3px;height:100%;background:var(--p);transform-origin:top;animation:borderDraw .7s cubic-bezier(.4,0,.2,1) .4s both}
 @keyframes borderDraw{from{transform:scaleY(0);opacity:0}to{transform:scaleY(1);opacity:1}}
-.em-eyebrow{font-size:9px;font-weight:600;letter-spacing:.18em;color:var(--p);text-transform:uppercase;margin-bottom:5px;opacity:.85;font-family:var(--fn-mono)}
+.em-eyebrow{font-size:10px;font-weight:600;letter-spacing:.18em;color:var(--p);text-transform:uppercase;margin-bottom:5px;opacity:.85;font-family:var(--fn-mono)}
 .em-name{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap}
 .em-light{font-size:13.5px;font-weight:300;color:var(--theme-mu);letter-spacing:-.1px}
 .em-bold{font-size:13.5px;font-weight:800;color:var(--theme-ink);letter-spacing:-.3px}
 .em-meta{display:flex;align-items:center;margin-top:7px;gap:8px}
 .em-line{flex:1;height:.5px;position:relative;background:var(--p);transform-origin:left;transform:scaleX(0);animation:lineReveal 1.1s cubic-bezier(.76,0,.24,1) .5s forwards}
-.em-version{font-size:8.5px;font-family:var(--fn-mono);font-weight:500;color:var(--theme-mu);opacity:0;white-space:nowrap;animation:versionIn .4s ease .8s forwards;letter-spacing:.04em}
+.em-version{font-size:10px;font-family:var(--fn-mono);font-weight:500;color:var(--theme-mu);opacity:0;white-space:nowrap;animation:versionIn .4s ease .8s forwards;letter-spacing:.04em}
 @keyframes lineReveal{to{transform:scaleX(1)}}
 @keyframes versionIn{to{opacity:.7}}
-.em-version{font-size:8.5px;font-family:var(--fn-mono);font-weight:500;color:var(--theme-mu);opacity:.7;white-space:nowrap;letter-spacing:.04em}
 #sb-sc{flex:1;overflow-y:auto;padding:0}
 #sb-sc::-webkit-scrollbar{width:3px}
 #sb-sc::-webkit-scrollbar-thumb{background:var(--theme-bd);border-radius:3px}
@@ -89,14 +104,6 @@ body.pres #sb{transform:translateX(calc(-1 * var(--sb) - 2px));margin-left:calc(
 #sb-sc{display:flex;flex-direction:column}
 .cs{border-bottom:.5px solid var(--theme-bd)}
 /* Sidebar reorder — Plantillas primero (entry point natural) */
-.cs:nth-child(1){order:2}  /* Historia */
-.cs:nth-child(2){order:3}  /* Canvas */
-.cs:nth-child(3){order:4}  /* Layout */
-.cs:nth-child(4){order:7}  /* Proporciones */
-.cs:nth-child(5){order:5}  /* Estilo */
-.cs:nth-child(6){order:6}  /* KPIs */
-.cs:nth-child(7){order:8}  /* Visuales */
-.cs:nth-child(8){order:1}  /* Plantillas — primero */
 .cs-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 12px 16px;cursor:pointer;user-select:none;transition:background var(--tr)}
 .cs-hd:hover{background:var(--theme-hover)}
 .cs-label{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
@@ -105,18 +112,13 @@ body.pres #sb{transform:translateX(calc(-1 * var(--sb) - 2px));margin-left:calc(
 .cs-texts{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0}
 .cs-title{font-size:12.5px;font-weight:600;color:var(--theme-ink);letter-spacing:-.005em}
 .cs-title::before{font-family:var(--fn-mono);font-size:10px;color:var(--theme-mu);font-weight:500;letter-spacing:.04em;margin-right:9px;opacity:.7}
-.cs:nth-child(8) .cs-title::before{content:"01"}
-.cs:nth-child(1) .cs-title::before{content:"02"}
-.cs:nth-child(2) .cs-title::before{content:"03"}
-.cs:nth-child(3) .cs-title::before{content:"04"}
-.cs:nth-child(5) .cs-title::before{content:"05"}
-.cs:nth-child(6) .cs-title::before{content:"06"}
-.cs:nth-child(4) .cs-title::before{content:"07"}
-.cs:nth-child(7) .cs-title::before{content:"08"}
+#sb-sc{counter-reset:cs}
+.cs{counter-increment:cs}
+.cs-title::before{content:counter(cs,decimal-leading-zero)}
 .cs:has(.cs-body.open) > .cs-hd > .cs-label > .cs-texts > .cs-title::before{color:var(--p);opacity:1}
 .cs-subtitle{font-size:11px;color:var(--theme-mu);font-weight:400;letter-spacing:0;margin-top:1px;padding-left:23px}
-.cs-num{display:inline-block;font-size:8px;font-weight:700;color:var(--p);letter-spacing:.3px;margin-right:2px;opacity:.7}
-.cs-chevron{font-size:9px;color:var(--theme-mu);transition:transform var(--tr)}
+.cs-num{display:inline-block;font-size:9.5px;font-weight:700;color:var(--p);letter-spacing:.3px;margin-right:2px;opacity:.7}
+.cs-chevron{font-size:10px;color:var(--theme-mu);transition:transform var(--tr)}
 .cs-chevron.open{transform:rotate(180deg)}
 .cs-body{padding:10px 14px 12px;display:none}
 .cs-body.open{display:block}
@@ -133,7 +135,7 @@ body.pres #sb{transform:translateX(calc(-1 * var(--sb) - 2px));margin-left:calc(
 .cr:last-child{margin-bottom:0}
 .cl{font-size:11px;color:var(--theme-ink);font-weight:500;display:flex;align-items:center;gap:4px;min-width:72px;flex-shrink:0;text-transform:none;letter-spacing:normal}
 .stp{display:flex;align-items:center;border:.5px solid var(--theme-bd);border-radius:5px;overflow:hidden;flex-shrink:0;background:transparent}
-.stp-b{width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:#fff;border:none;cursor:pointer;font-size:15px;color:var(--theme-ink);transition:background var(--tr);user-select:none;flex-shrink:0;font-family:var(--fn)}
+.stp-b{width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--theme-field);border:none;cursor:pointer;font-size:15px;color:var(--theme-ink);transition:background var(--tr);user-select:none;flex-shrink:0;font-family:var(--fn)}
 .stp-b:hover{background:var(--pl);color:var(--p)}
 .stp-b:active{background:var(--p);color:#fff}
 .stp-v{min-width:34px;text-align:center;font-size:12px;font-weight:600;color:var(--theme-ink);border-left:.5px solid var(--theme-bd);border-right:.5px solid var(--theme-bd);line-height:30px;padding:0 4px;font-family:var(--fn-mono);font-feature-settings:'tnum';letter-spacing:0}
@@ -151,26 +153,26 @@ body.pres #sb{transform:translateX(calc(-1 * var(--sb) - 2px));margin-left:calc(
 .tg-sl::before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform var(--tr);box-shadow:0 1px 3px rgba(0,0,0,.25)}
 .tg input:checked+.tg-sl{background:var(--p)}
 .tg input:checked+.tg-sl::before{transform:translateX(14px)}
-.swts{display:flex;gap:4px;flex-wrap:wrap;background:#fff;padding:6px;border-radius:7px}
+.swts{display:flex;gap:4px;flex-wrap:wrap;background:var(--theme-field);padding:6px;border-radius:7px}
 .sw2{width:22px;height:22px;border-radius:4px;cursor:pointer;border:1.5px solid transparent;transition:all var(--tr);position:relative;flex-shrink:0}
 .sw2:hover{transform:scale(1.12);z-index:1}
 .sw2-add{width:22px;height:22px;border-radius:4px;cursor:pointer;border:1.5px dashed var(--theme-bd);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--theme-mu);transition:all var(--tr);flex-shrink:0;line-height:1;background:transparent;font-family:var(--fn)}
 .sw2-add:hover{border-color:var(--p);color:var(--p);background:var(--pl)}
 .sw2-custom{width:22px;height:22px;border-radius:4px;border:1.5px solid var(--p);position:relative;flex-shrink:0;cursor:pointer;transition:all var(--tr)}
-.sw2-custom::after{content:'✎';position:absolute;bottom:-1px;right:-1px;font-size:7px;background:var(--p);color:#fff;border-radius:2px;width:9px;height:9px;display:flex;align-items:center;justify-content:center;line-height:9px;text-align:center}
-.cp-row{display:flex;align-items:center;gap:6px;margin-top:6px;padding:6px 8px;background:#ffffff;border:.5px solid var(--theme-bd);border-radius:6px}
+.sw2-custom::after{content:'✎';position:absolute;bottom:-1px;right:-1px;font-size:9px;background:var(--p);color:#fff;border-radius:2px;width:9px;height:9px;display:flex;align-items:center;justify-content:center;line-height:9px;text-align:center}
+.cp-row{display:flex;align-items:center;gap:6px;margin-top:6px;padding:6px 8px;background:var(--theme-field);border:.5px solid var(--theme-bd);border-radius:6px}
 .cp-swatch{width:20px;height:20px;border-radius:4px;border:.5px solid rgba(0,0,0,.1);flex-shrink:0;cursor:pointer;padding:0;appearance:none;-webkit-appearance:none;overflow:hidden}
 .cp-swatch::-webkit-color-swatch-wrapper{padding:0}
 .cp-swatch::-webkit-color-swatch{border:none}
 .cp-hex{flex:1;font-size:10px;font-family:var(--fn-mono);color:var(--theme-ink);background:transparent;border:none;outline:none;letter-spacing:.04em;min-width:0;padding:0}
-.cp-clear{font-size:9px;color:var(--theme-mu);cursor:pointer;padding:2px 6px;border:.5px solid var(--theme-bd);border-radius:3px;background:transparent;font-family:var(--fn);transition:all var(--tr);white-space:nowrap;flex-shrink:0}
+.cp-clear{font-size:10px;color:var(--theme-mu);cursor:pointer;padding:2px 6px;border:.5px solid var(--theme-bd);border-radius:3px;background:transparent;font-family:var(--fn);transition:all var(--tr);white-space:nowrap;flex-shrink:0}
 .cp-clear:hover{border-color:var(--p);color:var(--p)}
 .sw2.on{border-color:var(--p);transform:scale(1.1)}
-.sw2.on::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--p)}
+.sw2.on::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--p)}
 .pg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:8px}
-.pb{padding:5px 3px;border-radius:5px;font-size:9.5px;cursor:pointer;border:.5px solid var(--theme-bd);background:var(--theme-sb);color:var(--theme-mu);transition:all var(--tr);text-align:center;line-height:1.3}
+.pb{padding:5px 3px;border-radius:5px;font-size:10.5px;cursor:pointer;border:.5px solid var(--theme-bd);background:var(--theme-sb);color:var(--theme-mu);transition:all var(--tr);text-align:center;line-height:1.3}
 .pb .pn{color:var(--theme-ink);font-weight:600;font-size:10px;display:block}
-.pb .ps{font-size:8.5px;color:var(--theme-mu)}
+.pb .ps{font-size:10px;color:var(--theme-mu)}
 .pb.on{background:var(--pl);border-color:var(--p)}
 .pb.on .pn{color:var(--p)}
 .pb:hover:not(.on){border-color:var(--p);background:var(--theme-hover)}
@@ -180,7 +182,7 @@ body.pres #sb{transform:translateX(calc(-1 * var(--sb) - 2px));margin-left:calc(
 .custom-size span{font-size:10px;color:var(--theme-mu)}
 
 /* ── BOTTOM BTNS ── */
-.dl-group{display:flex;gap:6px;margin:10px 14px}
+.dl-group{display:flex;flex-direction:column;gap:0;margin:12px 14px 10px}
 /* ── SPLIT EXPORT BUTTON ── */
 .export-split{position:relative;display:flex;width:100%;border-radius:8px;overflow:visible}
 .export-main{flex:1;padding:9px 14px;background:var(--p);color:#fff;border:none;border-radius:8px 0 0 8px;font-family:var(--fn);font-size:12px;font-weight:700;cursor:pointer;transition:all var(--tr);display:flex;align-items:center;gap:7px;white-space:nowrap}
@@ -198,8 +200,8 @@ body.pres #sb{transform:translateX(calc(-1 * var(--sb) - 2px));margin-left:calc(
 .export-opt-icon{width:18px;height:18px;display:flex;align-items:center;justify-content:center;color:var(--p);flex-shrink:0}
 .export-opt-texts{flex:1;display:flex;flex-direction:column;gap:1px}
 .export-opt-label{font-size:11px;font-weight:600;color:var(--theme-ink)}
-.export-opt-hint{font-size:9px;color:var(--theme-mu)}
-.export-opt-kbd{font-size:9px;color:var(--theme-mu);font-family:var(--fn);background:var(--theme-tag-bg);border:.5px solid var(--theme-bd);border-radius:3px;padding:1px 5px;flex-shrink:0}
+.export-opt-hint{font-size:10px;color:var(--theme-mu)}
+.export-opt-kbd{font-size:10px;color:var(--theme-mu);font-family:var(--fn);background:var(--theme-tag-bg);border:.5px solid var(--theme-bd);border-radius:3px;padding:1px 5px;flex-shrink:0}
 
 /* ── MAIN ── */
 #main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;transition:all .35s cubic-bezier(.4,0,.2,1)}
@@ -210,7 +212,7 @@ body.pres #main{width:100%}
 body.pres #ptb{display:none}
 .dp{background:var(--theme-ow);border:.5px solid var(--theme-bd);border-radius:5px;padding:4px 9px;font-size:10.5px;color:var(--theme-mu);font-weight:500;font-family:var(--fn-mono);letter-spacing:.02em;font-feature-settings:'tnum';white-space:nowrap;flex-shrink:0;display:inline-flex;align-items:center}
 .dp strong{color:var(--theme-ink);font-weight:600}
-.ht{font-size:9.5px;color:var(--theme-mu);margin-left:auto;display:flex;align-items:center;gap:8px}
+.ht{font-size:10.5px;color:var(--theme-mu);margin-left:auto;display:flex;align-items:center;gap:8px}
 #gestalt-trigger{display:flex;align-items:center;gap:6px;padding:0 12px;height:30px;border-radius:6px;border:.5px solid var(--theme-bd);background:transparent;cursor:pointer;font-size:11px;font-weight:600;color:var(--theme-mu);font-family:var(--fn);transition:all var(--tr);white-space:nowrap;letter-spacing:0}
 #gestalt-trigger:hover{background:var(--pl);color:var(--p);border-color:var(--p)}
 #gestalt-trigger.on{background:var(--pl);color:var(--p);border-color:var(--p)}
@@ -228,7 +230,7 @@ body.pres #ptb{display:none}
 body.pres #canvas-tb{display:none}
 .tb-info{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .tb-info-sep{width:.5px;height:14px;background:var(--theme-bd);flex-shrink:0}
-.tb-label{font-size:9.5px;font-weight:500;color:var(--theme-mu);text-transform:uppercase;letter-spacing:.12em;margin-right:2px;font-family:var(--fn-mono);flex-shrink:0}
+.tb-label{font-size:10.5px;font-weight:500;color:var(--theme-mu);text-transform:uppercase;letter-spacing:.12em;margin-right:2px;font-family:var(--fn-mono);flex-shrink:0}
 
 /* Toolbar responsive — colapso progresivo */
 @media (max-width:1240px){
@@ -331,11 +333,11 @@ body.edit-mode .vsl[data-k="hdr"] .vsl-badge,body.edit-mode .vsl[data-k^="kpi-"]
 .em-measure{position:absolute;background:rgba(20,20,30,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;font-family:var(--fn-mono);font-size:10.5px;font-weight:500;letter-spacing:.04em;padding:4px 9px;border-radius:4px;pointer-events:none;z-index:45;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.22);font-feature-settings:'tnum'}
 
 /* ── PRINCIPLES BAR (eliminada) ── */
-.ptag{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--theme-mu);white-space:nowrap}
+.ptag{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--theme-mu);white-space:nowrap}
 .pdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;box-shadow:0 0 4px currentColor}
 .pbar-sep{width:.5px;height:12px;background:var(--theme-bd);flex-shrink:0}
-.pbar-label{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--theme-mu);white-space:nowrap;flex-shrink:0}
-.gchip{display:flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:600;cursor:pointer;border:.5px solid var(--theme-bd);color:var(--theme-mu);background:transparent;transition:all .12s;white-space:nowrap;font-family:var(--fn)}
+.pbar-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--theme-mu);white-space:nowrap;flex-shrink:0}
+.gchip{display:flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;border:.5px solid var(--theme-bd);color:var(--theme-mu);background:transparent;transition:all .12s;white-space:nowrap;font-family:var(--fn)}
 .gchip:hover{border-color:var(--p);color:var(--p)}
 .gchip.on{background:var(--p);color:#fff;border-color:var(--p)}
 .gchip-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:currentColor}
@@ -392,7 +394,7 @@ body.pres #gestalt-panel{display:none}
 .gp-body::-webkit-scrollbar-thumb{background:var(--theme-bd);border-radius:3px}
 
 .gp-section{margin-bottom:16px}
-.gp-section-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--theme-mu);margin-bottom:8px}
+.gp-section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--theme-mu);margin-bottom:8px}
 .gp-metric{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:7px;background:var(--theme-ow);border:.5px solid var(--theme-bd);margin-bottom:5px}
 .gp-metric-name{font-size:11px;color:var(--theme-ink);font-weight:500}
 .gp-metric-val{font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px}
@@ -413,7 +415,7 @@ body.pres #gestalt-panel{display:none}
 /* ── NAV GESTALT (lista editorial con estado semántico) ── */
 .gp-nav{display:flex;flex-direction:column;gap:0;padding:4px 0 6px;border-bottom:.5px solid rgba(0,0,0,.06);border-top:none;flex-shrink:0;background:rgba(0,0,0,.015)}
 [data-theme="dark"] .gp-nav{border-bottom-color:rgba(255,255,255,.07);background:rgba(255,255,255,.015)}
-.gp-nav-label{font-family:var(--fn-mono);font-size:9.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--theme-mu);padding:10px 18px 6px;line-height:1}
+.gp-nav-label{font-family:var(--fn-mono);font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--theme-mu);padding:10px 18px 6px;line-height:1}
 .gp-nav-btn{position:relative;display:flex;align-items:center;gap:10px;padding:10px 18px;border:none;border-left:2px solid transparent;background:transparent;cursor:pointer;font-family:var(--fn);color:var(--theme-ink);transition:background .15s ease,border-color .15s ease;text-align:left;width:100%;letter-spacing:0}
 .gp-nav-btn .gp-nav-num{display:none}
 .gp-nav-btn .gp-nav-name{flex:1;font-size:12.5px;font-weight:500;letter-spacing:-.005em;color:var(--theme-ink);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -441,7 +443,7 @@ body.pres #gestalt-panel{display:none}
 .gp-illu-half{flex:1;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:5px}
 .gp-illu-half.good{background:rgba(59,138,55,.06);border-right:.5px solid var(--theme-bd)}
 .gp-illu-half.bad{background:rgba(193,48,48,.05)}
-.gp-illu-label{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.gp-illu-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .gp-illu-half.good .gp-illu-label{color:#3c8a37}
 .gp-illu-half.bad .gp-illu-label{color:#c13030}
 /* reglas de diagnóstico */
@@ -470,14 +472,14 @@ body.pres #credit{display:none}
 .credit-li-btn{display:flex;align-items:center;justify-content:center;text-decoration:none;opacity:.65;transition:opacity .15s;flex-shrink:0}
 .credit-li-btn:hover{opacity:1}
 .credit-product{font-size:10.5px;font-weight:600;letter-spacing:-.1px;background:linear-gradient(90deg,#a78bfa,#7a7bff,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.credit-version{font-size:9px;font-weight:500;color:rgba(255,255,255,.35)}
+.credit-version{font-size:10px;font-weight:500;color:rgba(255,255,255,.35)}
 
 /* ── BG MODE SELECTOR (header / filtros) ── */
 .bgm-row{display:flex;gap:3px;margin-top:4px;margin-bottom:0}
 .bgm-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 3px 5px;border-radius:6px;border:.5px solid var(--theme-bd);background:var(--theme-sb);cursor:pointer;font-family:var(--fn);transition:all var(--tr)}
 .bgm-btn.on{background:var(--pl);border-color:var(--p)}
 .bgm-btn:hover:not(.on){border-color:var(--p);background:var(--theme-hover)}
-.bgm-btn .bgm-lbl{font-size:9px;font-weight:500;color:var(--theme-mu);transition:color var(--tr)}
+.bgm-btn .bgm-lbl{font-size:10px;font-weight:500;color:var(--theme-mu);transition:color var(--tr)}
 .bgm-btn.on .bgm-lbl{color:var(--p);font-weight:700}
 .bgm-custom-row{display:flex;align-items:center;gap:6px;margin-top:5px;padding:5px 8px;background:var(--theme-sb);border:.5px solid var(--theme-bd);border-radius:6px}
 
@@ -485,16 +487,16 @@ body.pres #credit{display:none}
 .vsl{position:absolute;cursor:pointer;overflow:hidden;transition:box-shadow var(--tr)}
 .vsl:hover{box-shadow:0 0 0 2px var(--p) inset}
 .vsl:hover .vsl-badge{opacity:1}
-.vsl-badge{position:absolute;top:5px;right:6px;background:var(--p);color:#fff;font-size:7px;font-weight:700;padding:1px 5px;border-radius:3px;opacity:0;transition:opacity var(--tr);pointer-events:none;z-index:5;text-transform:uppercase;letter-spacing:.5px}
+.vsl-badge{position:absolute;top:5px;right:6px;background:var(--p);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;opacity:0;transition:opacity var(--tr);pointer-events:none;z-index:5;text-transform:uppercase;letter-spacing:.5px}
 
 /* ── MISC CONTROLS ── */
-.sp-chip{display:inline-flex;align-items:center;gap:4px;background:var(--theme-tag-bg);border:.5px solid var(--theme-bd);border-radius:4px;padding:2px 7px;font-size:9px;color:var(--theme-mu);font-weight:500}
+.sp-chip{display:inline-flex;align-items:center;gap:4px;background:var(--theme-tag-bg);border:.5px solid var(--theme-bd);border-radius:4px;padding:2px 7px;font-size:10px;color:var(--theme-mu);font-weight:500}
 .sp-chip strong{color:var(--theme-ink);font-weight:700}
-.sdiv{font-size:9.5px;font-weight:500;color:var(--theme-mu);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;margin-top:2px;display:flex;align-items:center;gap:4px;font-family:var(--fn-mono)}
-.info-chip{display:flex;align-items:center;gap:5px;background:var(--pl);border-radius:4px;padding:5px 8px;font-size:9.5px;color:#4a4bcc;font-weight:500;margin-top:6px;line-height:1.45}
+.sdiv{font-size:10.5px;font-weight:500;color:var(--theme-mu);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;margin-top:2px;display:flex;align-items:center;gap:4px;font-family:var(--fn-mono)}
+.info-chip{display:flex;align-items:center;gap:5px;background:var(--pl);border-radius:4px;padding:5px 8px;font-size:10.5px;color:var(--p-ink);font-weight:500;margin-top:6px;line-height:1.45}
 
 /* ── TOOLTIP ── */
-.tip-btn{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;border:.5px solid var(--theme-bd);background:var(--theme-ow);color:var(--theme-mu);font-size:8.5px;cursor:default;flex-shrink:0;position:relative;text-transform:none;letter-spacing:normal;font-weight:400}
+.tip-btn{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:50%;border:.5px solid var(--theme-bd);background:var(--theme-ow);color:var(--theme-mu);font-size:10px;cursor:default;flex-shrink:0;position:relative;text-transform:none;letter-spacing:normal;font-weight:400}
 .tip-btn:hover .tip-box{display:block}
 .tip-box{display:none;position:absolute;left:18px;top:-4px;width:210px;background:#1a1a1a;color:#f0f0f0;font-size:10.5px;line-height:1.5;padding:8px 10px;border-radius:6px;z-index:9999;font-weight:400;text-transform:none;letter-spacing:normal;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.4);white-space:normal}
 .tip-box::before{content:'';position:absolute;left:-4px;top:8px;border-top:4px solid transparent;border-bottom:4px solid transparent;border-right:4px solid #1a1a1a}
@@ -502,22 +504,22 @@ body.pres #credit{display:none}
 /* ── PATTERN ── */
 .pattern-panel{margin-top:8px;border:.5px solid var(--theme-bd);border-radius:7px;overflow:hidden;background:var(--theme-sb)}
 .pattern-tab-bar{display:flex;border-bottom:.5px solid var(--theme-bd)}
-.pattern-tab{flex:1;padding:7px 4px;font-size:9px;font-weight:700;text-align:center;cursor:pointer;color:var(--theme-mu);border:none;background:transparent;transition:all var(--tr);font-family:var(--fn);text-transform:uppercase;letter-spacing:.6px}
+.pattern-tab{flex:1;padding:7px 4px;font-size:10px;font-weight:700;text-align:center;cursor:pointer;color:var(--theme-mu);border:none;background:transparent;transition:all var(--tr);font-family:var(--fn);text-transform:uppercase;letter-spacing:.6px}
 .pattern-tab.on{background:var(--theme-ink);color:var(--theme-sb)}
 .pattern-tab:hover:not(.on){background:var(--theme-hover);color:var(--theme-ink)}
 .pattern-body{padding:10px 12px 12px}
 .pattern-desc{font-size:10px;color:var(--theme-mu);line-height:1.5;margin-bottom:8px}
 .pattern-preview-vis{width:100%;height:80px;display:block;background:var(--theme-ow);border-radius:4px;border:.5px solid var(--theme-bd)}
 .pattern-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-.pattern-leg-item{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--theme-mu)}
+.pattern-leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--theme-mu)}
 .pattern-leg-dot{width:8px;height:2px;border-radius:1px;flex-shrink:0}
 
 /* ── TEMPLATES SECTION ── */
 .tpl-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:10px}
-.tpl-btn{padding:7px 6px;border-radius:5px;border:.5px solid var(--theme-bd);background:#fff;cursor:pointer;transition:all var(--tr);text-align:center}
+.tpl-btn{padding:7px 6px;border-radius:5px;border:.5px solid var(--theme-bd);background:var(--theme-field);cursor:pointer;transition:all var(--tr);text-align:center}
 .tpl-btn:hover{border-color:var(--p);background:var(--pl)}
 .tpl-btn .tpl-n{font-size:10px;font-weight:700;color:var(--theme-ink);display:block;margin-bottom:2px}
-.tpl-btn .tpl-d{font-size:8.5px;color:var(--theme-mu);display:block;line-height:1.3}
+.tpl-btn .tpl-d{font-size:10px;color:var(--theme-mu);display:block;line-height:1.3}
 .tpl-actions{display:flex;gap:5px}
 .tpl-act{flex:1;padding:6px 8px;border-radius:5px;border:.5px solid var(--theme-bd);background:var(--theme-ow);cursor:pointer;font-family:var(--fn);font-size:10.5px;font-weight:600;color:var(--theme-ink);transition:all var(--tr);display:flex;align-items:center;justify-content:center;gap:4px}
 .tpl-act:hover{border-color:var(--p);color:var(--p)}
@@ -530,7 +532,7 @@ body.pres #pres-bar{display:flex}
 .pres-item{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:rgba(255,255,255,.7);cursor:pointer;padding:4px 10px;border-radius:20px;transition:all var(--tr)}
 .pres-item:hover{background:rgba(255,255,255,.1);color:#fff}
 .pres-item svg{flex-shrink:0}
-.pres-key{font-size:8.5px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);padding:1px 5px;border-radius:3px;font-weight:700;letter-spacing:.5px}
+.pres-key{font-size:10px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);padding:1px 5px;border-radius:3px;font-weight:700;letter-spacing:.5px}
 
 /* ── TOAST ── */
 #toast-zone{position:fixed;bottom:80px;right:24px;z-index:9998;display:flex;flex-direction:column;gap:8px;pointer-events:none}
@@ -556,23 +558,23 @@ body.pres #pres-bar{display:flex}
 .vpick-group:last-child{border-bottom:none}
 .vpick-ghd{display:flex;align-items:center;justify-content:space-between;padding:7px 8px;cursor:pointer;user-select:none;border-radius:4px;transition:background var(--tr)}
 .vpick-ghd:hover{background:var(--theme-hover)}
-.vpick-glabel{font-size:9px;font-weight:700;color:var(--theme-mu);text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:5px}
-.vpick-gchev{font-size:8px;color:var(--theme-mu);transition:transform .15s ease;flex-shrink:0}
+.vpick-glabel{font-size:10px;font-weight:700;color:var(--theme-mu);text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:5px}
+.vpick-gchev{font-size:9.5px;color:var(--theme-mu);transition:transform .15s ease;flex-shrink:0}
 .vpick-gbody{display:none;padding:4px 4px 8px}
 .vpick-gbody.open{display:block}
 .vpick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
 .vpick-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px 4px;border-radius:5px;border:.5px solid transparent;cursor:pointer;background:transparent;transition:all .12s ease;position:relative;color:var(--theme-mu)}
 .vpick-btn:hover{background:var(--theme-hover);border-color:var(--theme-bd);color:var(--theme-ink)}
 .vpick-btn.on{background:var(--pl);border-color:var(--p);color:var(--p)}
-.vpick-lbl{font-size:7px;font-weight:500;text-align:center;line-height:1.2;max-width:40px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.vpick-tip{position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:9px;font-weight:600;padding:3px 7px;border-radius:4px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:100}
+.vpick-lbl{font-size:9px;font-weight:500;text-align:center;line-height:1.2;max-width:40px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vpick-tip{position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:#111;color:#fff;font-size:10px;font-weight:600;padding:3px 7px;border-radius:4px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:100}
 .vpick-btn:hover .vpick-tip{opacity:1}
 .vpick-active-dot{width:5px;height:5px;border-radius:50%;background:var(--p);flex-shrink:0}
 
 /* ── STORY SECTION ── */
 .story-intro{font-size:10px;color:var(--theme-mu);line-height:1.55;margin-bottom:10px;padding:8px 10px;background:var(--theme-tag-bg);border-radius:6px;border-left:2px solid var(--p)}
 .story-field{margin-bottom:10px}
-.story-label{font-size:9px;font-weight:700;color:var(--theme-mu);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;display:flex;align-items:center;gap:4px}
+.story-label{font-size:10px;font-weight:700;color:var(--theme-mu);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;display:flex;align-items:center;gap:4px}
 .story-label-req{width:5px;height:5px;border-radius:50%;background:var(--p);flex-shrink:0}
 .story-label-req.done{background:#3c8a37}
 .story-chips{display:flex;gap:4px;flex-wrap:wrap}
@@ -585,14 +587,14 @@ body.pres #pres-bar{display:flex}
 .story-bar-wrap{margin:10px 0 8px;display:flex;align-items:center;gap:8px}
 .story-bar-track{flex:1;height:3px;background:var(--theme-bd);border-radius:2px;overflow:hidden}
 .story-bar-fill{height:100%;background:linear-gradient(90deg,var(--p),#3c8a37);border-radius:2px;transition:width .4s ease}
-.story-bar-pct{font-size:9px;font-weight:700;color:var(--theme-mu);flex-shrink:0;min-width:24px;text-align:right}
+.story-bar-pct{font-size:10px;font-weight:700;color:var(--theme-mu);flex-shrink:0;min-width:24px;text-align:right}
 .story-suggestion{margin-top:8px;padding:9px 11px;border:.5px solid rgba(122,123,255,.3);border-radius:7px;background:var(--pl);display:none}
 .story-suggestion.show{display:block}
-.story-sug-label{font-size:8.5px;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+.story-sug-label{font-size:10px;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
 .story-sug-text{font-size:11px;color:var(--theme-ink);line-height:1.5;margin-bottom:6px}
-.story-sug-btn{font-size:9px;font-weight:700;color:var(--p);cursor:pointer;padding:3px 8px;border:.5px solid rgba(122,123,255,.35);border-radius:20px;background:transparent;font-family:var(--fn);transition:all var(--tr)}
+.story-sug-btn{font-size:10px;font-weight:700;color:var(--p);cursor:pointer;padding:3px 8px;border:.5px solid rgba(122,123,255,.35);border-radius:20px;background:transparent;font-family:var(--fn);transition:all var(--tr)}
 .story-sug-btn:hover{background:var(--p);color:#fff}
-.story-preview-badge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:3px 8px;border-radius:4px;background:rgba(60,138,55,.1);border:.5px solid rgba(60,138,55,.25);font-size:9px;color:#2a6a25;font-weight:600}
+.story-preview-badge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:3px 8px;border-radius:4px;background:rgba(60,138,55,.1);border:.5px solid rgba(60,138,55,.25);font-size:10px;color:#2a6a25;font-weight:600}
 /* ── FORMAT TOGGLE BUTTONS (B / I) ── */
 .fmt-btn{width:26px;height:26px;border-radius:5px;border:.5px solid var(--theme-bd);background:var(--theme-sb);color:var(--theme-mu);font-family:var(--fn);font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all var(--tr);flex-shrink:0;line-height:1;padding:0}
 .fmt-btn.on{background:var(--p);color:#fff;border-color:var(--p)}
@@ -609,7 +611,7 @@ body.pres #pres-bar{display:flex}
 .prop-zone-pct{font-size:14px;font-weight:700;line-height:1}
 .prop-zone-px{font-size:10px;color:var(--theme-mu);font-family:var(--fn-mono);font-feature-settings:'tnum'}
 .prop-zone-inner{display:flex;flex-direction:column;gap:3px;min-width:0}
-.prop-zone-weight{font-size:9px;font-weight:700;color:var(--theme-mu);font-family:var(--fn-mono);min-width:14px;text-align:right;flex-shrink:0;align-self:flex-end;padding-bottom:2px}
+.prop-zone-weight{font-size:10px;font-weight:700;color:var(--theme-mu);font-family:var(--fn-mono);min-width:14px;text-align:right;flex-shrink:0;align-self:flex-end;padding-bottom:2px}
 /* Custom range slider */
 .prop-slider{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:3px;outline:none;cursor:pointer;transition:height .12s}
 .prop-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;border:1.5px solid currentColor;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.18);transition:transform .12s}
@@ -617,393 +619,523 @@ body.pres #pres-bar{display:flex}
 .prop-slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#fff;border:1.5px solid currentColor;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.18)}
 .prop-reset{font-size:10px;font-weight:600;color:var(--theme-ink);cursor:pointer;padding:6px 14px;border:.5px solid var(--theme-bd);border-radius:8px;background:var(--theme-sb);font-family:var(--fn);transition:all var(--tr);box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .prop-reset:hover{border-color:var(--p);color:var(--p);background:var(--pl)}
-.fmt-btn-i{font-style:italic;font-weight:400;font-size:12px}</style>
+.fmt-btn-i{font-style:italic;font-weight:400;font-size:12px}
+/* ═══════════════════════════════════════════════════════════════
+   v25 · capa de acabado: accesibilidad, coherencia con borjamora.es
+   y componentes nuevos (historial, onboarding, atajos, aviso móvil)
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="dark"]{--pl:rgba(122,123,255,.16);--p-soft:rgba(122,123,255,.1)}
+::selection{background:var(--p);color:#fff}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip-link{position:fixed;top:8px;left:8px;z-index:10000;background:var(--theme-ink);color:var(--theme-sb);padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;transform:translateY(-200%);transition:transform .2s ease}
+.skip-link:focus{transform:none}
+:focus-visible{outline:2px solid var(--p);outline-offset:2px}
+.ti:focus-visible,.story-textarea:focus-visible,.cp-hex:focus-visible,.custom-size input:focus-visible{outline:none;border-color:var(--p);box-shadow:0 0 0 3px rgba(122,123,255,.22)}
+button{font-family:var(--fn)}
+button:disabled{cursor:not-allowed}
+
+/* Cabeceras de sección como botones reales */
+button.cs-hd{width:100%;border:none;background:transparent;text-align:left;font:inherit;color:inherit}
+.cs-hd:focus-visible{outline-offset:-2px}
+.cs-divider{height:1px;border-top:.5px solid var(--theme-bd);margin:12px 0 8px}
+
+/* Ayudas «?» accesibles con teclado */
+.tip-btn{cursor:help}
+.tip-btn:focus-visible .tip-box,.tip-btn:focus .tip-box{display:block}
+
+/* Barra superior */
+.tb-info{gap:6px}
+.hist-grp{display:flex;align-items:center;gap:2px;margin-left:6px;padding-left:10px;border-left:.5px solid var(--theme-bd)}
+.ctb-btn.icon-only{padding:0;width:30px;justify-content:center}
+.ctb-btn:disabled{opacity:.35;pointer-events:none}
+.zoom-fit{border-left:.5px solid var(--theme-bd)!important}
+#gestalt-trigger{color:var(--theme-ink)}
+.gst-score{display:none;min-width:18px;height:18px;padding:0 5px;border-radius:9px;font-family:var(--fn-mono);font-size:10px;font-weight:700;line-height:18px;text-align:center}
+.gst-score.ok,.gst-score.warn,.gst-score.bad{display:inline-block}
+.gst-score.ok{background:rgba(60,138,55,.14);color:var(--pos)}
+.gst-score.warn{background:rgba(217,119,6,.14);color:#a15c00}
+.gst-score.bad{background:rgba(163,34,62,.12);color:var(--neg)}
+[data-theme="dark"] .gst-score.ok{color:#7fd08a}
+[data-theme="dark"] .gst-score.warn{color:#f5a54a}
+[data-theme="dark"] .gst-score.bad{color:#f08aa0}
+
+/* Banner de diseño libre */
+.em-sel-indicator{font-size:10px;color:rgba(255,255,255,.6);padding:0 6px;border-left:.5px solid rgba(255,255,255,.15);margin-left:2px}
+#em-banner button.em-del{color:#ff9aa8}
+#em-banner button.em-align{background:rgba(122,123,255,.22);border:.5px solid rgba(122,123,255,.45);color:#c9caff;border-radius:5px;padding:0 10px;height:22px;display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600}
+
+/* Exportación */
+.export-opt{width:100%;border:none;border-bottom:.5px solid var(--theme-bd);background:transparent;text-align:left;font:inherit;color:inherit}
+.export-opt:focus-visible{outline-offset:-2px}
+.export-opt-kbd:empty{display:none}
+.export-main.ld,.export-arrow.ld{background:var(--theme-mu);cursor:wait;pointer-events:none}
+.autosave-note{margin-top:7px;font-size:10.5px;color:var(--theme-mu);text-align:center;letter-spacing:0;transition:color .3s ease}
+.autosave-note.saved{color:var(--pos)}
+
+/* Pie con autoría (rol idéntico al portfolio) */
+.sb-shortcuts{font-family:var(--fn);letter-spacing:0}
+.sb-credit-name{display:flex;flex-direction:column;gap:1px;text-decoration:none;color:inherit;border-radius:6px;padding:3px 4px;margin:-3px -4px}
+.sb-credit-name:hover .sb-credit-strong{color:var(--p)}
+.sb-credit-strong{font-size:12px;font-weight:700;color:var(--theme-ink);transition:color var(--tr)}
+.sb-credit-role{font-size:10.5px;color:var(--theme-mu);font-weight:500}
+
+/* Panel Gestalt: oculto de verdad cuando está cerrado */
+#gestalt-panel{visibility:hidden;transition:transform .32s cubic-bezier(.4,0,.2,1),visibility 0s linear .32s}
+#gestalt-panel.open{visibility:visible;transition:transform .32s cubic-bezier(.4,0,.2,1),visibility 0s}
+.gp-title{margin:0}
+.gp-nav-btn:focus-visible{outline-offset:-2px}
+
+/* Presentación */
+.pres-item{border:none;background:transparent;font-family:var(--fn)}
+kbd.pres-key{font-family:var(--fn-mono)}
+
+/* Onboarding */
+.onboard{position:absolute;left:20px;bottom:20px;z-index:60;width:min(340px,calc(100% - 40px));background:var(--theme-sb);color:var(--theme-ink);border:.5px solid var(--theme-bd);border-radius:12px;padding:16px 18px 14px;box-shadow:0 18px 50px rgba(17,17,40,.18),0 2px 8px rgba(17,17,40,.08);animation:onboardIn .45s cubic-bezier(.16,1,.3,1) both}
+.onboard[hidden]{display:none}
+@keyframes onboardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.onboard-eyebrow{font-family:var(--fn-mono);font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--p);margin-bottom:6px}
+.onboard-title{font-size:15px;font-weight:700;letter-spacing:-.2px;line-height:1.3;margin-bottom:10px}
+.onboard-steps{margin:0 0 12px 18px;display:flex;flex-direction:column;gap:6px;font-size:12px;line-height:1.5;color:var(--theme-mu)}
+.onboard-steps li::marker{color:var(--p);font-weight:700;font-family:var(--fn-mono);font-size:11px}
+.onboard-steps button{border:none;background:none;padding:0;color:var(--theme-ink);font-weight:600;font-size:inherit;text-decoration:underline;text-decoration-color:rgba(122,123,255,.5);text-underline-offset:2px;cursor:pointer}
+.onboard-steps button:hover{color:var(--p)}
+.onboard-close{display:block;margin-left:auto;padding:7px 14px;border-radius:8px;border:none;background:var(--theme-ink);color:var(--theme-sb);font-size:12px;font-weight:600;cursor:pointer;transition:background var(--tr)}
+.onboard-close:hover{background:var(--p);color:#fff}
+body.pres .onboard{display:none}
+
+/* Diálogo de atajos */
+.kbd-dialog{margin:auto;border:.5px solid var(--theme-bd);border-radius:14px;padding:0;width:min(440px,calc(100vw - 32px));background:var(--theme-sb);color:var(--theme-ink);box-shadow:0 24px 70px rgba(10,10,30,.3)}
+.kbd-dialog::backdrop{background:rgba(12,12,24,.45);backdrop-filter:blur(3px)}
+.kbd-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:.5px solid var(--theme-bd)}
+.kbd-hd h2{font-size:15px;font-weight:700;letter-spacing:-.2px;margin:0}
+.kbd-list{display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding:14px 18px;margin:0;font-size:12.5px}
+.kbd-list dt{color:var(--theme-ink)}
+.kbd-list dd{margin:0;display:flex;gap:4px;justify-content:flex-end}
+.kbd-list kbd{font-family:var(--fn-mono);font-size:11px;font-weight:600;padding:2px 7px;border-radius:5px;background:var(--theme-ow);border:.5px solid var(--theme-bd);border-bottom-width:1.5px;color:var(--theme-ink)}
+.kbd-foot{padding:0 18px 16px;font-size:11.5px;line-height:1.5;color:var(--theme-mu)}
+
+/* Aviso en móvil */
+.mobile-note{display:none}
+@media (max-width:760px){
+  body:not(.mobile-ok) .mobile-note{display:flex;position:fixed;inset:0;z-index:10001;background:var(--theme-bg);align-items:center;justify-content:center;padding:16px}
+  .mobile-note-card{background:var(--theme-sb);border:.5px solid var(--theme-bd);border-radius:14px;padding:22px 20px;max-width:360px;box-shadow:0 18px 50px rgba(17,17,40,.16)}
+  .mobile-note-card h2{font-size:19px;font-weight:800;letter-spacing:-.4px;margin-bottom:8px}
+  .mobile-note-card p{font-size:13.5px;line-height:1.55;color:var(--theme-mu);margin-bottom:16px}
+  .mobile-note-link{display:block;text-align:center;padding:11px;border-radius:9px;background:var(--p);color:#fff;font-weight:700;font-size:13.5px;text-decoration:none;margin-bottom:8px}
+  .mobile-note-card button{width:100%;padding:10px;border-radius:9px;border:.5px solid var(--theme-bd);background:transparent;color:var(--theme-ink);font-size:13px;font-weight:600}
+}
+
+/* Movimiento reducido */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .pat-line,.pat-dot,.pat-lbl,.pat-zone{stroke-dashoffset:0!important;opacity:1!important}
+}
+
+/* Durante la exportación: fuera guías y selección */
+body.exporting .em-handle,body.exporting .em-snap,body.exporting .em-measure,body.exporting #em-grid,body.exporting [data-guide]{display:none!important}
+body.exporting .vsl{box-shadow:none!important}
+body.exporting .vsl-badge{display:none!important}
+
+/* Plantillas */
+.tpl-list{display:flex;flex-direction:column;gap:5px;margin-bottom:6px}
+.tpl-row{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;text-align:left;font:inherit;color:inherit;border-radius:8px}
+.tpl-ico{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;background:var(--pl);color:var(--p);font-size:13px;flex-shrink:0}
+.tpl-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.tpl-btn .tpl-n{font-size:12px;margin:0}
+.tpl-btn .tpl-d{font-size:10.5px;line-height:1.35}
+.tpl-go{font-size:10px;font-weight:700;color:var(--p);opacity:0;transform:translateX(-4px);transition:opacity var(--tr),transform var(--tr);flex-shrink:0}
+.tpl-row:hover .tpl-go,.tpl-row:focus-visible .tpl-go{opacity:1;transform:none}
+.tpl-note{font-size:11px;line-height:1.5;color:var(--theme-mu);margin:0 0 8px}
+.tpl-note strong{color:var(--theme-ink)}
+.tpl-reset{display:block;width:100%;margin-top:8px;padding:7px;border:none;background:none;color:var(--theme-mu);font-size:11px;font-weight:600;text-decoration:underline;text-underline-offset:2px;cursor:pointer;border-radius:6px}
+.tpl-reset:hover{color:var(--neg)}
+
+/* Resalte del selector de visual al hacer clic en el lienzo */
+@keyframes slotFlash{0%{background:rgba(122,123,255,.22)}100%{background:transparent}}
+.slot-flash{animation:slotFlash 1.4s ease-out;border-radius:8px}
+
+/* El lienzo deja sitio al panel de diagnóstico en vez de quedar tapado */
+#main{transition:margin-right .32s cubic-bezier(.4,0,.2,1)}
+@media (min-width:1100px){body.gp-open #main{margin-right:300px}}
+#gestalt-panel{border-left:.5px solid var(--theme-bd)}
+
+/* Barra compacta según su propio ancho (p. ej. con el panel de diagnóstico abierto) */
+#main{container-type:inline-size;container-name:main}
+@container main (max-width:980px){
+  #canvas-tb{gap:6px;padding:7px 10px}
+  .tb-info .dp:nth-child(2){display:none}
+  .ctb-btn .lbl-txt,#gestalt-trigger .gst-lbl{display:none}
+  .ctb-btn{padding:0 8px}
+  #gestalt-trigger{padding:0 9px}
+}
+@container main (max-width:760px){
+  #layout-info,.hist-grp{display:none}
+}
+</style>
 </head>
 <body>
+<a class="skip-link" href="#pco">Saltar al lienzo</a>
 <div id="app">
   <!-- SIDEBAR -->
-  <div id="sb">
+  <aside id="sb" aria-label="Configuración del mockup">
     <div id="sb-hd">
       <div class="em-hd">
-        <div class="em-eyebrow">Data Visualization Tool</div>
+        <div class="em-eyebrow">Herramienta · Power BI</div>
         <div class="em-name">
-          <span class="em-light">Power BI</span>
+          <span class="em-light">PBI</span>
           <span class="em-bold">Mockup Creator</span>
         </div>
         <div class="em-meta">
           <div class="em-line"></div>
-          <span class="em-version">v24 · 2026</span>
+          <span class="em-version">v25 · 2026</span>
         </div>
       </div>
     </div>
-    <div id="sb-sc">
+    <nav id="sb-sc" aria-label="Pasos del diseño">
 
-<!-- 00 · Historia del Dashboard -->
-<div class="cs">
-  <div class="cs-hd" onclick="toggleSection('story')">
+<!-- 01 · Plantillas -->
+<section class="cs" data-sec="templates">
+  <button type="button" class="cs-hd" onclick="toggleSection('templates')" aria-expanded="false" aria-controls="body-templates">
     <span class="cs-label">
-      <span class="cs-icon">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 2h10a1 1 0 011 1v6a1 1 0 01-1 1H5l-3 2V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path>
-          <line x1="4.5" y1="5" x2="9.5" y2="5" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".6"></line>
-          <line x1="4.5" y1="7" x2="7.5" y2="7" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".4"></line>
-        </svg>
-      </span>
-      <span class="cs-texts">
-        <span class="cs-title">Historia del Dashboard</span>
-        <span class="cs-subtitle">Audiencia · decisión · métrica</span>
-      </span>
-    </span>
-    <span class="cs-chevron" id="chev-story">▾</span>
-  </div>
-  <div class="cs-body" id="body-story"><div id="storyc"></div></div>
-</div>
-
-<!-- 01 · Canvas -->
-<div class="cs">
-  <div class="cs-hd" onclick="toggleSection('canvas')">
-    <span class="cs-label">
-      <span class="cs-icon">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2"></rect>
-          <line x1="1" y1="4.2" x2="13" y2="4.2" stroke="currentColor" stroke-width=".8" opacity=".55"></line>
-          <line x1="4.2" y1="1" x2="4.2" y2="4.2" stroke="currentColor" stroke-width=".8" opacity=".55"></line>
-        </svg>
-      </span>
-      <span class="cs-texts">
-        <span class="cs-title">Canvas</span>
-        <span class="cs-subtitle">Formato y dimensiones</span>
-      </span>
-    </span>
-    <span class="cs-chevron" id="chev-canvas">▾</span>
-  </div>
-  <div class="cs-body" id="body-canvas">
-    <div class="pg" id="pg"></div>
-    <div id="custom-size-row" class="hidden" style="display: none;">
-      <div class="sdiv">Dimensiones</div>
-      <div class="custom-size">
-        <input type="number" id="cw-input" placeholder="1280" min="200" max="3840">
-        <span>×</span>
-        <input type="number" id="ch-input" placeholder="720" min="200" max="2160">
-        <span>px</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 02 · Layout del Dashboard -->
-<div class="cs">
-  <div class="cs-hd" onclick="toggleSection('layout')">
-    <span class="cs-label">
-      <span class="cs-icon">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="1" width="12" height="3.5" rx="1" stroke="currentColor" stroke-width="1.1"></rect>
-          <rect x="1" y="6" width="5" height="7" rx="1" stroke="currentColor" stroke-width="1.1"></rect>
-          <rect x="8" y="6" width="5" height="7" rx="1" stroke="currentColor" stroke-width="1.1"></rect>
-        </svg>
-      </span>
-      <span class="cs-texts">
-        <span class="cs-title">Layout del Dashboard</span>
-        <span class="cs-subtitle">Márgenes, gap y zonas</span>
-      </span>
-    </span>
-    <span class="cs-chevron" id="chev-layout">▾</span>
-  </div>
-  <div class="cs-body" id="body-layout">
-    <div id="mc"></div>
-    <div style="height:6px;border-top:.5px solid var(--theme-bd);margin:10px 0 6px"></div>
-    <div id="zc"></div>
-  </div>
-</div>
-
-<!-- 03b · Proporciones -->
-<div class="cs">
-  <div class="cs-hd" onclick="toggleSection('prop')">
-    <span class="cs-label">
-      <span class="cs-icon">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="2" width="12" height="3" rx="1" fill="currentColor" opacity=".9"></rect>
-          <rect x="1" y="6.5" width="8" height="2.5" rx="1" fill="currentColor" opacity=".55"></rect>
-          <rect x="1" y="10" width="11" height="2.5" rx="1" fill="currentColor" opacity=".3"></rect>
-        </svg>
-      </span>
-      <span class="cs-texts">
-        <span class="cs-title">Proporciones de zonas</span>
-        <span class="cs-subtitle">Altura relativa por bloque</span>
-      </span>
-    </span>
-    <span class="cs-chevron" id="chev-prop">▾</span>
-  </div>
-<div class="cs-body" id="body-prop"><div id="propc"></div></div>
-</div>
-<!-- 03 · Estilo Visual -->
-<div class="cs">
-  <div class="cs-hd" onclick="toggleSection('style')">
-    <span class="cs-label">
-      <span class="cs-icon">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"></circle>
-          <circle cx="7" cy="7" r="2" fill="currentColor"></circle>
-          <line x1="7" y1="1.5" x2="7" y2="4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></line>
-          <line x1="7" y1="9.5" x2="7" y2="12.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></line>
-          <line x1="1.5" y1="7" x2="4.5" y2="7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></line>
-          <line x1="9.5" y1="7" x2="12.5" y2="7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></line>
-        </svg>
-      </span>
-      <span class="cs-texts">
-        <span class="cs-title">Estilo Visual</span>
-        <span class="cs-subtitle">Apariencia y geometría</span>
-      </span>
-    </span>
-    <span class="cs-chevron" id="chev-style">▾</span>
-  </div>
-  <div class="cs-body" id="body-style">
-    <div id="stc"></div>
-    <div style="height:6px;border-top:.5px solid var(--theme-bd);margin:10px 0 6px"></div>
-    <div id="gc"></div>
-  </div>
-</div>
-
-<!-- 04 · Tarjetas KPI -->
-<div class="cs">
-  <div class="cs-hd" onclick="toggleSection('kpis')">
-    <span class="cs-label">
-      <span class="cs-icon">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="3" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"></rect>
-          <line x1="3.5" y1="6.5" x2="7" y2="6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></line>
-          <line x1="3.5" y1="8.5" x2="5.5" y2="8.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".5"></line>
-          <path d="M9 5.2 L11.5 7 L9 8.8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-      </span>
-      <span class="cs-texts">
-        <span class="cs-title">Tarjetas KPI</span>
-        <span class="cs-subtitle">Valores y mini gráficos</span>
-      </span>
-    </span>
-    <span class="cs-chevron" id="chev-kpis">▾</span>
-  </div>
-  <div class="cs-body" id="body-kpis"><div id="kpic"></div></div>
-</div>
-
-<!-- 05 · Tipo de Visuales -->
-<div class="cs">
-  <div class="cs-hd" onclick="toggleSection('vtypes')">
-    <span class="cs-label">
-      <span class="cs-icon">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="1" y1="13" x2="13" y2="13" stroke="currentColor" stroke-width="1" opacity=".4"></line>
-          <line x1="1" y1="1" x2="1" y2="13" stroke="currentColor" stroke-width="1" opacity=".4"></line>
-          <rect x="2.5" y="7.5" width="2" height="5.5" rx=".4" fill="currentColor" opacity=".45"></rect>
-          <rect x="6" y="4" width="2" height="9" rx=".4" fill="currentColor"></rect>
-          <rect x="9.5" y="9" width="2" height="4" rx=".4" fill="currentColor" opacity=".45"></rect>
-        </svg>
-      </span>
-      <span class="cs-texts">
-        <span class="cs-title">Tipo de Visuales</span>
-        <span class="cs-subtitle">Gráficos por zona</span>
-      </span>
-    </span>
-    <span class="cs-chevron" id="chev-vtypes">▾</span>
-  </div>
-  <div class="cs-body" id="body-vtypes"><div id="vtc"></div></div>
-</div>
-
-<!-- 06 · Plantillas -->
-<div class="cs">
-  <div class="cs-hd" onclick="toggleSection('templates')">
-    <span class="cs-label">
-      <span class="cs-icon">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="2" y="1" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"></rect>
-          <line x1="4.5" y1="4.5" x2="9.5" y2="4.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"></line>
-          <line x1="4.5" y1="7" x2="9.5" y2="7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity=".5"></line>
-          <line x1="4.5" y1="9.5" x2="7.5" y2="9.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity=".5"></line>
-        </svg>
-      </span>
       <span class="cs-texts">
         <span class="cs-title">Plantillas</span>
         <span class="cs-subtitle">Empieza desde una base</span>
       </span>
     </span>
-    <span class="cs-chevron" id="chev-templates">▾</span>
-  </div>
+    <span class="cs-chevron" id="chev-templates" aria-hidden="true">▾</span>
+  </button>
   <div class="cs-body" id="body-templates"><div id="tplc"></div></div>
-</div>
+</section>
 
-    </div>
-    <div class="dl-group">
-      <div class="export-split">
-        <!-- Dropdown (opens upward) -->
-        <div class="export-dropdown" id="export-dd">
-          <div class="export-opt" onclick="closeExportDD();doDownload()">
-            <span class="export-opt-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 7l3 3 3-3M1.5 13h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg></span>
-            <span class="export-opt-texts"><span class="export-opt-label">Exportar como PNG</span><span class="export-opt-hint">Alta resolución</span></span>
-            <span class="export-opt-kbd">⌘E</span>
-          </div>
-          <div class="export-opt" onclick="closeExportDD();doExportPDF()">
-            <span class="export-opt-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"></rect><path d="M4 5h6M4 7.5h4M4 10h3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"></path></svg></span>
-            <span class="export-opt-texts"><span class="export-opt-label">Exportar como PDF</span><span class="export-opt-hint">Vectorial</span></span>
-            <span class="export-opt-kbd">⌘P</span>
-          </div>
-          <div class="export-opt" onclick="closeExportDD();saveJSON()">
-            <span class="export-opt-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 10V12h2l5.5-5.5-2-2L2 10zM11.7 4.3a1 1 0 000-1.4L10.1 1.3a1 1 0 00-1.4 0L7.6 2.4l2 2 2.1-2.1z" fill="currentColor" opacity=".8"></path></svg></span>
-            <span class="export-opt-texts"><span class="export-opt-label">Guardar plantilla JSON</span><span class="export-opt-hint">Reutilizable</span></span>
-            <span class="export-opt-kbd">⌘S</span>
-          </div>
-        </div>
-        <!-- Main action -->
-        <button id="dl-btn" class="export-main" onclick="doDownload()">
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7.5M3.5 6l3 3 3-3M1.5 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
-          Exportar PNG
-        </button>
-        <!-- Arrow toggle -->
-        <button class="export-arrow" id="export-arrow-btn" onclick="toggleExportDD()" title="Más opciones de exportación">
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-        </button>
+<!-- 02 · Historia del Dashboard -->
+<section class="cs" data-sec="story">
+  <button type="button" class="cs-hd" onclick="toggleSection('story')" aria-expanded="false" aria-controls="body-story">
+    <span class="cs-label">
+      <span class="cs-texts">
+        <span class="cs-title">Historia del dashboard</span>
+        <span class="cs-subtitle">Audiencia · decisión · métrica</span>
+      </span>
+    </span>
+    <span class="cs-chevron" id="chev-story" aria-hidden="true">▾</span>
+  </button>
+  <div class="cs-body" id="body-story"><div id="storyc"></div></div>
+</section>
+
+<!-- 03 · Canvas -->
+<section class="cs" data-sec="canvas">
+  <button type="button" class="cs-hd" onclick="toggleSection('canvas')" aria-expanded="false" aria-controls="body-canvas">
+    <span class="cs-label">
+      <span class="cs-texts">
+        <span class="cs-title">Canvas</span>
+        <span class="cs-subtitle">Formato y dimensiones</span>
+      </span>
+    </span>
+    <span class="cs-chevron" id="chev-canvas" aria-hidden="true">▾</span>
+  </button>
+  <div class="cs-body" id="body-canvas">
+    <div class="pg" id="pg"></div>
+    <div id="custom-size-row" style="display:none">
+      <div class="sdiv">Dimensiones</div>
+      <div class="custom-size">
+        <label class="sr-only" for="cw-input">Ancho en píxeles</label>
+        <input type="number" id="cw-input" placeholder="1280" min="200" max="3840" step="10" onchange="applyCustomSize()" onkeydown="if(event.key==='Enter')applyCustomSize()">
+        <span aria-hidden="true">×</span>
+        <label class="sr-only" for="ch-input">Alto en píxeles</label>
+        <input type="number" id="ch-input" placeholder="720" min="200" max="2160" step="10" onchange="applyCustomSize()" onkeydown="if(event.key==='Enter')applyCustomSize()">
+        <span>px</span>
       </div>
     </div>
-    <div class="sb-shortcuts">
-      <span class="sb-credit-name">Borja Mora Méndez</span>
-      <a class="sb-credit-li" href="https://www.linkedin.com/in/borjamoramendez/?locale=cha" target="_blank" rel="noopener" title="LinkedIn· Borja Mora Méndez">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286z"/></svg>
-      </a>
-    </div>
   </div>
+</section>
+
+<!-- 04 · Layout del Dashboard -->
+<section class="cs" data-sec="layout">
+  <button type="button" class="cs-hd" onclick="toggleSection('layout')" aria-expanded="false" aria-controls="body-layout">
+    <span class="cs-label">
+      <span class="cs-texts">
+        <span class="cs-title">Layout del dashboard</span>
+        <span class="cs-subtitle">Márgenes, gap y zonas</span>
+      </span>
+    </span>
+    <span class="cs-chevron" id="chev-layout" aria-hidden="true">▾</span>
+  </button>
+  <div class="cs-body" id="body-layout">
+    <div id="mc"></div>
+    <div class="cs-divider"></div>
+    <div id="zc"></div>
+  </div>
+</section>
+
+<!-- 05 · Estilo Visual -->
+<section class="cs" data-sec="style">
+  <button type="button" class="cs-hd" onclick="toggleSection('style')" aria-expanded="false" aria-controls="body-style">
+    <span class="cs-label">
+      <span class="cs-texts">
+        <span class="cs-title">Estilo visual</span>
+        <span class="cs-subtitle">Color, geometría y guías</span>
+      </span>
+    </span>
+    <span class="cs-chevron" id="chev-style" aria-hidden="true">▾</span>
+  </button>
+  <div class="cs-body" id="body-style">
+    <div id="stc"></div>
+    <div class="cs-divider"></div>
+    <div id="gc"></div>
+  </div>
+</section>
+
+<!-- 06 · Tarjetas KPI -->
+<section class="cs" data-sec="kpis">
+  <button type="button" class="cs-hd" onclick="toggleSection('kpis')" aria-expanded="false" aria-controls="body-kpis">
+    <span class="cs-label">
+      <span class="cs-texts">
+        <span class="cs-title">Tarjetas KPI</span>
+        <span class="cs-subtitle">Valores y mini gráficos</span>
+      </span>
+    </span>
+    <span class="cs-chevron" id="chev-kpis" aria-hidden="true">▾</span>
+  </button>
+  <div class="cs-body" id="body-kpis"><div id="kpic"></div></div>
+</section>
+
+<!-- 07 · Proporciones -->
+<section class="cs" data-sec="prop">
+  <button type="button" class="cs-hd" onclick="toggleSection('prop')" aria-expanded="false" aria-controls="body-prop">
+    <span class="cs-label">
+      <span class="cs-texts">
+        <span class="cs-title">Proporciones de zonas</span>
+        <span class="cs-subtitle">Altura relativa por bloque</span>
+      </span>
+    </span>
+    <span class="cs-chevron" id="chev-prop" aria-hidden="true">▾</span>
+  </button>
+  <div class="cs-body" id="body-prop"><div id="propc"></div></div>
+</section>
+
+<!-- 08 · Tipo de Visuales -->
+<section class="cs" data-sec="vtypes">
+  <button type="button" class="cs-hd" onclick="toggleSection('vtypes')" aria-expanded="false" aria-controls="body-vtypes">
+    <span class="cs-label">
+      <span class="cs-texts">
+        <span class="cs-title">Tipo de visuales</span>
+        <span class="cs-subtitle">Gráficos por zona</span>
+      </span>
+    </span>
+    <span class="cs-chevron" id="chev-vtypes" aria-hidden="true">▾</span>
+  </button>
+  <div class="cs-body" id="body-vtypes"><div id="vtc"></div></div>
+</section>
+
+    </nav>
+    <div class="dl-group">
+      <div class="export-split">
+        <div class="export-dropdown" id="export-dd" role="menu" aria-label="Opciones de exportación">
+          <button type="button" class="export-opt" role="menuitem" onclick="closeExportDD();doDownload()">
+            <span class="export-opt-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 7l3 3 3-3M1.5 13h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+            <span class="export-opt-texts"><span class="export-opt-label">Exportar como PNG</span><span class="export-opt-hint">Imagen a 2× · para presentaciones</span></span>
+            <kbd class="export-opt-kbd" data-kbd="E"></kbd>
+          </button>
+          <button type="button" class="export-opt" role="menuitem" onclick="closeExportDD();doExportPDF()">
+            <span class="export-opt-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 5h6M4 7.5h4M4 10h3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></span>
+            <span class="export-opt-texts"><span class="export-opt-label">Exportar como PDF</span><span class="export-opt-hint">Una página · tamaño del canvas</span></span>
+            <kbd class="export-opt-kbd" data-kbd="P"></kbd>
+          </button>
+          <button type="button" class="export-opt" role="menuitem" onclick="closeExportDD();saveTemplateJSON()">
+            <span class="export-opt-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 11V7h10v4M5 7V2h4v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="export-opt-texts"><span class="export-opt-label">Guardar proyecto (.json)</span><span class="export-opt-hint">Para retomarlo o compartirlo</span></span>
+            <kbd class="export-opt-kbd" data-kbd="S"></kbd>
+          </button>
+          <button type="button" class="export-opt" role="menuitem" onclick="closeExportDD();document.getElementById('tpl-file-input').click()">
+            <span class="export-opt-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 6l3-3 3 3M7 3v7M2 12h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="export-opt-texts"><span class="export-opt-label">Abrir proyecto (.json)</span><span class="export-opt-hint">Carga un diseño guardado</span></span>
+            <kbd class="export-opt-kbd" data-kbd="O"></kbd>
+          </button>
+        </div>
+        <button type="button" id="dl-btn" class="export-main" onclick="doDownload()">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M6.5 1v7.5M3.5 6l3 3 3-3M1.5 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Exportar PNG
+        </button>
+        <button type="button" class="export-arrow" id="export-arrow-btn" onclick="toggleExportDD()" aria-haspopup="menu" aria-expanded="false" aria-controls="export-dd" title="Más opciones: PDF y proyecto">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="sr-only">Más opciones de exportación</span>
+        </button>
+      </div>
+      <p class="autosave-note" id="autosave-note" aria-live="polite">Se guarda automáticamente en este navegador</p>
+    </div>
+    <footer class="sb-shortcuts">
+      <a class="sb-credit-name" href="https://borjamora.es/" target="_blank" rel="noopener" title="Portfolio de Borja Mora">
+        <span class="sb-credit-strong">Borja Mora Méndez</span>
+        <span class="sb-credit-role">Data Analyst Junior · borjamora.es</span>
+      </a>
+      <a class="sb-credit-li" href="https://www.linkedin.com/in/borjamoramendez/" target="_blank" rel="noopener" title="LinkedIn de Borja Mora Méndez">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286z"/></svg>
+        <span class="sr-only">LinkedIn</span>
+      </a>
+    </footer>
+  </aside>
 
   <!-- MAIN -->
-  <div id="main">
-    <!-- Canvas toolbar (unified) -->
-    <div id="canvas-tb">
+  <main id="main">
+    <div id="canvas-tb" role="toolbar" aria-label="Lienzo">
       <div class="tb-info">
-        <span class="dp"><strong id="dt">1280 × 720</strong></span>
-        <span class="tb-info-sep"></span>
-        <span class="dp"><strong id="sc">47%</strong></span>
-        <span class="tb-info-sep"></span>
-        <span class="dp" id="layout-info" style="display:inline-flex"><strong id="lt">4·2·2</strong></span>
+        <span class="dp" title="Tamaño del canvas en píxeles"><strong id="dt">1280 × 720</strong></span>
+        <span class="dp" title="Escala de la vista"><strong id="sc">100%</strong></span>
+        <span class="dp" id="layout-info" title="Bloques del layout: KPIs · Zona A · Zona B"><strong id="lt">4·2·2</strong></span>
+      </div>
+      <div class="hist-grp" role="group" aria-label="Historial">
+        <button type="button" class="ctb-btn icon-only" id="undo-btn" onclick="undo()" title="Deshacer (Ctrl+Z)" aria-label="Deshacer" disabled>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M5 3.5L2.5 6 5 8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.8 6H9a2.8 2.8 0 010 5.6H6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
+        <button type="button" class="ctb-btn icon-only" id="redo-btn" onclick="redo()" title="Rehacer (Ctrl+Shift+Z)" aria-label="Rehacer" disabled>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M9 3.5L11.5 6 9 8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.2 6H5a2.8 2.8 0 000 5.6h2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>
       </div>
       <div style="flex:1"></div>
       <div class="theme-picker" id="theme-picker">
-        <button class="ctb-btn icon-only" id="theme-btn" onclick="toggleThemePopover(event)" title="Tema">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" id="theme-icon">
-            <circle cx="7" cy="7" r="3" fill="currentColor" opacity=".25"></circle>
-            <circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.2"></circle>
-            <path d="M7 1v1.6M7 11.4V13M1 7h1.6M11.4 7H13M2.6 2.6l1.1 1.1M10.3 10.3l1.1 1.1M2.6 11.4l1.1-1.1M10.3 3.7l1.1-1.1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path>
+        <button type="button" class="ctb-btn icon-only" id="theme-btn" onclick="toggleThemePopover(event)" title="Tema de la interfaz y del lienzo" aria-haspopup="menu" aria-expanded="false" aria-controls="theme-popover">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <circle cx="7" cy="7" r="3" fill="currentColor" opacity=".25"/>
+            <circle cx="7" cy="7" r="3" stroke="currentColor" stroke-width="1.2"/>
+            <path d="M7 1v1.6M7 11.4V13M1 7h1.6M11.4 7H13M2.6 2.6l1.1 1.1M10.3 10.3l1.1 1.1M2.6 11.4l1.1-1.1M10.3 3.7l1.1-1.1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
           </svg>
+          <span class="sr-only">Tema</span>
         </button>
-        <div class="theme-popover" id="theme-popover" role="menu">
-          <button class="theme-opt" data-theme-id="light" onclick="selectTheme('light')">
+        <div class="theme-popover" id="theme-popover" role="menu" aria-label="Tema">
+          <button type="button" class="theme-opt" role="menuitemradio" data-theme-id="light" onclick="selectTheme('light')">
             <span class="th-sw" style="background:linear-gradient(135deg,#e8e8f0 45%,#7a7bff 100%)"></span>
             <span>Claro</span>
-            <span class="th-check">✓</span>
+            <span class="th-check" aria-hidden="true">✓</span>
           </button>
-          <button class="theme-opt" data-theme-id="dark" onclick="selectTheme('dark')">
+          <button type="button" class="theme-opt" role="menuitemradio" data-theme-id="dark" onclick="selectTheme('dark')">
             <span class="th-sw" style="background:linear-gradient(135deg,#13131f 45%,#7a7bff 100%)"></span>
             <span>Oscuro</span>
-            <span class="th-check">✓</span>
+            <span class="th-check" aria-hidden="true">✓</span>
           </button>
-          <button class="theme-opt" data-theme-id="warm" onclick="selectTheme('warm')">
+          <button type="button" class="theme-opt" role="menuitemradio" data-theme-id="warm" onclick="selectTheme('warm')">
             <span class="th-sw" style="background:linear-gradient(135deg,#f4ede0 45%,#c08040 100%)"></span>
             <span>Cálido</span>
-            <span class="th-check">✓</span>
+            <span class="th-check" aria-hidden="true">✓</span>
           </button>
         </div>
       </div>
-      <!-- Pills legacy (ocultas, renderThemePills sigue activo para JS) -->
-      <div class="th-pills" id="th-pills"></div>
-      <div style="flex:1"></div>
-      <div class="zoom-grp">
-        <button class="zoom-btn" onclick="changeZoom(-0.1)" title="Alejar (Ctrl -)">−</button>
-        <span class="zoom-val" id="zoom-val">100%</span>
-        <button class="zoom-btn" onclick="changeZoom(0.1)" title="Acercar (Ctrl +)">+</button>
-        <button class="zoom-btn" onclick="fitZoom()" title="Ajustar al área" style="font-size:9px;width:28px;border-left:.5px solid var(--theme-bd)">⊡</button>
+      <div class="zoom-grp" role="group" aria-label="Zoom">
+        <button type="button" class="zoom-btn" onclick="changeZoom(-0.1)" title="Alejar (Ctrl −)" aria-label="Alejar">−</button>
+        <span class="zoom-val" id="zoom-val" aria-live="polite">100%</span>
+        <button type="button" class="zoom-btn" onclick="changeZoom(0.1)" title="Acercar (Ctrl +)" aria-label="Acercar">+</button>
+        <button type="button" class="zoom-btn zoom-fit" onclick="fitZoom()" title="Ajustar al área (Ctrl 0)" aria-label="Ajustar al área">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
       <div class="ctb-sep"></div>
-      <button class="ctb-btn em-btn" onclick="toggleEditMode()" id="edit-mode-btn" title="Diseño libre (E) — arrastra y redimensiona visuales">
-        <span class="em-dot"></span>
-        <span class="em-lbl">Diseño libre</span>
+      <button type="button" class="ctb-btn em-btn" onclick="toggleEditMode()" id="edit-mode-btn" title="Diseño libre (E): arrastra y redimensiona visuales" aria-pressed="false">
+        <span class="em-dot" aria-hidden="true"></span>
+        <span class="em-lbl lbl-txt">Diseño libre</span>
       </button>
-      <div class="ctb-sep"></div>
-      <button class="ctb-btn" onclick="togglePresentation()" id="pres-btn">
-        <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"></rect><path d="M5 11h4M7 11v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg>
-        <span id="pres-btn-lbl">Presentar</span>
+      <button type="button" class="ctb-btn" onclick="togglePresentation()" id="pres-btn" title="Presentar (P)" aria-pressed="false">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="2" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 11h4M7 11v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <span id="pres-btn-lbl" class="lbl-txt">Presentar</span>
       </button>
-      <div class="ctb-sep"></div>
-      <button id="gestalt-trigger" onclick="openGestaltPanel()" class="" title="Diagnóstico de Principios Gestalt">
-        <div class="gt-icon">
-          <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
-            <circle cx="4" cy="4" r="2" fill="currentColor" opacity=".9"></circle>
-            <circle cx="10" cy="4" r="2" fill="currentColor" opacity=".9"></circle>
-            <circle cx="4" cy="10" r="2" fill="currentColor" opacity=".4"></circle>
-            <circle cx="10" cy="10" r="2" fill="currentColor" opacity=".4"></circle>
-            <line x1="4" y1="6" x2="4" y2="8" stroke="currentColor" stroke-width="1.2" opacity=".5"></line>
-            <line x1="6" y1="4" x2="8" y2="4" stroke="currentColor" stroke-width="1.2" opacity=".5"></line>
+      <button type="button" id="gestalt-trigger" onclick="openGestaltPanel()" title="Diagnóstico con los principios de la Gestalt (G)" aria-pressed="false">
+        <span class="gt-icon" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+            <circle cx="4" cy="4" r="2" fill="currentColor" opacity=".9"/>
+            <circle cx="10" cy="4" r="2" fill="currentColor" opacity=".9"/>
+            <circle cx="4" cy="10" r="2" fill="currentColor" opacity=".4"/>
+            <circle cx="10" cy="10" r="2" fill="currentColor" opacity=".4"/>
           </svg>
-        </div>
-        <span class="gst-lbl">Gestalt</span>
+        </span>
+        <span class="gst-lbl">Diagnóstico</span>
+        <span class="gst-score" id="gst-score" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="ctb-btn icon-only" onclick="openShortcuts()" title="Atajos de teclado (?)" aria-label="Atajos de teclado">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="3.5" width="14" height="9" rx="1.6" stroke="currentColor" stroke-width="1.2"/><path d="M4 6.5h.01M6.5 6.5h.01M9 6.5h.01M11.5 6.5h.01M5 9.5h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
       </button>
     </div>
-    <div id="pco">
-      <div id="em-banner">
-        <span class="em-banner-dot"></span>
-        <span id="em-banner-txt">Diseño libre · arrastra y redimensiona</span>
-        <span id="em-sel-indicator" style="font-size:9px;color:rgba(255,255,255,.5);padding:0 6px;border-left:.5px solid rgba(255,255,255,.15);margin-left:2px;display:none"></span>
-        <button id="em-del-btn" onclick="emDeleteSelected()" style="display:none;color:#ff7b7b;border-left:.5px solid rgba(255,255,255,.18);margin-left:4px">✕ Eliminar</button>
-        <button onclick="emAlignToNeighbor()" style="background:rgba(122,123,255,.2);border:.5px solid rgba(122,123,255,.45);color:#b0b0ff;border-radius:5px;padding:0 10px;height:22px;display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.02em"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" style="flex-shrink:0"><rect x="1" y="2" width="4" height="8" rx="1" fill="currentColor"/><rect x="7" y="4" width="4" height="4" rx="1" fill="currentColor" opacity=".5"/><line x1="1" y1="2" x2="11" y2="2" stroke="currentColor" stroke-width="1.2" opacity=".6"/><line x1="1" y1="10" x2="11" y2="10" stroke="currentColor" stroke-width="1.2" opacity=".6"/></svg>Alinear gráfico</button>
-        <button onclick="resetVisualPositions()">Restablecer</button>
-        <button onclick="toggleEditMode()">Salir · Esc</button>
+    <div id="pco" tabindex="-1">
+      <div id="em-banner" role="status">
+        <span class="em-banner-dot" aria-hidden="true"></span>
+        <span id="em-banner-txt">Diseño libre · arrastra, redimensiona y usa las flechas</span>
+        <span id="em-sel-indicator" class="em-sel-indicator" style="display:none"></span>
+        <button type="button" id="em-del-btn" class="em-del" onclick="emDeleteSelected()" style="display:none">Eliminar</button>
+        <button type="button" class="em-align" onclick="emAlignToNeighbor()" title="Iguala posición vertical y altura con el visual vecino">
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><rect x="1" y="2" width="4" height="8" rx="1" fill="currentColor"/><rect x="7" y="4" width="4" height="4" rx="1" fill="currentColor" opacity=".5"/><line x1="1" y1="2" x2="11" y2="2" stroke="currentColor" stroke-width="1.2" opacity=".6"/><line x1="1" y1="10" x2="11" y2="10" stroke="currentColor" stroke-width="1.2" opacity=".6"/></svg>Alinear
+        </button>
+        <button type="button" onclick="resetVisualPositions()">Restablecer</button>
+        <button type="button" onclick="toggleEditMode()">Salir · Esc</button>
       </div>
       <div id="psc">
-        <div id="dp2"></div>
-        <div id="pat-overlay"></div>
+        <div id="dp2" role="img" aria-label="Vista previa del dashboard"></div>
+        <div id="pat-overlay" aria-hidden="true"></div>
+      </div>
+      <div id="onboard" class="onboard" hidden>
+        <p class="onboard-eyebrow">Primeros pasos</p>
+        <p class="onboard-title">Diseña el layout antes de abrir Power BI</p>
+        <ol class="onboard-steps">
+          <li><button type="button" onclick="openSection('templates');dismissOnboard()">Elige una plantilla</button> o empieza desde esta base.</li>
+          <li><button type="button" onclick="openSection('story');dismissOnboard()">Define la historia</button>: quién mira y qué decide.</li>
+          <li>Doble clic en cualquier título o KPI para editarlo.</li>
+          <li>Revisa el <button type="button" onclick="dismissOnboard();openGestaltPanel()">diagnóstico</button> y exporta en PNG o PDF.</li>
+        </ol>
+        <button type="button" class="onboard-close" onclick="dismissOnboard()">Entendido</button>
       </div>
     </div>
-  </div>
+  </main>
 </div>
 
 <!-- GESTALT PANEL (right) -->
-<div id="gestalt-panel" class="">
+<aside id="gestalt-panel" aria-label="Diagnóstico de principios de diseño" aria-hidden="true">
   <div class="gp-hd">
-    <div class="gp-icon" id="gp-icon" style="background: rgba(59, 138, 55, 0.15);"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="6" cy="10" r="2.5" fill="#E88ACF"></circle><circle cx="10" cy="10" r="2.5" fill="#E88ACF"></circle><circle cx="14" cy="6" r="2.5" fill="#E88ACF" opacity=".35"></circle><circle cx="14" cy="14" r="2.5" fill="#E88ACF" opacity=".35"></circle></svg></div>
+    <div class="gp-icon" id="gp-icon"></div>
     <div style="flex:1;min-width:0">
-      <div class="gp-title" id="gp-title">Proximidad</div>
+      <h2 class="gp-title" id="gp-title">Proximidad</h2>
       <div class="gp-subtitle" id="gp-subtitle">Elementos cercanos se perciben como grupo</div>
     </div>
-    <button class="gp-close" onclick="closeGestaltPanel()">✕</button>
+    <button type="button" class="gp-close" onclick="closeGestaltPanel()" aria-label="Cerrar diagnóstico">✕</button>
   </div>
   <div id="gp-verdict-wrap"></div>
   <div class="gp-body" id="gp-body"></div>
   <div class="gp-nav" id="gp-nav"></div>
-</div>
-
-<!-- CREDIT -->
-<div id="credit">
-  <span class="credit-name">Borja Mora Méndez</span>
-  <a class="credit-li-btn" href="https://www.linkedin.com/in/borjamoramendez/?locale=cha" target="_blank" rel="noopener" title="LinkedIn · Borja Mora Méndez">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(255,255,255,.7)"><path d="M5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286z"/></svg>
-  </a>
-  <div class="credit-sep"></div>
-  <span class="credit-product">PBI Mockup Creator</span>
-  <span class="credit-version">v22</span>
-</div>
+</aside>
 
 <!-- PRESENTATION BAR -->
-<div id="pres-bar">
-  <div class="pres-item" onclick="togglePresentation()">
-    <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M3 3l8 4-8 4V3z" fill="currentColor" opacity=".7"></path></svg>
-    Presentación activa
-    <span class="pres-key">ESC</span>
+<div id="pres-bar" role="toolbar" aria-label="Presentación">
+  <button type="button" class="pres-item" onclick="togglePresentation()">
+    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 3l8 4-8 4V3z" fill="currentColor" opacity=".7"/></svg>
+    Salir de la presentación
+    <kbd class="pres-key">Esc</kbd>
+  </button>
+  <span class="ctb-sep" style="background:rgba(255,255,255,.15)"></span>
+  <button type="button" class="pres-item" onclick="doDownload()">
+    <svg width="11" height="11" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M6.5 1v7.5M3.5 6l3 3 3-3M1.5 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    Exportar PNG
+  </button>
+</div>
+
+<!-- SHORTCUTS DIALOG -->
+<dialog id="kbd-dialog" class="kbd-dialog" aria-labelledby="kbd-title">
+  <div class="kbd-hd">
+    <h2 id="kbd-title">Atajos de teclado</h2>
+    <button type="button" class="gp-close" onclick="document.getElementById('kbd-dialog').close()" aria-label="Cerrar">✕</button>
   </div>
-  <div class="ctb-sep" style="background:rgba(255,255,255,.15)"></div>
-  <div class="pres-item" onclick="doDownload()">
-    <svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7.5M3.5 6l3 3 3-3M1.5 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
-    Exportar
+  <dl class="kbd-list" id="kbd-list"></dl>
+  <p class="kbd-foot">Doble clic sobre títulos, subtítulos y valores KPI para editarlos directamente en el lienzo.</p>
+</dialog>
+
+<!-- MOBILE NOTICE -->
+<div id="mobile-note" class="mobile-note" role="dialog" aria-modal="true" aria-labelledby="mobile-note-title">
+  <div class="mobile-note-card">
+    <p class="onboard-eyebrow">PBI Mockup Creator</p>
+    <h2 id="mobile-note-title">Pensada para pantalla grande</h2>
+    <p>Diseñar un dashboard de Power BI pide espacio: ábrela en un ordenador para usar el lienzo, el diseño libre y la exportación.</p>
+    <a class="mobile-note-link" href="https://borjamora.es/">Volver a borjamora.es</a>
+    <button type="button" onclick="document.body.classList.add('mobile-ok')">Continuar igualmente</button>
   </div>
 </div>
 
 <!-- TOAST ZONE -->
-<div id="toast-zone"></div>
-<input type="file" id="tpl-file-input" accept=".json" onchange="loadTemplateFile(event)">
+<div id="toast-zone" role="status" aria-live="polite"></div>
+<input type="file" id="tpl-file-input" accept=".json,application/json" onchange="loadTemplateFile(event)" hidden>
 
 <script>
 // ═══════════════════════════════════════════
@@ -1208,7 +1340,7 @@ let S={
   z:{header:true,filter:'none',filterW:160,kpi:4,main:2,sec:2,tooltip:false,drillthrough:false,headerBg:'card',filterBg:'card',headerBgCustom:'',filterBgCustom:''},
   st:{br:8,cbg:1,ccard:0,cbord:0,canvasRadius:3,bordActive:false,accentIdx:0,accentCustom:''},
   grid:{show:false,dir:'both',cols:3,gutter:16,margin:0},
-  pattern:'None',theme:'light',zoom:1,vt:{},
+  pattern:'none',theme:'light',zoom:1,vt:{},
   vDrill:{},
   vTooltip:{},
   kd:KD_DEFAULT.map(k=>({...k})),
@@ -1249,11 +1381,14 @@ document.addEventListener('mouseup',endPress);document.addEventListener('touchen
 // ═══════════════════════════════════════════
 function toggleSection(id){
   const body=document.getElementById('body-'+id),chev=document.getElementById('chev-'+id);
+  if(!body)return;
   const open=body.classList.toggle('open');
-  if(open)chev.classList.add('open');else chev.classList.remove('open');
+  if(chev)chev.classList.toggle('open',open);
+  const hd=document.querySelector(`.cs-hd[aria-controls="body-${id}"]`);
+  if(hd)hd.setAttribute('aria-expanded',String(open));
 }
 
-function tip(key){return`<span class="tip-btn">?<span class="tip-box">${TIPS[key]||''}</span></span>`}
+function tip(key){const t=TIPS[key]||'';return`<span class="tip-btn" tabindex="0" role="note" aria-label="Ayuda: ${escHtml(t)}">?<span class="tip-box" aria-hidden="true">${t}</span></span>`}
 
 // ═══════════════════════════════════════════
 // STEPPERS
@@ -1367,12 +1502,14 @@ function toggleThemePopover(e){
   if(!po||!btn)return;
   const open=po.classList.toggle('open');
   btn.classList.toggle('on',open);
+  btn.setAttribute('aria-expanded',String(open));
+  if(open){const cur=po.querySelector('.theme-opt.on')||po.querySelector('.theme-opt');if(cur)cur.focus();}
 }
 function closeThemePopover(){
   const po=document.getElementById('theme-popover');
   const btn=document.getElementById('theme-btn');
   if(po)po.classList.remove('open');
-  if(btn)btn.classList.remove('on');
+  if(btn){btn.classList.remove('on');btn.setAttribute('aria-expanded','false');}
 }
 function selectTheme(id){
   applyTheme(id);
@@ -1456,7 +1593,7 @@ function renderStory(){
             onclick="setStoryAudience('${a.id}')"
             title="${a.hint}">${a.label}</button>`).join('')}
       </div>
-      ${st.audience?`<div style="font-size:9.5px;color:var(--theme-mu);margin-top:5px;line-height:1.45;padding-left:2px">${STORY_AUDIENCES.find(a=>a.id===st.audience)?.hint||''}</div>`:''}
+      ${st.audience?`<div style="font-size:10.5px;color:var(--theme-mu);margin-top:5px;line-height:1.45;padding-left:2px">${STORY_AUDIENCES.find(a=>a.id===st.audience)?.hint||''}</div>`:''}
     </div>
 
     <div class="story-field">
@@ -1538,13 +1675,8 @@ function refreshStoryBar(){
 
 function applyStorySuggestion(audienceId){
   const map=STORY_TPL_MAP[audienceId]; if(!map)return;
-  // aplicar plantilla
-  const t=BUILT_IN_TPLS[map.tpl];
-  if(t){
-    if(t.si!=null)S.si=t.si;
-    Object.assign(S.z,t.s.z);Object.assign(S.m,t.s.m);
-    S.gap=t.s.gap;Object.assign(S.st,t.s.st);S.vt={...t.s.vt};
-  }
+  // aplicar la plantilla completa (layout, KPIs, títulos) sin perder la historia escrita
+  applyBuiltInTpl(map.tpl,true);
   // aplicar patrón de lectura
   S.pattern=map.pattern;
   renderControls();renderPreview();
@@ -1563,18 +1695,22 @@ function renderTitleSteppers(){
 }
 function renderSizes(){
   document.getElementById('pg').innerHTML=SIZES.map((s,i)=>
-    `<button class="pb ${i===S.si?'on':''}" onclick="selSize(${i})"><span class="pn">${s.n}</span><span class="ps">${s.d}</span></button>`).join('');
+    `<button type="button" class="pb ${i===S.si?'on':''}" aria-pressed="${i===S.si}" onclick="selSize(${i})"><span class="pn">${s.n}</span><span class="ps">${s.custom?(S.customW+'×'+S.customH):s.d}</span></button>`).join('');
   const cr=document.getElementById('custom-size-row');
   if(cr)cr.style.display=SIZES[S.si].custom?'block':'none';
+  const cw=document.getElementById('cw-input'),ch=document.getElementById('ch-input');
+  if(cw&&document.activeElement!==cw)cw.value=S.customW;
+  if(ch&&document.activeElement!==ch)ch.value=S.customH;
 }
 function selSize(i){
-  S.si=i;renderSizes();
+  S.si=i;renderSizes();renderPreview();
   requestAnimationFrame(()=>requestAnimationFrame(()=>{renderPreview();_lpk='';updatePatternOverlay(S.pattern,calcLayout())}));
 }
 function applyCustomSize(){
   S.customW=Math.max(200,Math.min(3840,parseInt(document.getElementById('cw-input').value)||1280));
   S.customH=Math.max(200,Math.min(2160,parseInt(document.getElementById('ch-input').value)||720));
-  requestAnimationFrame(renderPreview);
+  document.getElementById('cw-input').value=S.customW;document.getElementById('ch-input').value=S.customH;
+  renderSizes();renderPreview();fitZoom();
 }
 function getCanvasSize(){const sz=SIZES[S.si];return sz.custom?{w:S.customW,h:S.customH}:sz}
 
@@ -1720,21 +1856,21 @@ function renderZones(){
     </div>
     ${!['none','lateral'].includes(z.filter)?`
     <div style="margin-bottom:8px">
-      <div style="font-size:9px;color:var(--theme-mu);margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:.4px">Posición de los filtros</div>
+      <div style="font-size:10px;color:var(--theme-mu);margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:.4px">Posición de los filtros</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px">
         ${[['left','Izquierda'],['center','Centro'],['right','Derecha']].map(([v,l])=>{
           const isOn=z.filter===v;
           const icon=v==='left'?`<svg width="28" height="14" viewBox="0 0 28 14"><rect x="1" y="3" width="9" height="8" rx="1.5" fill="${isOn?'#7a7bff':'#aaa'}" opacity="${isOn?1:.5}"/><rect x="12" y="5" width="7" height="4" rx="1" fill="${isOn?'#7a7bff':'#ccc'}" opacity="${isOn?.35:.25}"/><rect x="21" y="5" width="6" height="4" rx="1" fill="${isOn?'#7a7bff':'#ccc'}" opacity="${isOn?.35:.25}"/></svg>`:v==='center'?`<svg width="28" height="14" viewBox="0 0 28 14"><rect x="1" y="5" width="6" height="4" rx="1" fill="${isOn?'#7a7bff':'#ccc'}" opacity="${isOn?.35:.25}"/><rect x="9.5" y="3" width="9" height="8" rx="1.5" fill="${isOn?'#7a7bff':'#aaa'}" opacity="${isOn?1:.5}"/><rect x="21" y="5" width="6" height="4" rx="1" fill="${isOn?'#7a7bff':'#ccc'}" opacity="${isOn?.35:.25}"/></svg>`:`<svg width="28" height="14" viewBox="0 0 28 14"><rect x="1" y="5" width="6" height="4" rx="1" fill="${isOn?'#7a7bff':'#ccc'}" opacity="${isOn?.35:.25}"/><rect x="9" y="5" width="7" height="4" rx="1" fill="${isOn?'#7a7bff':'#ccc'}" opacity="${isOn?.35:.25}"/><rect x="18" y="3" width="9" height="8" rx="1.5" fill="${isOn?'#7a7bff':'#aaa'}" opacity="${isOn?1:.5}"/></svg>`;
           return`<button onclick="ss('z.filter','${v}')" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:7px 4px;border-radius:6px;border:.5px solid ${isOn?'var(--p)':'var(--theme-bd)'};background:${isOn?'var(--pl)':'var(--theme-sb)'};cursor:pointer;font-family:var(--fn);transition:all var(--tr)">
             ${icon}
-            <span style="font-size:9px;font-weight:${isOn?700:500};color:${isOn?'var(--p)':'var(--theme-mu)'}">${l}</span>
+            <span style="font-size:10px;font-weight:${isOn?700:500};color:${isOn?'var(--p)':'var(--theme-mu)'}">${l}</span>
           </button>`;}).join('')}
       </div>
     </div>
     `:''}
     ${z.filter==='lateral'?spx('filterW','Ancho lateral',120,280,z.filterW,8,'z.filterW','filterW'):''}
     ${z.filter==='none'
-      ?`<div style="font-size:9px;color:var(--theme-mu);padding:2px 0 4px;line-height:1.45;margin-top:-2px">Sin zona de filtros. Los usuarios no podrán interactuar con los datos directamente.</div>`
+      ?`<div style="font-size:10px;color:var(--theme-mu);padding:2px 0 4px;line-height:1.45;margin-top:-2px">Sin zona de filtros. Los usuarios no podrán interactuar con los datos directamente.</div>`
       :`<div style="margin-left:10px;margin-top:2px;margin-bottom:6px">
         <div style="font-size:10px;color:var(--theme-mu);font-weight:500;margin-bottom:4px">Fondo de la zona</div>
         ${bgModeSelector('z.filterBg','z.filterBgCustom','flt')}
@@ -1794,7 +1930,7 @@ function renderStyle(){
         <input type="text" class="cp-hex" id="${pickerId}-hex" maxlength="7" value="${customHex}" placeholder="#RRGGBB" oninput="applyCustomHex('${customKey}','${pickerId}',this.value)">
         <button class="cp-clear" onclick="clearCustomColor('${idxKey}','${customKey}','${pickerId}')">Quitar</button>
       </div>`;
-    return `<div class="swts" style="flex-wrap:wrap;gap:4px;margin-bottom:4px;background:#fff;padding:6px;border-radius:7px">${swatches}${customSw}${addBtn}</div>${pickerRow}`;
+    return `<div class="swts" style="flex-wrap:wrap;gap:4px;margin-bottom:4px;padding:6px;border-radius:7px">${swatches}${customSw}${addBtn}</div>${pickerRow}`;
   }
 
   // contraste figura-fondo
@@ -1816,8 +1952,8 @@ function renderStyle(){
     <div class="sdiv">Fondo tarjetas ${tip('ccard')}</div>
     ${swtB(cardArr,'ccard','ccardCustom','cp-card')}
     <div style="display:flex;align-items:center;gap:6px;margin:4px 0 6px">
-      <span style="font-size:9px;color:var(--theme-mu)">Contraste figura-fondo:</span>
-      <span style="font-size:9px;font-weight:700;color:${contrastColor}">${contrastLabel} (Δ${Math.round(delta)})</span>
+      <span style="font-size:10px;color:var(--theme-mu)">Contraste figura-fondo:</span>
+      <span style="font-size:10px;font-weight:700;color:${contrastColor}">${contrastLabel} (Δ${Math.round(delta)})</span>
     </div>
     <div class="sdiv">Borde tarjetas ${tip('cbord')}</div>
     <div class="trow" style="margin-bottom:6px">
@@ -2007,10 +2143,10 @@ function renderKpis(){
       const chevId=`kpi-chev-${i}`;
       return`<div style="border:.5px solid var(--theme-bd);border-radius:6px;margin-bottom:6px;overflow:hidden;background:var(--theme-ow)">
         <div onclick="toggleVGroup('${bodyId}','${chevId}')" style="display:flex;align-items:center;gap:7px;padding:7px 10px;cursor:pointer;user-select:none;transition:background var(--tr)" onmouseover="this.style.background='var(--theme-hover)'" onmouseout="this.style.background=''">
-          <span style="width:16px;height:16px;background:${k.p?'rgba(107,201,140,.18)':'rgba(232,128,128,.18)'};border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0">${k.p?'▲':'▼'}</span>
+          <span style="width:16px;height:16px;background:${k.p?'rgba(107,201,140,.18)':'rgba(232,128,128,.18)'};border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0">${k.p?'▲':'▼'}</span>
           <span style="font-size:10px;font-weight:700;color:var(--theme-ink);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(k.l)||'KPI '+(i+1)}</span>
-          <span style="font-size:9px;font-weight:600;color:var(--theme-mu);flex-shrink:0">${escHtml(k.v)}</span>
-          <span id="${chevId}" style="font-size:8px;color:var(--theme-mu);transition:transform .15s ease;flex-shrink:0">▾</span>
+          <span style="font-size:10px;font-weight:600;color:var(--theme-mu);flex-shrink:0">${escHtml(k.v)}</span>
+          <span id="${chevId}" style="font-size:9.5px;color:var(--theme-mu);transition:transform .15s ease;flex-shrink:0">▾</span>
         </div>
         <div id="${bodyId}" style="display:none;padding:8px 10px;border-top:.5px solid var(--theme-bd)">
           <div class="cr" style="margin-bottom:5px">
@@ -2025,7 +2161,7 @@ function renderKpis(){
             <span class="cl" style="min-width:52px;font-size:10px">Variación</span>
             <input class="ti" data-field="d" style="font-size:10px;padding:3px 7px" value="${escHtml(k.d)}" oninput="updateKd(${i},'d',this.value)" placeholder="+0,0%">
           </div>
-          <button onclick="toggleKpiDir(${i})" style="font-size:8px;font-weight:600;padding:3px 8px;border-radius:4px;border:.5px solid var(--theme-bd);background:var(--theme-sb);color:var(--theme-mu);cursor:pointer;font-family:var(--fn)">Dirección: ${k.p?'Positivo ▲':'Negativo ▼'}</button>
+          <button onclick="toggleKpiDir(${i})" style="font-size:9.5px;font-weight:600;padding:3px 8px;border-radius:4px;border:.5px solid var(--theme-bd);background:var(--theme-sb);color:var(--theme-mu);cursor:pointer;font-family:var(--fn)">Dirección: ${k.p?'Positivo ▲':'Negativo ▼'}</button>
         </div>
       </div>`;
     }).join('')}
@@ -2074,15 +2210,15 @@ function renderVTypes(){
   function vBadges(k){
     const dt=S.vDrill[k]||false;const tt=S.vTooltip[k]||false;
     return `<div style="display:flex;gap:4px;margin-top:8px;padding-top:8px;border-top:.5px solid var(--theme-bd)">
-      <button style="padding:2px 7px;border-radius:20px;font-size:9px;font-weight:600;cursor:pointer;border:.5px solid ${dt?'#7a7bff':'var(--theme-bd)'};background:${dt?'var(--pl)':'transparent'};color:${dt?'#5a5bcc':'var(--theme-mu)'};font-family:var(--fn)" onclick="S.vDrill['${k}']=!S.vDrill['${k}'];renderVTypes();renderPreview()">Drill-through</button>
-      <button style="padding:2px 7px;border-radius:20px;font-size:9px;font-weight:600;cursor:pointer;border:.5px solid ${tt?'#7a7bff':'var(--theme-bd)'};background:${tt?'var(--pl)':'transparent'};color:${tt?'#5a5bcc':'var(--theme-mu)'};font-family:var(--fn)" onclick="S.vTooltip['${k}']=!S.vTooltip['${k}'];renderVTypes();renderPreview()">Tooltip</button>
+      <button style="padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;border:.5px solid ${dt?'#7a7bff':'var(--theme-bd)'};background:${dt?'var(--pl)':'transparent'};color:${dt?'#5a5bcc':'var(--theme-mu)'};font-family:var(--fn)" onclick="S.vDrill['${k}']=!S.vDrill['${k}'];renderVTypes();renderPreview()">Drill-through</button>
+      <button style="padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;border:.5px solid ${tt?'#7a7bff':'var(--theme-bd)'};background:${tt?'var(--pl)':'transparent'};color:${tt?'#5a5bcc':'var(--theme-mu)'};font-family:var(--fn)" onclick="S.vTooltip['${k}']=!S.vTooltip['${k}'];renderVTypes();renderPreview()">Tooltip</button>
     </div>`;
   }
 
   for(let i=0;i<z.main;i++){
     const k=`main-${i}`;const t=gvt(k,i);
     html+=`<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:.5px solid var(--theme-bd)">
-      <div class="sdiv" style="margin-bottom:8px">Zona A · Visual ${i+1}${i===0?' — principal':''}</div>
+      <div class="sdiv" id="vslot-${k}" style="margin-bottom:8px">Zona A · Visual ${i+1}${i===0?' · principal':''}</div>
       <div style="background:var(--theme-ow);border:.5px solid var(--theme-bd);border-radius:6px;padding:8px 8px 4px">
         ${iconPicker(k,t)}
       </div>
@@ -2092,7 +2228,7 @@ function renderVTypes(){
   for(let i=0;i<z.sec;i++){
     const k=`sec-${i}`;const t=gvt(k,i+2);
     html+=`<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:.5px solid var(--theme-bd)">
-      <div class="sdiv" style="margin-bottom:8px">Zona B · Visual ${i+1}</div>
+      <div class="sdiv" id="vslot-${k}" style="margin-bottom:8px">Zona B · Visual ${i+1}</div>
       <div style="background:var(--theme-ow);border:.5px solid var(--theme-bd);border-radius:6px;padding:8px 8px 4px">
         ${iconPicker(k,t)}
       </div>
@@ -2128,41 +2264,39 @@ function toggleKpiDir(i){S.kd[i].p=!S.kd[i].p;renderKpis();renderPreview()}
 function renderTemplates(){
   const el=document.getElementById('tplc');if(!el)return;
   el.innerHTML=`
-    <div class="sdiv">Plantillas rápidas</div>
-    <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:10px">
+    <div class="sdiv">Plantillas por área</div>
+    <div class="tpl-list">
       ${BUILT_IN_TPLS.map((t,i)=>`
-      <div class="tpl-btn" onclick="applyBuiltInTpl(${i})" style="display:flex;align-items:center;gap:8px;padding:7px 9px;text-align:left">
-        <div style="flex:1;min-width:0">
-          <span class="tpl-n" style="display:block">${t.n}</span>
+      <button type="button" class="tpl-btn tpl-row" onclick="applyBuiltInTpl(${i})" title="${escHtml(t.hint||t.d)}">
+        <span class="tpl-ico" aria-hidden="true">${t.icon||'◆'}</span>
+        <span class="tpl-txt">
+          <span class="tpl-n">${t.n}</span>
           <span class="tpl-d">${t.d}</span>
-        </div>
-        <span style="font-size:8px;color:var(--p);font-weight:700;flex-shrink:0">Aplicar →</span>
-      </div>`).join('')}
+        </span>
+        <span class="tpl-go" aria-hidden="true">Aplicar →</span>
+      </button>`).join('')}
     </div>
-    <div class="sdiv">Guardar &amp; Cargar (JSON)</div>
-    <div style="padding:7px 9px;background:var(--theme-tag-bg);border-radius:6px;font-size:9px;color:var(--theme-mu);line-height:1.5;margin-bottom:8px">
-      Guarda toda la configuración del mockup como archivo <strong style="color:var(--theme-ink)">.json</strong>. 
-      Puedes cargarlo en otro momento o compartirlo con tu equipo directamente.
-    </div>
+    <div class="sdiv" style="margin-top:12px">Tu proyecto</div>
+    <p class="tpl-note">El diseño se guarda solo en este navegador. Descárgalo como <strong>.json</strong> para retomarlo en otro equipo o compartirlo con tu equipo.</p>
     <div class="tpl-actions">
-      <button class="tpl-act primary" onclick="saveTemplateJSON()">
-        <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M2 11V7h10v4M5 7V2h4v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Guardar JSON
+      <button type="button" class="tpl-act primary" onclick="saveTemplateJSON()">
+        <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 11V7h10v4M5 7V2h4v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Guardar .json
       </button>
-      <button class="tpl-act" onclick="document.getElementById('tpl-file-input').click()">
-        <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M4 9l3-3 3 3M7 6v6M2 3h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        Cargar JSON
+      <button type="button" class="tpl-act" onclick="document.getElementById('tpl-file-input').click()">
+        <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M4 6l3-3 3 3M7 3v7M2 12h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Abrir .json
       </button>
     </div>
-    <div style="margin-top:8px;display:flex;align-items:flex-start;gap:6px;padding:7px 9px;background:var(--pl);border-radius:6px;border:.5px solid rgba(122,123,255,.25)">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="#5a5bcc" style="flex-shrink:0;margin-top:1px"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-      <span style="font-size:9px;color:#4a4bcc;line-height:1.45">Comparte tu plantilla en <strong>LinkedIn</strong> — la comunidad PBI en español te lo agradecerá.</span>
-    </div>`;
+    <button type="button" class="tpl-reset" onclick="resetAll()">Empezar un mockup nuevo</button>`;
 }
 
-function applyBuiltInTpl(i){
+function applyBuiltInTpl(i,silent){
   const t=BUILT_IN_TPLS[i];
+  if(!t)return;
   if(t.si!=null)S.si=t.si;
+  S.visuals={};
+  if(typeof clearEMSelection==='function')clearEMSelection();
   Object.assign(S.z,t.s.z);Object.assign(S.m,t.s.m);
   S.gap=t.s.gap;Object.assign(S.st,t.s.st);S.vt={...t.s.vt};
   S.vDrill={};S.vTooltip={};
@@ -2172,16 +2306,17 @@ function applyBuiltInTpl(i){
   if(t.s.title!=null){S.title=t.s.title;const el=document.getElementById('dash-title');if(el)el.value=t.s.title;}
   if(t.s.subtitle!=null){S.subtitle=t.s.subtitle;const el=document.getElementById('dash-subtitle');if(el)el.value=t.s.subtitle;}
   renderControls();renderPreview();
-  toast(`✓ Plantilla "${t.n}" aplicada`,true);
+  if(!silent)toast(`Plantilla «${t.n}» aplicada · Ctrl+Z para deshacer`,true);
 }
 function saveTemplateJSON(){
-  const data=JSON.stringify(S,null,2);
+  const data=JSON.stringify({app:'PBI Mockup Creator',version:25,...persistable()},null,2);
   const blob=new Blob([data],{type:'application/json'});
   const a=document.createElement('a');
-  const title=(document.getElementById('dash-title')?.value||'mockup').replace(/[^a-z0-9áéíóúñ\-_\s]/gi,'').trim().replace(/\s+/g,'_').substring(0,40)||'mockup';
-  a.download=`pbi_mockup_${title}.json`;
-  a.href=URL.createObjectURL(blob);a.click();
-  toast('Plantilla guardada como JSON',true);
+  a.download=_exportName('json').replace(/_\d+x\d+\.json$/,'.json');
+  a.href=URL.createObjectURL(blob);
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  toast('Proyecto guardado como .json',true);
 }
 function loadTemplateFile(e){
   const file=e.target.files[0];if(!file)return;
@@ -2189,41 +2324,12 @@ function loadTemplateFile(e){
   reader.onload=ev=>{
     try{
       const loaded=JSON.parse(ev.target.result);
-      if(loaded.m)Object.assign(S.m,loaded.m);
-      if(loaded.z)Object.assign(S.z,loaded.z);
-      if(loaded.st){
-        Object.assign(S.st,loaded.st);
-        // compatibilidad: inicializar campos custom si no existen
-        if(!S.st.cbgCustom)S.st.cbgCustom='';
-        if(!S.st.ccardCustom)S.st.ccardCustom='';
-        if(!S.st.cbordCustom)S.st.cbordCustom='';
-        if(S.st.accentIdx===undefined)S.st.accentIdx=0;
-        if(!S.st.accentCustom)S.st.accentCustom='';
-        // Normalizar campos bg de header/filtros (legacy bool → string)
-        if(S.z.headerBg===true)S.z.headerBg='card';
-        if(S.z.headerBg===false)S.z.headerBg='none';
-        if(!S.z.headerBgCustom)S.z.headerBgCustom='';
-        if(S.z.filterBg===true)S.z.filterBg='card';
-        if(S.z.filterBg===false)S.z.filterBg='none';
-        if(!S.z.filterBgCustom)S.z.filterBgCustom='';
-      }
-      if(loaded.grid)Object.assign(S.grid,loaded.grid);
-      if(loaded.gap!=null)S.gap=loaded.gap;
-      if(loaded.vt)S.vt=loaded.vt;
-      if(loaded.kd&&Array.isArray(loaded.kd))S.kd=loaded.kd;
-      if(loaded.vTitles)S.vTitles=loaded.vTitles;
-      if(loaded.vSubtitles)S.vSubtitles=loaded.vSubtitles;
-      if(loaded.story&&typeof loaded.story==='object')Object.assign(S.story,loaded.story);
-      if(loaded.proportions&&typeof loaded.proportions==='object')Object.assign(S.proportions,loaded.proportions);
-      if(loaded.pattern)S.pattern=loaded.pattern;
-      if(loaded.titleSize)S.titleSize=loaded.titleSize;
-      if(loaded.subSize)S.subSize=loaded.subSize;
-      if(loaded.title!=null)S.title=loaded.title;
-      if(loaded.subtitle!=null)S.subtitle=loaded.subtitle;
-      if(loaded.si!=null)S.si=loaded.si;
-      if(loaded.theme){applyTheme(loaded.theme)}else{renderControls();renderPreview();}
-      toast('Plantilla cargada correctamente',true);
-    }catch(_){toast('Error al cargar el JSON',false)}
+      if(!loaded||typeof loaded!=='object'||(!loaded.z&&!loaded.m&&!loaded.st))throw new Error('formato');
+      hydrateState(loaded);
+      clearEMSelection();
+      renderControls();renderPreview();fitZoom();
+      toast(`Proyecto «${file.name.replace(/\.json$/i,'')}» cargado`,true);
+    }catch(_){toast('No se ha podido leer el archivo: ¿es un proyecto de PBI Mockup Creator?',false)}
   };
   reader.readAsText(file);
   e.target.value='';
@@ -2255,7 +2361,7 @@ function togglePresentation(){
   document.body.classList.toggle('pres');
   const on=document.body.classList.contains('pres');
   const btn=document.getElementById('pres-btn');
-  if(btn)btn.classList.toggle('on',on);
+  if(btn){btn.classList.toggle('on',on);btn.setAttribute('aria-pressed',String(on));}
   if(on)setTimeout(renderPreview,370);
   else  requestAnimationFrame(renderPreview);
   toast(on?'Modo presentación activo — ESC para salir':'Modo presentación desactivado');
@@ -2357,7 +2463,7 @@ function cc(){
     axis:dark?'#3a3a55':'#e8e8f4',
     txt:dark?'#555580':'#aaaacc',
     bg:'transparent',
-    pos:'#6bc98c',neg:'#e88080',
+    pos:dark?'#6cc46a':'#3c8a37',neg:dark?'#ec7b93':'#a3223e',
     line2:dark?'#444466':'#c8c8e0',
     line3:dark?'#333350':'#ddddef',
     dark,
@@ -3476,7 +3582,7 @@ function renderProportions(){
     </div>
     <div style="margin-bottom:10px">${zoneControls}</div>
     <div style="display:flex;align-items:center;justify-content:space-between">
-      <span style="font-size:9px;color:var(--theme-mu);font-family:var(--fn-mono)">Gap: ${S.gap}px × ${nGaps} = ${S.gap*nGaps}px</span>
+      <span style="font-size:10px;color:var(--theme-mu);font-family:var(--fn-mono)">Gap: ${S.gap}px × ${nGaps} = ${S.gap*nGaps}px</span>
       <button class="prop-reset" onclick="resetProportions()">Restablecer</button>
     </div>`;
 }
@@ -3970,11 +4076,11 @@ function renderPreview(){
       const h=L.kpiH;
 
       // ── Colores semánticos ──
-      const posC  = kd.p ? '#22a06b' : '#c05050';
+      const posC  = kd.p ? (isDark ? '#6cc46a' : '#3c8a37') : (isDark ? '#ec7b93' : '#a3223e');
       const posBg = kd.p
-        ? (isDark ? 'rgba(34,160,107,.16)'  : 'rgba(34,160,107,.10)')
-        : (isDark ? 'rgba(192,80,80,.18)'   : 'rgba(192,80,80,.10)');
-      const accentC = kd.p ? '#22a06b' : '#d94f4f';
+        ? (isDark ? 'rgba(60,138,55,.22)'  : 'rgba(60,138,55,.10)')
+        : (isDark ? 'rgba(163,34,62,.26)'  : 'rgba(163,34,62,.08)');
+      const accentC = posC;
 
       // ── Tipografía proporcional a la altura de la card ──
       const pH      = Math.max(14, Math.round(kpiW * .065));   // padding horizontal
@@ -4198,17 +4304,17 @@ function renderPreview(){
     const sB='rgba(255,107,89,0.08)',sBd='rgba(255,107,89,0.42)';
     if((g.dir==='vertical'||g.dir==='both')&&g.cols>0){
       const cw2=(gw-(g.cols-1)*g.gutter)/g.cols;
-      for(let ci=0;ci<g.cols;ci++){const cx2=gx+ci*(cw2+g.gutter);html+=`<div style="position:absolute;left:${cx2}px;top:${gy}px;width:${cw2}px;height:${gh}px;background:${sB};border:.5px solid ${sBd};pointer-events:none;box-sizing:border-box"></div>`;}
+      for(let ci=0;ci<g.cols;ci++){const cx2=gx+ci*(cw2+g.gutter);html+=`<div data-guide style="position:absolute;left:${cx2}px;top:${gy}px;width:${cw2}px;height:${gh}px;background:${sB};border:.5px solid ${sBd};pointer-events:none;box-sizing:border-box"></div>`;}
     }
     if((g.dir==='horizontal'||g.dir==='both')&&g.cols>0){
       const rh2=(gh-(g.cols-1)*g.gutter)/g.cols;
-      for(let ri=0;ri<g.cols;ri++){const ry=gy+ri*(rh2+g.gutter);html+=`<div style="position:absolute;left:${gx}px;top:${ry}px;width:${gw}px;height:${rh2}px;background:${sB};border:.5px solid ${sBd};pointer-events:none;box-sizing:border-box"></div>`;}
+      for(let ri=0;ri<g.cols;ri++){const ry=gy+ri*(rh2+g.gutter);html+=`<div data-guide style="position:absolute;left:${gx}px;top:${ry}px;width:${gw}px;height:${rh2}px;background:${sB};border:.5px solid ${sBd};pointer-events:none;box-sizing:border-box"></div>`;}
     }
-    html+=`<div style="position:absolute;left:${gx}px;top:${Math.max(2,gy-13)}px;font-size:8px;font-weight:700;color:rgba(200,80,60,.65);font-family:'Segoe UI',sans-serif;letter-spacing:.5px;pointer-events:none">GRID ${g.cols} ${g.dir==='horizontal'?'ROWS':g.dir==='vertical'?'COLS':'COL·ROW'} · ${g.gutter}px</div>`;
+    html+=`<div data-guide style="position:absolute;left:${gx}px;top:${Math.max(2,gy-13)}px;font-size:8px;font-weight:700;color:rgba(200,80,60,.65);font-family:'Segoe UI',sans-serif;letter-spacing:.5px;pointer-events:none">GRID ${g.cols} ${g.dir==='horizontal'?'ROWS':g.dir==='vertical'?'COLS':'COL·ROW'} · ${g.gutter}px</div>`;
   }
 
   dp.innerHTML=html;
-  dp.querySelectorAll('.vsl').forEach(el=>{el.addEventListener('click',(e)=>{if(S.editMode)return;if(e.target.closest('[data-role="vtitle"],[data-role="vsubtitle"],[data-role="kpi-label"],[data-role="kpi-value"],[data-role="kpi-delta"]'))return;const k=el.dataset.k;if(!k||k==='hdr'||k.startsWith('kpi-'))return;S.vt[k]=((S.vt[k]||0)+1)%VTYPES.length;renderControls();renderPreview()})});
+  dp.querySelectorAll('.vsl').forEach(el=>{el.addEventListener('click',(e)=>{if(S.editMode)return;if(e.target.closest('[data-role="vtitle"],[data-role="vsubtitle"],[data-role="kpi-label"],[data-role="kpi-value"],[data-role="kpi-delta"]'))return;const k=el.dataset.k;if(!k||k==='hdr'||k.startsWith('kpi-'))return;if(e.shiftKey){const fb=k.startsWith('sec-')?parseInt(k.split('-')[1])+2:parseInt(k.split('-')[1]);S.vt[k]=(VTYPES.indexOf(gvt(k,fb))+1)%VTYPES.length;renderControls();renderPreview();return}focusVisualSlot(k)})});
 
   // Títulos editables — doble clic activa input inline
   dp.querySelectorAll('[data-role="vtitle"]').forEach(titleEl=>{
@@ -4318,8 +4424,12 @@ function openGestaltPanel(){
 function updateGestaltTrigger(){
   const btn=document.getElementById('gestalt-trigger');
   if(!btn)return;
-  const on=S.gestalt&&document.getElementById('gestalt-panel')?.classList.contains('open');
+  const panel=document.getElementById('gestalt-panel');
+  const on=S.gestalt&&panel?.classList.contains('open');
   btn.classList.toggle('on',!!on);
+  btn.setAttribute('aria-pressed',String(!!on));
+  if(panel)panel.setAttribute('aria-hidden',String(!on));
+  document.body.classList.toggle('gp-open',!!on);
 }
 
 function renderPBar(){
@@ -4393,6 +4503,8 @@ function openSection(id){
   if(body&&!body.classList.contains('open')){
     body.classList.add('open');
     if(chev)chev.classList.add('open');
+    const hd=document.querySelector(`.cs-hd[aria-controls="${bodyId}"]`);
+    if(hd)hd.setAttribute('aria-expanded','true');
   }
   // scroll al sidebar section — sin scrollIntoView
   if(body){
@@ -4428,11 +4540,13 @@ function applyGestaltFix(type){
       break;
     }
     case 'increaseBgContrast':
+      S.st.cbgCustom='';
       S.st.cbg=Math.min((S.theme==='dark'?4:5),S.st.cbg+1);
       toast('✓ Fondo canvas más oscuro — mayor contraste',true);
       openSection('style');
       break;
     case 'lightenCards':
+      S.st.ccardCustom='';
       S.st.ccard=Math.max(0,S.st.ccard-1);
       toast('✓ Fondo de tarjetas más claro',true);
       openSection('style');
@@ -4898,7 +5012,7 @@ function buildGestaltPanel(id,L){
             <span class="gp-rule-val">${rule.val}</span>
           </div>
           <div class="gp-rule-desc">${rule.desc}</div>
-          ${rule.threshold?`<div style="font-size:9px;color:var(--theme-mu);margin-top:3px;opacity:.7">${rule.threshold}</div>`:''}
+          ${rule.threshold?`<div style="font-size:10px;color:var(--theme-mu);margin-top:3px;opacity:.7">${rule.threshold}</div>`:''}
           ${rule.action?`<button class="gp-rule-action" onclick="${rule.action.fn}">${arrowSVG}${rule.action.label}</button>`:''}
         </div>`).join('')}
     </div>`;
@@ -4958,79 +5072,90 @@ function toggleExportDD(){
   const btn=document.getElementById('export-arrow-btn');
   const open=dd.classList.toggle('open');
   btn.classList.toggle('open',open);
+  btn.setAttribute('aria-expanded',String(open));
+  if(open){const first=dd.querySelector('.export-opt');if(first)setTimeout(()=>first.focus(),0);}
   if(open){setTimeout(()=>document.addEventListener('click',_closeOnOutside),0);}
 }
 function closeExportDD(){
   document.getElementById('export-dd').classList.remove('open');
   document.getElementById('export-arrow-btn').classList.remove('open');
+  document.getElementById('export-arrow-btn').setAttribute('aria-expanded','false');
   document.removeEventListener('click',_closeOnOutside);
 }
 function _closeOnOutside(e){
   if(!e.target.closest('.export-split'))closeExportDD();
 }
 
-async function doDownload(){
-  const btn=document.getElementById('dl-btn');
-  if(btn.classList.contains('ld'))return;
-  btn.classList.add('ld');
-  btn.innerHTML=`<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" opacity=".3"/><path d="M12 3a9 9 0 0 1 9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur=".8s" repeatCount="indefinite"/></path></svg> Exportando…`;
-  const psc=document.getElementById('psc');
-  const prev=psc.style.cssText;
-  try{
-    const sz=getCanvasSize();
-    psc.style.cssText=`width:${sz.w}px;height:${sz.h}px;transform:scale(1);transform-origin:top left;position:absolute;left:0;top:0`;
-    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-    const canvas=await html2canvas(document.getElementById('dp2'),{width:sz.w,height:sz.h,scale:2,useCORS:true,allowTaint:true,backgroundColor:getCbg(),logging:false,imageTimeout:0});
-    const a=document.createElement('a');
-    const title=(document.getElementById('dash-title')?.value||'dashboard').replace(/[^a-z0-9áéíóúñ\-_\s]/gi,'').trim().replace(/\s+/g,'_').substring(0,40)||'dashboard';
-    a.download=`pbi_mockup_${title}_${sz.w}x${sz.h}.png`;
-    a.href=canvas.toDataURL('image/png',1.0);a.click();
-    gtag('event', 'exportar_png', {
-      'event_category': 'exportar',
-      'event_label': 'PNG'
-    });  
-    toast('PNG exportado correctamente',true);
-  }catch(e){console.error(e);toast('Error al exportar PNG',false)}
-  finally{
-    psc.style.cssText=prev;
-    renderPreview();
-    btn.classList.remove('ld');
-    btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v7.5M3.5 6l3 3 3-3M1.5 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Exportar PNG`;
+function _exportName(ext){
+  const sz=getCanvasSize();
+  const title=(S.title||'dashboard').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\-_\s]/gi,'').trim().replace(/\s+/g,'_').substring(0,40)||'dashboard';
+  return `pbi_mockup_${title}_${sz.w}x${sz.h}.${ext}`;
+}
+function _setExportBusy(on,label){
+  const btn=document.getElementById('dl-btn'),arr=document.getElementById('export-arrow-btn');
+  if(!btn)return;
+  if(on){
+    btn.classList.add('ld');if(arr)arr.classList.add('ld');
+    btn.setAttribute('aria-busy','true');
+    btn.innerHTML=`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" opacity=".3"/><path d="M12 3a9 9 0 0 1 9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur=".8s" repeatCount="indefinite"/></path></svg> ${label}`;
+  }else{
+    btn.classList.remove('ld');if(arr)arr.classList.remove('ld');
+    btn.removeAttribute('aria-busy');
+    btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M6.5 1v7.5M3.5 6l3 3 3-3M1.5 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> Exportar PNG`;
   }
 }
-
-// ═══════════════════════════════════════════
-// EXPORT PDF
-// ═══════════════════════════════════════════
-async function doExportPDF(){
-  const btn=document.getElementById('pdf-btn');
-  btn.disabled=true;btn.textContent='…';
+// Renderiza el canvas a escala 1 y devuelve un <canvas> a 2×, sin guías ni selección
+async function _captureCanvas(){
+  if(typeof html2canvas!=='function')throw new Error('html2canvas no disponible');
   const psc=document.getElementById('psc');
   const prev=psc.style.cssText;
+  const sz=getCanvasSize();
+  document.body.classList.add('exporting');
   try{
-    const sz=getCanvasSize();
     psc.style.cssText=`width:${sz.w}px;height:${sz.h}px;transform:scale(1);transform-origin:top left;position:absolute;left:0;top:0`;
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-    const canvas=await html2canvas(document.getElementById('dp2'),{width:sz.w,height:sz.h,scale:2,useCORS:true,allowTaint:true,backgroundColor:getCbg(),logging:false});
-    const imgData=canvas.toDataURL('image/png',1.0);
-    const {jsPDF}=window.jspdf;
-    const isPortrait=sz.h>sz.w;
-    const pdf=new jsPDF({orientation:isPortrait?'portrait':'landscape',unit:'px',format:[sz.w,sz.h]});
-    pdf.addImage(imgData,'PNG',0,0,sz.w,sz.h);
-    const title=(document.getElementById('dash-title')?.value||'dashboard').replace(/[^a-z0-9áéíóúñ\-_\s]/gi,'').trim().replace(/\s+/g,'_').substring(0,40)||'dashboard';
-    pdf.save(`pbi_mockup_${title}.pdf`);
-    gtag('event', 'exportar_pdf', {
-      'event_category': 'exportar',  
-      'event_label': 'PDF'
-    });
-    toast('PDF exportado correctamente',true);
-  }catch(e){console.error(e);toast('Error al exportar PDF',false)}
-  finally{
+    return await html2canvas(document.getElementById('dp2'),{width:sz.w,height:sz.h,scale:2,useCORS:true,allowTaint:true,backgroundColor:getCbg(),logging:false,imageTimeout:0});
+  }finally{
+    document.body.classList.remove('exporting');
     psc.style.cssText=prev;
     renderPreview();
-    btn.disabled=false;
-    btn.innerHTML=`<svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 5h6M4 7.5h4M4 10h3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg> PDF`;
   }
+}
+function _track(name,label){try{if(typeof gtag==='function')gtag('event',name,{event_category:'exportar',event_label:label})}catch(_){}}
+
+async function doDownload(){
+  const btn=document.getElementById('dl-btn');
+  if(btn&&btn.classList.contains('ld'))return;
+  _setExportBusy(true,'Exportando PNG…');
+  try{
+    const canvas=await _captureCanvas();
+    const a=document.createElement('a');
+    a.download=_exportName('png');
+    a.href=canvas.toDataURL('image/png',1.0);
+    document.body.appendChild(a);a.click();a.remove();
+    _track('exportar_png','PNG');
+    toast('PNG exportado',true);
+  }catch(e){console.error(e);toast('No se ha podido exportar el PNG',false)}
+  finally{_setExportBusy(false)}
+}
+
+async function doExportPDF(){
+  const btn=document.getElementById('dl-btn');
+  if(btn&&btn.classList.contains('ld'))return;
+  _setExportBusy(true,'Exportando PDF…');
+  try{
+    if(!window.jspdf||!window.jspdf.jsPDF)throw new Error('jsPDF no disponible');
+    const sz=getCanvasSize();
+    const canvas=await _captureCanvas();
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:sz.h>sz.w?'portrait':'landscape',unit:'px',format:[sz.w,sz.h],hotfixes:['px_scaling']});
+    pdf.setProperties({title:S.title||'Dashboard',author:'PBI Mockup Creator · borjamora.es',creator:'PBI Mockup Creator'});
+    pdf.addImage(canvas.toDataURL('image/png',1.0),'PNG',0,0,sz.w,sz.h);
+    pdf.save(_exportName('pdf'));
+    _track('exportar_pdf','PDF');
+    toast('PDF exportado',true);
+  }catch(e){console.error(e);toast('No se ha podido exportar el PDF',false)}
+  finally{_setExportBusy(false)}
 }
 
 // ═══════════════════════════════════════════
@@ -5044,7 +5169,7 @@ function toggleEditMode(){
   S.editMode = !S.editMode;
   document.body.classList.toggle('edit-mode', S.editMode);
   const btn = document.getElementById('edit-mode-btn');
-  if(btn) btn.classList.toggle('on', S.editMode);
+  if(btn){ btn.classList.toggle('on', S.editMode); btn.setAttribute('aria-pressed', String(S.editMode)); }
   if(S.editMode){
     attachEMListeners();
     toast('Diseño libre activado — Esc para salir', true);
@@ -5124,6 +5249,7 @@ function emAlignToNeighbor(){
   best.style.boxShadow  = '0 0 0 2px rgba(122,123,255,.9) inset, 0 0 0 5px rgba(122,123,255,.2)';
   setTimeout(() => { best.style.boxShadow = ''; best.style.transition = ''; }, 650);
 
+  scheduleCommit();
   toast('✓ Alineado con el vecino lateral', true);
 }
 
@@ -5347,6 +5473,7 @@ function onEMUp(){
   }
   document.querySelectorAll('.em-snap, .em-measure').forEach(el => el.remove());
   _em.dragState = null;
+  if(ds) scheduleCommit();
 }
 
 function renderEMHandles(visEl){
@@ -5443,7 +5570,8 @@ function _emRefreshChart(vslEl, k, vslW, vslH){
   const cW = chartDiv.offsetWidth;
   const cH = chartDiv.offsetHeight;
   if(cW < 10 || cH < 10) return;
-  const vtype = gvt(k, 0);
+  const _i = parseInt(k.split('-')[1]) || 0;
+  const vtype = gvt(k, k.startsWith('sec-') ? _i + 2 : _i);
   const uid = ++_uid;
   chartDiv.innerHTML = renderChart(vtype, cW, cH, uid);
 }
@@ -5472,43 +5600,241 @@ document.addEventListener('pointerdown', (e) => {
 });
 
 // ═══════════════════════════════════════════
+// ESTADO PERSISTENTE · HISTORIAL · GUARDADO AUTOMÁTICO
+// ═══════════════════════════════════════════
+const STORE_KEY='pbiMockup.v25.state', ONBOARD_KEY='pbiMockup.onboarded';
+const IS_MAC=/Mac|iPhone|iPad/i.test(navigator.platform||navigator.userAgent||'');
+const MOD=IS_MAC?'⌘':'Ctrl';
+const kbdLabel=k=>IS_MAC?`⌘${k}`:`Ctrl+${k}`;
+
+// Lo que define el diseño (sin zoom, modo edición ni panel abierto)
+function persistable(){
+  const {zoom,editMode,gestalt,...rest}=S;
+  return JSON.parse(JSON.stringify(rest));
+}
+
+// Fusiona un estado guardado (JSON, localStorage o historial) validando cada campo
+function hydrateState(d){
+  if(!d||typeof d!=='object')return;
+  ['si','customW','customH','titleSize','subSize','subtitleSize','kpiValueSize','kpiValueBold','kpiSparkline',
+   'title','subtitle','titleBold','titleItalic','subtitleBold','subtitleItalic','gap','pattern']
+    .forEach(k=>{if(d[k]!==undefined&&d[k]!==null)S[k]=d[k]});
+  ['m','z','st','grid','story','proportions'].forEach(k=>{
+    if(d[k]&&typeof d[k]==='object')S[k]={...S[k],...d[k]};
+  });
+  ['vt','vDrill','vTooltip','vTitles','vSubtitles','visuals'].forEach(k=>{
+    if(d[k]&&typeof d[k]==='object')S[k]={...d[k]};
+  });
+  if(Array.isArray(d.kd)&&d.kd.length){
+    S.kd=d.kd.slice(0,6).map((k,i)=>({...KD_DEFAULT[i],...(k&&typeof k==='object'?k:{})}));
+  }
+  while(S.kd.length<6)S.kd.push({...KD_DEFAULT[S.kd.length]});
+  // Normalizaciones (formatos antiguos)
+  const pat=String(S.pattern||'none');
+  S.pattern=pat.toLowerCase()==='none'?'none':(['Z','F','layer-cake'].includes(pat)?pat:'none');
+  if(!(S.si>=0&&S.si<SIZES.length))S.si=0;
+  S.customW=Math.max(200,Math.min(3840,+S.customW||1280));
+  S.customH=Math.max(200,Math.min(2160,+S.customH||720));
+  if(S.z.headerBg===true)S.z.headerBg='card';
+  if(S.z.headerBg===false)S.z.headerBg='none';
+  if(S.z.filterBg===true)S.z.filterBg='card';
+  if(S.z.filterBg===false)S.z.filterBg='none';
+  ['headerBgCustom','filterBgCustom'].forEach(k=>{if(!S.z[k])S.z[k]=''});
+  ['cbgCustom','ccardCustom','cbordCustom','accentCustom'].forEach(k=>{if(!S.st[k])S.st[k]=''});
+  if(S.st.accentIdx===undefined)S.st.accentIdx=0;
+  S.z.kpi=Math.max(0,Math.min(6,+S.z.kpi||0));
+  S.z.main=Math.max(1,Math.min(4,+S.z.main||1));
+  S.z.sec=Math.max(0,Math.min(4,+S.z.sec||0));
+  // El tema se aplica sin restablecer los colores guardados
+  if(d.theme&&THEMES[d.theme]){S.theme=d.theme;document.documentElement.setAttribute('data-theme',d.theme);}
+}
+
+const HIST={stack:[],idx:-1,lock:false,timer:null};
+function _snap(){return JSON.stringify(persistable())}
+function scheduleCommit(){
+  if(HIST.lock)return;
+  clearTimeout(HIST.timer);
+  HIST.timer=setTimeout(commitHistory,350);
+}
+function commitHistory(){
+  clearTimeout(HIST.timer);
+  if(HIST.lock)return;
+  const snap=_snap();
+  if(HIST.stack[HIST.idx]===snap)return;
+  HIST.stack=HIST.stack.slice(0,HIST.idx+1);
+  HIST.stack.push(snap);
+  if(HIST.stack.length>100)HIST.stack.shift();
+  HIST.idx=HIST.stack.length-1;
+  updateHistUI();
+  autosave(snap);
+}
+function _restore(i){
+  HIST.lock=true;
+  try{
+    hydrateState(JSON.parse(HIST.stack[i]));
+    if(typeof clearEMSelection==='function')clearEMSelection();
+    renderControls();renderPreview();
+  }finally{HIST.lock=false}
+  HIST.idx=i;updateHistUI();autosave(HIST.stack[i]);
+}
+function undo(){
+  commitHistory();
+  if(HIST.idx>0){_restore(HIST.idx-1);toast('Deshecho',null);}
+}
+function redo(){
+  if(HIST.idx<HIST.stack.length-1){_restore(HIST.idx+1);toast('Rehecho',null);}
+}
+function updateHistUI(){
+  const u=document.getElementById('undo-btn'),r=document.getElementById('redo-btn');
+  if(u)u.disabled=HIST.idx<=0;
+  if(r)r.disabled=HIST.idx>=HIST.stack.length-1;
+}
+let _saveFlash=null;
+function autosave(snap){
+  try{localStorage.setItem(STORE_KEY,snap)}catch(_){return}
+  const n=document.getElementById('autosave-note');
+  if(!n)return;
+  n.textContent='Guardado en este navegador';n.classList.add('saved');
+  clearTimeout(_saveFlash);
+  _saveFlash=setTimeout(()=>{n.textContent='Se guarda automáticamente en este navegador';n.classList.remove('saved')},1600);
+}
+function resetAll(){
+  if(!confirm('¿Empezar un mockup nuevo? Se perderá el diseño actual (puedes deshacerlo con '+kbdLabel('Z')+').'))return;
+  commitHistory();
+  const fresh={si:0,customW:1280,customH:720,titleSize:18,subSize:11,subtitleSize:13,kpiValueSize:28,kpiValueBold:true,kpiSparkline:'sparkline',
+    title:'Análisis Comercial · 2026',subtitle:'Análisis de ventas por canal y región',titleBold:true,titleItalic:false,subtitleBold:false,subtitleItalic:false,
+    m:{t:24,b:24,l:24,r:24},gap:12,
+    z:{header:true,filter:'none',filterW:160,kpi:4,main:2,sec:2,tooltip:false,drillthrough:false,headerBg:'card',filterBg:'card',headerBgCustom:'',filterBgCustom:''},
+    st:{br:8,cbg:1,ccard:0,cbord:0,canvasRadius:3,bordActive:false,accentIdx:0,accentCustom:'',cbgCustom:'',ccardCustom:'',cbordCustom:''},
+    grid:{show:false,dir:'both',cols:3,gutter:16,margin:0},pattern:'none',vt:{},vDrill:{},vTooltip:{},
+    kd:KD_DEFAULT.map(k=>({...k})),vTitles:{},vSubtitles:{},story:{audience:'',decision:'',keyMetric:'',context:''},
+    proportions:{hdr:1,kpi:2,main:5,sec:3},visuals:{},theme:S.theme};
+  hydrateState(fresh);
+  S.vt={};S.vDrill={};S.vTooltip={};S.vTitles={};S.vSubtitles={};S.visuals={};
+  clearEMSelection();renderControls();renderPreview();
+  toast('Mockup nuevo · '+kbdLabel('Z')+' para recuperar el anterior',true);
+}
+
+// Clic en un visual del lienzo → abre su selector de tipo en el panel
+function focusVisualSlot(k){
+  openSection('vtypes');
+  setTimeout(()=>{
+    const el=document.getElementById('vslot-'+k);const sb=document.getElementById('sb-sc');
+    if(!el||!sb)return;
+    const top=el.getBoundingClientRect().top-sb.getBoundingClientRect().top+sb.scrollTop;
+    sb.scrollTo({top:Math.max(0,top-12),behavior:'smooth'});
+    const block=el.parentElement;
+    block.classList.remove('slot-flash');void block.offsetWidth;block.classList.add('slot-flash');
+  },200);
+}
+
+// Contador del diagnóstico en la barra (principios correctos / total)
+function updateGestaltScore(L){
+  const el=document.getElementById('gst-score');if(!el||typeof GESTALT_META==='undefined')return;
+  const st=Object.values(GESTALT_META).map(m=>{try{return m.diagnose(L).status}catch(_){return 'ok'}});
+  const ok=st.filter(x=>x==='ok').length;
+  const worst=st.includes('bad')?'bad':st.includes('warn')?'warn':'ok';
+  el.textContent=`${ok}/${st.length}`;
+  el.className='gst-score '+worst;
+  const btn=document.getElementById('gestalt-trigger');
+  if(btn)btn.setAttribute('aria-label',`Diagnóstico de diseño: ${ok} de ${st.length} principios correctos`);
+}
+
+// Atajos de teclado
+function openShortcuts(){
+  const list=document.getElementById('kbd-list'),dlg=document.getElementById('kbd-dialog');
+  if(!list||!dlg)return;
+  const k=(...keys)=>keys.map(x=>`<kbd>${x}</kbd>`).join('');
+  const rows=[
+    ['Deshacer',k(MOD,'Z')],['Rehacer',IS_MAC?k('⌘','Mayús','Z'):k('Ctrl','Y')],
+    ['Exportar PNG',k(MOD,'E')],['Exportar PDF',k(MOD,'P')],
+    ['Guardar proyecto (.json)',k(MOD,'S')],['Abrir proyecto',k(MOD,'O')],
+    ['Zoom + / − / ajustar',k(MOD,'+')+k(MOD,'−')+k(MOD,'0')],
+    ['Diseño libre',k('E')],['Mover visual (Mayús = 8 px)',k('←','↑','→','↓')],
+    ['Eliminar visual seleccionado',k('Supr')],['Modo presentación',k('P')],
+    ['Diagnóstico Gestalt',k('G')],['Rotar tipo de visual',k('Mayús')+'<span style="font-size:11px;color:var(--theme-mu);align-self:center">+ clic</span>'],
+    ['Esta ayuda',k('?')],['Salir / cerrar',k('Esc')],
+  ];
+  list.innerHTML=rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join('');
+  if(typeof dlg.showModal==='function')dlg.showModal();else dlg.setAttribute('open','');
+}
+
+function dismissOnboard(){
+  const o=document.getElementById('onboard');if(o)o.hidden=true;
+  try{localStorage.setItem(ONBOARD_KEY,'1')}catch(_){}
+}
+
+// Tras cada render: historial, guardado y contador del diagnóstico
+(function(){
+  const _orig=window.renderPreview;
+  let _scoreRaf=0;
+  window.renderPreview=function(){
+    _orig.apply(this,arguments);
+    scheduleCommit();
+    cancelAnimationFrame(_scoreRaf);
+    _scoreRaf=requestAnimationFrame(()=>updateGestaltScore(calcLayout()));
+  };
+  // Cambios que no pasan por el render del lienzo (historia del dashboard)
+  ['refreshStoryBar','setStoryAudience'].forEach(name=>{
+    const fn=window[name];
+    if(typeof fn==='function')window[name]=function(){const r=fn.apply(this,arguments);scheduleCommit();return r};
+  });
+})();
+
+// ═══════════════════════════════════════════
 // KEYBOARD SHORTCUTS
 // ═══════════════════════════════════════════
 document.addEventListener('keydown',e=>{
-  const tag=document.activeElement.tagName;
-  if(tag==='INPUT'||tag==='TEXTAREA')return;
-  if(e.key==='Escape'){
-    if(S.editMode){ toggleEditMode(); return; }
-    exitPresentation();return
-  }
-  if((e.key==='e'||e.key==='E')&&!e.metaKey&&!e.ctrlKey){toggleEditMode();return}
-  if((e.key==='p'||e.key==='P')&&!e.metaKey&&!e.ctrlKey){togglePresentation();return}
-  if((e.metaKey||e.ctrlKey)&&e.key==='s'){e.preventDefault();saveTemplateJSON();return}
-  if((e.metaKey||e.ctrlKey)&&e.key==='e'){e.preventDefault();doDownload();return}
-  if((e.metaKey||e.ctrlKey)&&e.key==='p'){e.preventDefault();doExportPDF();return}
-  if((e.metaKey||e.ctrlKey)&&(e.key==='='||e.key==='+')){e.preventDefault();changeZoom(0.1);return}
-  if((e.metaKey||e.ctrlKey)&&e.key==='-'){e.preventDefault();changeZoom(-0.1);return}
-  if((e.metaKey||e.ctrlKey)&&e.key==='0'){e.preventDefault();fitZoom();return}
-  // Eliminar visual seleccionado con Delete/Backspace
-  if(S.editMode && _em.selected && (e.key==='Delete'||e.key==='Backspace')){
-    e.preventDefault();
-    emDeleteSelected();
+  const ae=document.activeElement;
+  const typing=!!ae&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'||ae.tagName==='SELECT'||ae.isContentEditable);
+  if(document.getElementById('kbd-dialog')?.open)return;
+  const mod=e.metaKey||e.ctrlKey;
+  if(mod&&!e.altKey){
+    const k=e.key.toLowerCase();
+    if(k==='z'&&!typing){e.preventDefault();e.shiftKey?redo():undo();return}
+    if(k==='y'&&!typing){e.preventDefault();redo();return}
+    if(k==='s'){e.preventDefault();saveTemplateJSON();return}
+    if(k==='o'){e.preventDefault();document.getElementById('tpl-file-input').click();return}
+    if(k==='e'){e.preventDefault();doDownload();return}
+    if(k==='p'){e.preventDefault();doExportPDF();return}
+    if(k==='='||k==='+'){e.preventDefault();changeZoom(0.1);return}
+    if(k==='-'){e.preventDefault();changeZoom(-0.1);return}
+    if(k==='0'){e.preventDefault();fitZoom();return}
     return;
   }
-  // Nudge con flechas cuando hay visual seleccionado en edit mode
-  if(S.editMode && _em.selected && e.key.startsWith('Arrow')){
-    const el = document.querySelector(`.vsl[data-k="${_em.selected}"]`);
-    if(!el) return;
+  if(typing)return;
+  if(e.key==='Escape'){
+    if(document.getElementById('export-dd')?.classList.contains('open')){closeExportDD();document.getElementById('export-arrow-btn')?.focus();return}
+    if(S.editMode){toggleEditMode();return}
+    if(document.body.classList.contains('pres')){exitPresentation();return}
+    if(document.getElementById('gestalt-panel')?.classList.contains('open')){closeGestaltPanel();return}
+    return;
+  }
+  if(e.key==='?'){e.preventDefault();openShortcuts();return}
+  if(e.altKey)return;
+  const onButton=ae&&ae.tagName==='BUTTON';
+  if(!onButton&&(e.key==='e'||e.key==='E')){toggleEditMode();return}
+  if(!onButton&&(e.key==='p'||e.key==='P')){togglePresentation();return}
+  if(!onButton&&(e.key==='g'||e.key==='G')){openGestaltPanel();return}
+  // Eliminar visual seleccionado con Supr/Retroceso
+  if(S.editMode&&_em.selected&&(e.key==='Delete'||e.key==='Backspace')){
+    e.preventDefault();emDeleteSelected();return;
+  }
+  // Mover con flechas el visual seleccionado (Mayús = 8 px)
+  if(S.editMode&&_em.selected&&e.key.startsWith('Arrow')){
+    const el=document.querySelector(`.vsl[data-k="${_em.selected}"]`);
+    if(!el)return;
     e.preventDefault();
-    const step = e.shiftKey ? 8 : 1;
-    const r = emReadRect(el);
-    if(e.key==='ArrowLeft') r.x = Math.max(0, r.x-step);
-    if(e.key==='ArrowRight') r.x += step;
-    if(e.key==='ArrowUp') r.y = Math.max(0, r.y-step);
-    if(e.key==='ArrowDown') r.y += step;
-    el.style.left = r.x + 'px'; el.style.top = r.y + 'px';
-    S.visuals[_em.selected] = r;
+    const step=e.shiftKey?8:1;
+    const r=emReadRect(el);
+    if(e.key==='ArrowLeft')r.x=Math.max(0,r.x-step);
+    if(e.key==='ArrowRight')r.x+=step;
+    if(e.key==='ArrowUp')r.y=Math.max(0,r.y-step);
+    if(e.key==='ArrowDown')r.y+=step;
+    el.style.left=r.x+'px';el.style.top=r.y+'px';
+    S.visuals[_em.selected]={...(S.visuals[_em.selected]||{}),...r};
     renderEMHandles(el);
+    scheduleCommit();
   }
 });
 
@@ -5518,9 +5844,14 @@ document.addEventListener('keydown',e=>{
 new ResizeObserver(()=>requestAnimationFrame(renderPreview)).observe(document.getElementById('pco'));
 
 function init(){
+  // Recupera el último diseño de este navegador
+  try{const raw=localStorage.getItem(STORE_KEY);if(raw)hydrateState(JSON.parse(raw));}catch(_){}
+  document.documentElement.setAttribute('data-theme',S.theme);
+  document.querySelectorAll('[data-kbd]').forEach(el=>{el.textContent=kbdLabel(el.dataset.kbd)});
   renderControls();
   renderThemePills();
-  requestAnimationFrame(()=>requestAnimationFrame(renderPreview));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{renderPreview();commitHistory();}));
+  try{if(!localStorage.getItem(ONBOARD_KEY))document.getElementById('onboard').hidden=false;}catch(_){}
 }
 init();
 </script>
