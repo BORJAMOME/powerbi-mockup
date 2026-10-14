@@ -1,153 +1,90 @@
 # PBI Mockup Creator
 
-> **Herramienta avanzada de wireframing para dashboards de Power BI — en el navegador, sin instalación, sin dependencias.**
+**Diseño la estructura de mis dashboards de Power BI antes de construirlos.**
 
-Diseña, itera y valida la estructura visual de tus informes antes de construirlos en Power BI. Control total sobre layout, jerarquía, zonas, patrones de lectura y tipos de visuales — con exportación lista para compartir.
+He creado PBI Mockup Creator, una herramienta web gratuita para planificar la distribución de gráficos, KPIs, filtros y otros elementos de un informe antes de desarrollarlo en Power BI. Permite probar diseños, organizar la información y exportar propuestas para compartirlas o validarlas.
 
-Para visualizarlo: https://borjamome.github.io/powerbi-mockup/
+**[Probar PBI Mockup Creator](https://borjamome.github.io/powerbi-mockup/)**
 
 ## Demo
 
 ![PBI Mockup Creator screenshot](PBI_MockUp.png)
 
+## ¿Por qué creé esta herramienta?
 
+Diseñar un dashboard no consiste únicamente en elegir gráficos. También hay que decidir qué información debe destacar, cómo organizarla y cómo facilitar su lectura.
 
-## Por qué existe esta herramienta
+Quería experimentar con estas decisiones sin tener que construir cada propuesta directamente en Power BI y rehacerla cada vez que necesitara cambiar la distribución.
 
-En proyectos de Business Intelligence, el mayor coste no está en los datos, sino en la iteración visual.
+Por eso desarrollé esta herramienta: para diseñar primero, comparar alternativas y definir una estructura visual antes de empezar a construir el informe.
 
-Construir dashboards directamente en Power BI para luego rehacerlos implica:
-- Tiempo perdido  
-- Fricción con stakeholders  
-- Decisiones de diseño tardías  
+## ¿Qué puedo hacer con ella?
 
-**PBI Mockup Creator** mueve esa iteración a una fase previa, rápida y sin fricción.
+- **Diseñar el layout:** elegir el tamaño del lienzo y ajustar márgenes, espacios y distribución.
+- **Organizar la información:** colocar KPIs, gráficos, tablas y filtros según su importancia.
+- **Probar diferentes composiciones:** utilizar plantillas para informes ejecutivos, comerciales, analíticos, operativos o centrados en el storytelling.
+- **Aplicar criterios de diseño:** trabajar con cuadrículas, jerarquía visual y patrones de lectura.
+- **Personalizar la apariencia:** modificar fondos, tarjetas, bordes y tamaños de texto.
+- **Guardar y compartir propuestas:** exportar diseños a PNG o PDF y guardar la configuración en JSON para reutilizarla.
 
-Diseñas primero → validas → luego construyes.
+## Funcionalidades principales
 
+### Lienzo y distribución
 
+He incorporado formatos 16:9, 4:3, carta, tooltip, móvil y dimensiones personalizadas. También puedo ajustar los márgenes y los espacios entre elementos.
 
-## Características
+### Estructura del dashboard
 
-### Canvas & Layout
-- Presets de tamaño:
-  - **16:9 (1280x720)**
-  - **4:3 (1024x768)**
-  - **Carta**
-  - **Tooltip**
-  - **Móvil**
-  - **Custom**
-- Márgenes configurables por lado (precisión de 1 px)
-- Gap entre bloques configurable
-- Control de radio del canvas y de tarjetas
+La herramienta permite configurar el encabezado, la zona de filtros y las áreas principales y secundarias del informe. Puedo distribuir entre 0 y 6 tarjetas KPI y añadir hasta 4 visualizaciones en cada zona de contenido.
 
+### KPIs y visualizaciones
 
+He incluido opciones para configurar el valor principal de cada KPI, sus indicadores de tendencia y pequeños gráficos integrados.
 
-### Zonas del dashboard
-- **Header configurable**
-  - Título y subtítulo editables
-  - Tamaño de fuente configurable
-  - CTA / botón de acción
+También puedo elegir entre más de 15 tipos de visualizaciones, como barras, líneas, tablas, matrices, cascadas, áreas, funnels, lollipop, dumbbell y slope charts.
 
-- **Zona de filtros**
-  - Sin filtros
-  - Arriba
-  - Lateral
+### Guías de composición
 
-- **Bloques de datos dinámicos**
-  - KPIs: 0–6
-  - Zona A (principal): 1–4 visuales
-  - Zona B (secundaria): 1–4 visuales
+He incorporado una cuadrícula para facilitar la alineación de los elementos y patrones de lectura Z y F para explorar distintas formas de organizar la información. También puedo trabajar en modo libre, sin seguir una composición predefinida.
 
+### Plantillas de inicio
 
+He preparado cinco plantillas para acelerar el proceso de diseño:
 
-### Tarjetas KPI
-- Valor principal configurable (10–48 px)
-- Indicadores de tendencia (positivo / negativo)
-- Mini gráfico integrado:
-  - **Sparkline**
-  - **Columnas**
-  - O sin gráfico
-- Diseño optimizado para lectura rápida (no compite con el dato)
+- **C-Suite:** indicadores ejecutivos y evolución del negocio.
+- **Comercial:** seguimiento de ventas y resultados.
+- **Analítico:** exploración detallada de los datos.
+- **Storytelling:** organización de la información como una narrativa visual.
+- **Operacional:** seguimiento de métricas y actividad diaria.
 
+### Guardado y exportación
 
+Puedo guardar y recuperar configuraciones JSON, además de exportar los diseños en PNG o PDF con resolución optimizada para presentaciones, documentación y revisión de propuestas.
 
-### Tipos de visuales (15+)
-Intercambiables con un clic:
+## Principios de diseño
 
-- Barras, Líneas, Tabla, Cascada, Funnel, Área, Matriz, Columnas, Lollipop, Dumbbell, Slope, Drill-through, Tooltip
+He aplicado criterios de diseño visual para ayudar a crear dashboards más claros y fáciles de interpretar:
 
-Pensados para cubrir el 95% de casos reales en Power BI.
+- **Jerarquía visual:** destacar la información más relevante.
+- **Proximidad y agrupación:** relacionar elementos que comparten un propósito.
+- **Consistencia:** mantener patrones visuales coherentes.
+- **Carga cognitiva:** evitar que demasiados elementos compitan por la atención.
+- **Patrones de lectura:** organizar el contenido para facilitar su exploración.
 
+## ¿Para quién he creado esta herramienta?
 
+- **Analistas de Power BI:** para planificar informes antes de desarrollarlos.
+- **Desarrolladores BI:** para probar distribuciones y reutilizar estructuras.
+- **Consultores:** para presentar y validar propuestas visuales con clientes.
+- **Equipos de negocio:** para revisar la organización de la información antes de construir el dashboard.
+- **Estudiantes de Power BI:** para practicar composición y diseño de informes.
 
-### Estilo visual
-- Fondo de canvas configurable  
-- Fondo de tarjetas configurable  
-- Bordes personalizables  
-- Sistema visual coherente  
+## Tecnologías y acceso
 
+He desarrollado una herramienta web que funciona directamente en el navegador, sin necesidad de instalación ni de configurar dependencias.
 
+**[Acceder a PBI Mockup Creator](https://borjamome.github.io/powerbi-mockup/)**
 
-### Guías de diseño
-- **Cuadrícula (grid system)**
-  - Activable/desactivable
-  - Alineación precisa
+## Contacto
 
-- **Patrones de lectura**
-  - **Patrón Z** — Flujo natural: izquierda, derecha, diagonal, CTA. KPIs arriba, acción abajo derecha.
-  - **Patrón F** — Escaneo digital típico. Refuerzo en primera fila.
-  - **Modo libre**
-
-Visualización del flujo directamente en el canvas
-
-
-
-### Plantillas inteligentes
-Arranque rápido con presets:
-
-- **C-Suite** — KPIs + tendencia + tabla pro  
-- **Comercial** — Seguimiento de ventas  
-- **Analítico** — Deep dive de datos  
-- **Storytelling** — Narrativa visual  
-- **Operacional** — Monitorización diaria  
-
-
-
-### 💾 Guardar & Cargar (JSON)
-- Guarda toda la configuración como `.json`
-- Permite reutilizar layouts, versionar diseños y compartir con equipo.
-
-
-### Exportación
-- Exportación a:
-  - **PNG**
-  - **PDF**
-- Resolución optimizada (2×)
-- Listo para:
-  - Presentaciones
-  - Documentación
-  - Validación con clientes
-
-
-
-## Principios de diseño aplicados
-
-- Proximidad (Gestalt) — agrupación mediante spacing  
-- Semejanza — coherencia entre tarjetas  
-- Jerarquía visual — Zona A vs Zona B  
-- Carga cognitiva — control de elementos visibles  
-- Patrones Z y F — navegación natural del usuario  
-- Consistencia — sistema visual uniforme  
-
-
-
-## Casos de uso
-
-- Diseño previo de dashboards Power BI  
-- Validación con clientes antes de desarrollo  
-- Documentación de layout  
-- Formación en diseño de dashboards  
-- Prototipado rápido en consultoría BI  
-
-[LinkedIn](https://www.linkedin.com/in/borjamoramendez/)
+- **LinkedIn:** [Borja Mora Méndez](https://www.linkedin.com/in/borjamoramendez/)
