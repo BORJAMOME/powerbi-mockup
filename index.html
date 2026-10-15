@@ -103,7 +103,7 @@ body.pres #sb{transform:translateX(calc(-1 * var(--sb) - 2px));margin-left:calc(
 /* ── SECTIONS ── */
 #sb-sc{display:flex;flex-direction:column}
 .cs{border-bottom:.5px solid var(--theme-bd)}
-/* Sidebar reorder — Plantillas primero (entry point natural) */
+/* Sidebar reorder: Plantillas primero (entry point natural) */
 .cs-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 12px 16px;cursor:pointer;user-select:none;transition:background var(--tr)}
 .cs-hd:hover{background:var(--theme-hover)}
 .cs-label{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
@@ -232,7 +232,7 @@ body.pres #canvas-tb{display:none}
 .tb-info-sep{width:.5px;height:14px;background:var(--theme-bd);flex-shrink:0}
 .tb-label{font-size:10.5px;font-weight:500;color:var(--theme-mu);text-transform:uppercase;letter-spacing:.12em;margin-right:2px;font-family:var(--fn-mono);flex-shrink:0}
 
-/* Toolbar responsive — colapso progresivo */
+/* Toolbar responsive: colapso progresivo */
 @media (max-width:1240px){
   #canvas-tb{gap:8px;padding:7px 12px}
   .tb-label{display:none}
@@ -247,7 +247,7 @@ body.pres #canvas-tb{display:none}
   .tb-info{gap:5px}
   #canvas-tb{gap:6px}
   .ctb-btn{padding:0 7px}
-  /* Esconder el texto de Presentar y Gestalt — quedan solo iconos */
+  /* Esconder el texto de Presentar y Gestalt: quedan solo iconos */
   .ctb-btn span.lbl-txt, #pres-btn-lbl, #gestalt-trigger > .gst-lbl{display:none}
 }
 .ctb-sep{width:.5px;height:18px;background:var(--theme-bd);flex-shrink:0;margin:0 2px}
@@ -1166,7 +1166,7 @@ const VGROUPS=[
   {label:'Otros gráficos',types:['ribbon','waterfall','funnel','scatter','donut','treemap']},
   {label:'Análisis avanzado',types:['table','matrix','lollypop','dumbbell','slope']},
 ];
-// Iconos SVG estilo Power BI — 36×36, stroke outline, azul acento + gris
+// Iconos SVG estilo Power BI: 36×36, stroke outline, azul acento + gris
 const _ic=(body)=>`<svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" style="display:block">${body}</svg>`;
 const _ax=`<line x1="5" y1="31" x2="31" y2="31" stroke="currentColor" stroke-width="1.2" opacity=".35"/><line x1="5" y1="5" x2="5" y2="31" stroke="currentColor" stroke-width="1.2" opacity=".35"/>`;
 const VICONS={
@@ -1222,7 +1222,7 @@ const THEME_PILLS={
 };
 const TIPS={
   margins:'Distancia entre el borde del canvas y el primer elemento. Power BI: 20–32 px.',
-  gap:'Gestalt: proximidad — los elementos cercanos se perciben como un grupo.',
+  gap:'Gestalt: proximidad: los elementos cercanos se perciben como un grupo.',
   header:'Barra superior con título, subtítulo y acciones globales.',
   filter:'Posición de los controles de filtro interactivos.',
   filterW:'Ancho de la columna lateral de filtros en píxeles.',
@@ -1574,7 +1574,7 @@ function renderStory(){
 
   el.innerHTML=`
     <div class="story-intro">
-      Define el contexto antes de diseñar. El mockup más efectivo no empieza por los visuales — empieza por la pregunta que tiene que responder.
+      Define el contexto antes de diseñar. El mockup más efectivo no empieza por los visuales: empieza por la pregunta que tiene que responder.
     </div>
 
     <div class="story-bar-wrap">
@@ -1730,7 +1730,7 @@ function renderMargins(){
 
 
 // ═══════════════════════════════════════════════════════════════
-// BG MODE SELECTOR — header y filtros
+// BG MODE SELECTOR: header y filtros
 // mode: 'none' | 'card' | 'custom'
 // ═══════════════════════════════════════════════════════════════
 function bgModeSelector(modeKey, customKey, uid){
@@ -1835,7 +1835,7 @@ function clearBgCustom(modeKey, customKey, uid){
   renderZones(); renderPreview();
 }
 
-// FIX: Zonas sin "Zonas especiales" — Tooltip y Drill solo en Tipo de Visuales
+// FIX: Zonas sin "Zonas especiales": Tooltip y Drill solo en Tipo de Visuales
 function renderZones(){
   const z=S.z;
   document.getElementById('zc').innerHTML=`
@@ -2008,7 +2008,7 @@ function clearCustomColor(idxKey, customKey, pickerId){
 
 function renderGuides(){
   const g=S.grid,pt=S.pattern;
-  // FIX: Pattern colors theme-aware — dark uses white/purple, light uses dark
+  // FIX: Pattern colors theme-aware: dark uses white/purple, light uses dark
   const isDark=S.theme==='dark';
   const patInk=isDark?'rgba(220,220,255,0.88)':'#111111';
   const patAcc='#7a7bff';
@@ -2121,7 +2121,7 @@ function renderGuides(){
 
 function setPattern(v){S.pattern=v;renderGuides();renderPreview();_lpk='';requestAnimationFrame(()=>updatePatternOverlay(v,calcLayout()))}
 
-// KPI SECTION — sección independiente
+// KPI SECTION: sección independiente
 function renderKpis(){
   const el=document.getElementById('kpic');if(!el)return;
   let html='';
@@ -2169,13 +2169,13 @@ function renderKpis(){
   el.innerHTML=html;
 }
 
-// VISUAL TYPE PICKER — grid de iconos agrupado por categoría
+// VISUAL TYPE PICKER: grid de iconos agrupado por categoría
 function renderVTypes(){
   const z=S.z;let html='';
 
   // ── helper: icon grid con acordeones por grupo ──
   function iconPicker(slotKey, activeType){
-    // Grupo que contiene el tipo activo — se abre por defecto
+    // Grupo que contiene el tipo activo: se abre por defecto
     const activeGroupIdx=VGROUPS.findIndex(g=>g.types.includes(activeType));
     return VGROUPS.map((g,gi)=>{
       const hasActive=g.types.includes(activeType);
@@ -2364,7 +2364,7 @@ function togglePresentation(){
   if(btn){btn.classList.toggle('on',on);btn.setAttribute('aria-pressed',String(on));}
   if(on)setTimeout(renderPreview,370);
   else  requestAnimationFrame(renderPreview);
-  toast(on?'Modo presentación activo — ESC para salir':'Modo presentación desactivado');
+  toast(on?'Modo presentación activo: ESC para salir':'Modo presentación desactivado');
 }
 function exitPresentation(){
   if(document.body.classList.contains('pres'))togglePresentation();
@@ -2393,7 +2393,7 @@ function calcLayout(){
   const nGaps=Math.max(0,activeZones.length-1);
   const usableH=Math.max(0,uh-gap*nGaps);
 
-  // pesos — ftop usa peso fijo pequeño (es zona de filtros, no configurable)
+  // pesos: ftop usa peso fijo pequeño (es zona de filtros, no configurable)
   const weights={
     hdr:  Math.max(1,pr.hdr||1),
     ftop: 1,
@@ -2474,8 +2474,8 @@ function cc(){
 // ── CHART RENDERERS ──
 // ═══════════════════════════════════════════
 
-// FIX: BAR — padding consistente, no clipping
-// BARRAS HORIZONTALES — fidelidad Power BI: rx=0, eje Y solo línea base, grid vertical ligero
+// FIX: BAR: padding consistente, no clipping
+// BARRAS HORIZONTALES, fidelidad Power BI: rx=0, eje Y solo línea base, grid vertical ligero
 function svgBar(w,h){
   const {acc,ghost,grid,axis,txt,dark}=cc();
   const data=[
@@ -2492,7 +2492,7 @@ function svgBar(w,h){
   const rowH=Math.floor(uH/n);
   const fs=Math.max(7,Math.min(9,rowH*0.38));
   let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
-  // grid vertical — líneas delgadas PBI style
+  // grid vertical: líneas delgadas PBI style
   [0.25,0.5,0.75,1].forEach(v=>{
     const x=pL+Math.round(v*uw);
     s+=`<line x1="${x}" y1="${pT}" x2="${x}" y2="${pT+uH}" stroke="${grid}" stroke-width="0.6" stroke-dasharray="2,3"/>`;
@@ -2508,12 +2508,12 @@ function svgBar(w,h){
     // valor a la derecha
     s+=`<text x="${pL+bw2+5}" y="${cy}" dominant-baseline="central" font-size="${Math.max(6,fs*0.85)}" font-weight="${hi?700:400}" fill="${hi?acc:txt}" font-family="Segoe UI">${d.v}K</text>`;
   });
-  // línea base eje Y — solo horizontal inferior, igual que PBI
+  // línea base eje Y: solo horizontal inferior, igual que PBI
   s+=`<line x1="${pL}" y1="${pT+uH}" x2="${pL+uw}" y2="${pT+uH}" stroke="${axis}" stroke-width="0.8"/>`;
   return s+'</svg>';
 }
 
-// LÍNEAS — fidelidad PBI: puntos marcados, línea base solo, sin curvas, leyenda top-left
+// LÍNEAS, fidelidad PBI: puntos marcados, línea base solo, sin curvas, leyenda top-left
 function svgLine(w,h,uid){
   const {acc,line2,grid,axis,txt,dark}=cc();
   const n=12;
@@ -2530,7 +2530,7 @@ function svgLine(w,h,uid){
   const path=pts=>'M'+pts.map(p=>`${p.x},${p.y}`).join('L');
   const c2stroke=dark?'#555575':'#c8c8e0';
   let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
-  // leyenda compacta arriba — estilo PBI
+  // leyenda compacta arriba: estilo PBI
   if(w>100){
     s+=`<rect x="${pL}" y="2" width="8" height="2" rx="0" fill="${acc}"/>`;
     s+=`<text x="${pL+11}" y="3" dominant-baseline="central" font-size="7" fill="${txt}" font-family="Segoe UI">2026</text>`;
@@ -2543,9 +2543,9 @@ function svgLine(w,h,uid){
     s+=`<line x1="${pL}" y1="${y}" x2="${pL+uw}" y2="${y}" stroke="${grid}" stroke-width="0.6"/>`;
     if(w>120)s+=`<text x="${pL-3}" y="${y}" dominant-baseline="central" text-anchor="end" font-size="6" fill="${txt}" font-family="Segoe UI" opacity=".7">${v>=1000?v/1000+'K':v}</text>`;
   });
-  // línea 2025 — gris, fina
+  // línea 2025: gris, fina
   s+=`<path d="${path(pts2)}" fill="none" stroke="${c2stroke}" stroke-width="1.5" stroke-linejoin="miter"/>`;
-  // línea 2026 — acento, más gruesa
+  // línea 2026: acento, más gruesa
   s+=`<path d="${path(pts1)}" fill="none" stroke="${acc}" stroke-width="2.5" stroke-linejoin="miter"/>`;
   // puntos PBI: todos los puntos visibles, pequeños
   pts1.forEach((p,i)=>{
@@ -2556,7 +2556,7 @@ function svgLine(w,h,uid){
   const last=pts1[n-1];
   s+=`<circle cx="${last.x}" cy="${last.y}" r="4" fill="${acc}"/>`;
   if(w>80)s+=`<text x="${last.x}" y="${last.y-7}" text-anchor="middle" font-size="7" font-weight="700" fill="${acc}" font-family="Segoe UI">${d1[n-1]}</text>`;
-  // labels eje X — meses
+  // labels eje X: meses
   if(w>80){
     [0,2,4,6,8,10,11].forEach(i=>{
       const x=pL+Math.round(i/(n-1)*uw);
@@ -2568,7 +2568,7 @@ function svgLine(w,h,uid){
   return s+'</svg>';
 }
 
-// TABLA — fidelidad PBI: header con fondo, filas alternas, data bars, conditional formatting
+// TABLA, fidelidad PBI: header con fondo, filas alternas, data bars, conditional formatting
 function svgTable(w,h){
   const {acc,dark}=cc();
   const ink=dark?'#e0e0f0':'#252525';
@@ -2616,7 +2616,7 @@ function svgTable(w,h){
     s+=`<text x="${cName+cBar+cVal-4}" y="${midY}" dominant-baseline="central" text-anchor="end" font-size="${fs}" font-weight="${i===0?700:400}" fill="${ink}" font-family="Segoe UI">${r.v}K</text>`;
     // %
     s+=`<text x="${cName+cBar+cVal+cPct/2}" y="${midY}" dominant-baseline="central" text-anchor="middle" font-size="${fs}" fill="${mu}" font-family="Segoe UI">${r.pct}%</text>`;
-    // delta badge — conditional formatting PBI
+    // delta badge: conditional formatting PBI
     const pos=r.delta>0;
     const badgeW=Math.max(24,Math.round(cDelta*0.7));
     const badgeH=Math.max(9,Math.round(rowH*0.55));
@@ -2629,7 +2629,7 @@ function svgTable(w,h){
   return s+'</svg>';
 }
 
-// CASCADA — fidelidad PBI: rx=0, conectores punteados, colores pos/neg/total PBI exactos
+// CASCADA, fidelidad PBI: rx=0, conectores punteados, colores pos/neg/total PBI exactos
 function svgWaterfall(w,h){
   const {acc,dark}=cc();
   const posC=dark?'#5cc98a':'#107c41';
@@ -2673,7 +2673,7 @@ function svgWaterfall(w,h){
     if(prevTopY!==null&&i>0){
       s+=`<line x1="${prevX2}" y1="${prevTopY}" x2="${x}" y2="${prevTopY}" stroke="${connC}" stroke-width="0.8" stroke-dasharray="2,2"/>`;
     }
-    // barra — rx=0 PBI style
+    // barra: rx=0 PBI style
     s+=`<rect x="${x}" y="${y}" width="${bw}" height="${absH}" rx="0" fill="${col}"/>`;
     // valor encima si cabe
     const labelV=Math.abs(d.v);
@@ -2691,7 +2691,7 @@ function svgWaterfall(w,h){
   return s+'</svg>';
 }
 
-// FUNNEL — fidelidad PBI: trapecios centrados, etiquetas de conversión, colores PBI
+// FUNNEL, fidelidad PBI: trapecios centrados, etiquetas de conversión, colores PBI
 function svgFunnel(w,h){
   const {acc,txt,dark}=cc();
   const stages=[
@@ -2738,7 +2738,7 @@ function svgFunnel(w,h){
   return s+'</svg>';
 }
 
-// ÁREA — fidelidad PBI: gradiente suave, línea base limpia, puntos solo en hover simulado (último), eje X con fechas
+// ÁREA, fidelidad PBI: gradiente suave, línea base limpia, puntos solo en hover simulado (último), eje X con fechas
 function svgArea(w,h,uid){
   const {acc,grid,axis,txt,dark}=cc();
   const n=12;
@@ -2763,7 +2763,7 @@ function svgArea(w,h,uid){
       if(w>100)s+=`<text x="${pL-2}" y="${y}" dominant-baseline="central" text-anchor="end" font-size="6" fill="${txt}" font-family="Segoe UI" opacity="0.7">${v>=1000?v/1000+'K':v}</text>`;
     }
   });
-  // área + línea — rx=0, sin suavizado (PBI por defecto no suaviza)
+  // área + línea: rx=0, sin suavizado (PBI por defecto no suaviza)
   s+=`<path d="${pathArea}" fill="url(#ag${uid})"/>`;
   s+=`<path d="${pathLine}" fill="none" stroke="${acc}" stroke-width="2" stroke-linejoin="miter"/>`;
   // último punto destacado
@@ -2782,7 +2782,7 @@ function svgArea(w,h,uid){
   return s+'</svg>';
 }
 
-// MATRIX — fidelidad PBI: headers col/fila, celdas con intensidad de color, fila totales
+// MATRIX, fidelidad PBI: headers col/fila, celdas con intensidad de color, fila totales
 function svgMatrix(w,h){
   const {acc,txt,dark}=cc();
   const ink=dark?'#e0e0f0':'#252525';
@@ -2833,7 +2833,7 @@ function svgMatrix(w,h){
   return s+'</svg>';
 }
 
-// COLUMNAS — fidelidad PBI: rx=0, línea objetivo, data label solo en seleccionado, ejes limpios
+// COLUMNAS, fidelidad PBI: rx=0, línea objetivo, data label solo en seleccionado, ejes limpios
 function svgColumn(w,h){
   const {acc,ghost,grid,axis,txt,dark}=cc();
   const vals=[64,82,71,97,78,91,85,68,94,88,76,83];
@@ -2858,7 +2858,7 @@ function svgColumn(w,h){
       if(w>100&&v<maxV)s+=`<text x="${pL-2}" y="${y}" dominant-baseline="central" text-anchor="end" font-size="6" fill="${txt}" font-family="Segoe UI" opacity="0.7">${v}</text>`;
     }
   });
-  // línea objetivo punteada — estilo PBI target line
+  // línea objetivo punteada: estilo PBI target line
   const targetY=scaleY(target);
   s+=`<line x1="${pL}" y1="${targetY}" x2="${pL+uw}" y2="${targetY}" stroke="${dark?'rgba(200,80,80,.7)':'#c62828'}" stroke-width="1" stroke-dasharray="4,3"/>`;
   if(w>120)s+=`<text x="${pL+uw+2}" y="${targetY}" dominant-baseline="central" font-size="6" fill="${dark?'rgba(200,80,80,.8)':'#c62828'}" font-family="Segoe UI" font-weight="600">Obj</text>`;
@@ -2868,7 +2868,7 @@ function svgColumn(w,h){
     const x=pL+i*(bw+gap2);
     const y=scaleY(v);
     const hi=i===peak;
-    // rx=0 — PBI por defecto
+    // rx=0: PBI por defecto
     s+=`<rect x="${x}" y="${y}" width="${bw}" height="${bh}" rx="0" fill="${hi?acc:ghost}"/>`;
     // data label solo en barra máxima
     if(hi&&bw>6)s+=`<text x="${x+bw/2}" y="${y-4}" text-anchor="middle" font-size="${Math.max(6,Math.min(8,bw*0.55))}" font-weight="700" fill="${acc}" font-family="Segoe UI">${v}</text>`;
@@ -2879,7 +2879,7 @@ function svgColumn(w,h){
   return s+'</svg>';
 }
 
-// LOLLIPOP — fidelidad PBI: tallo fino, círculo limpio, valor alineado derecha
+// LOLLIPOP, fidelidad PBI: tallo fino, círculo limpio, valor alineado derecha
 function svgLollypop(w,h){
   const {acc,ghost,axis,txt,dark}=cc();
   const grid=dark?'#252535':'#f0f0f0';
@@ -2912,7 +2912,7 @@ function svgLollypop(w,h){
     s+=`<line x1="${pL}" y1="${cy}" x2="${pL+uw}" y2="${cy}" stroke="${dark?'rgba(255,255,255,.05)':'rgba(0,0,0,.05)'}" stroke-width="1"/>`;
     // tallo
     s+=`<line x1="${pL}" y1="${cy}" x2="${xEnd}" y2="${cy}" stroke="${hi?acc:ghost}" stroke-width="${hi?2:1.5}" stroke-linecap="round"/>`;
-    // círculo — sin relleno blanco interior para mayor fidelidad PBI
+    // círculo: sin relleno blanco interior para mayor fidelidad PBI
     s+=`<circle cx="${xEnd}" cy="${cy}" r="${hi?r+0.5:r}" fill="${hi?acc:ghost}"/>`;
     // valor
     s+=`<text x="${xEnd+r+5}" y="${cy}" dominant-baseline="central" font-size="${Math.max(6.5,fs*0.88)}" font-weight="${hi?700:400}" fill="${hi?acc:txt}" font-family="Segoe UI">${d.v}</text>`;
@@ -2921,7 +2921,7 @@ function svgLollypop(w,h){
   return s+'</svg>';
 }
 
-// DUMBBELL — fidelidad PBI: círculos claros antes/después, delta anotado, leyenda compacta
+// DUMBBELL, fidelidad PBI: círculos claros antes/después, delta anotado, leyenda compacta
 function svgDumbbell(w,h){
   const {acc,txt,dark}=cc();
   const grid=dark?'#252535':'#f0f0f0';
@@ -2963,9 +2963,9 @@ function svgDumbbell(w,h){
     s+=`<text x="${pL-6}" y="${cy}" dominant-baseline="central" text-anchor="end" font-size="${fs}" fill="${txt}" font-family="Segoe UI">${d.l}</text>`;
     // conector
     s+=`<line x1="${Math.min(xa,xb)}" y1="${cy}" x2="${Math.max(xa,xb)}" y2="${cy}" stroke="${lineC}" stroke-width="2" opacity="0.5"/>`;
-    // círculo anterior — hueco con borde
+    // círculo anterior: hueco con borde
     s+=`<circle cx="${xa}" cy="${cy}" r="${r}" fill="${dark?'#1c1c2c':'white'}" stroke="${prevC}" stroke-width="1.5"/>`;
-    // círculo actual — sólido
+    // círculo actual: sólido
     s+=`<circle cx="${xb}" cy="${cy}" r="${r}" fill="${improved?acc:dark?'#e08080':'#d13438'}"/>`;
     // delta
     const delta=d.b-d.a;
@@ -2980,7 +2980,7 @@ function svgDumbbell(w,h){
   return s+'</svg>';
 }
 
-// SLOPE — fidelidad PBI: ejes verticales limpios, años en header, línea destacada, valores en ambos extremos
+// SLOPE, fidelidad PBI: ejes verticales limpios, años en header, línea destacada, valores en ambos extremos
 function svgSlope(w,h){
   const {acc,txt,dark}=cc();
   const posC=acc;
@@ -2999,7 +2999,7 @@ function svgSlope(w,h){
   const xL=pL,xR=w-pR;
   const scaleY=v=>pT+Math.round((1-v/maxV)*uH*0.9);
   let s=`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">`;
-  // headers año — estilo PBI
+  // headers año: estilo PBI
   s+=`<text x="${xL}" y="${pT-10}" text-anchor="middle" font-size="8" font-weight="700" fill="${txt}" font-family="Segoe UI">2025</text>`;
   s+=`<text x="${xR}" y="${pT-10}" text-anchor="middle" font-size="8" font-weight="700" fill="${txt}" font-family="Segoe UI">2026</text>`;
   // ejes verticales
@@ -3017,7 +3017,7 @@ function svgSlope(w,h){
     s+=`<circle cx="${xR}" cy="${yB}" r="${hi?4:2.5}" fill="${col}" opacity="${hi?1:0.7}"/>`;
     // valor izquierda
     s+=`<text x="${xL-6}" y="${yA}" dominant-baseline="central" text-anchor="end" font-size="${Math.max(6.5,hi?8:7)}" font-weight="${hi?700:400}" fill="${col}" font-family="Segoe UI">${d.a}</text>`;
-    // nombre región — más a la izquierda
+    // nombre región: más a la izquierda
     if(xL-6>22)s+=`<text x="${xL-22}" y="${yA}" dominant-baseline="central" text-anchor="end" font-size="${Math.max(5.5,hi?7:6)}" fill="${txt}" font-family="Segoe UI" opacity="${hi?1:0.7}">${d.l}</text>`;
     // valor derecha
     s+=`<text x="${xR+6}" y="${yB}" dominant-baseline="central" font-size="${Math.max(6.5,hi?8:7)}" font-weight="${hi?700:400}" fill="${col}" font-family="Segoe UI">${d.b}</text>`;
@@ -3025,7 +3025,7 @@ function svgSlope(w,h){
   return s+'</svg>';
 }
 
-// Spark mini charts (KPI) — sin cambios
+// Spark mini charts (KPI): sin cambios
 function svgKpiSparkline(w,h,uid){
   const dark=cc().dark;
   const pts=[.38,.45,.40,.55,.50,.62,.57,.70,.65,.80,.74,.88];
@@ -3053,7 +3053,7 @@ function svgKpiBars(w,h,uid){
 
 
 // ── KPI SPARKLINE PREMIUM ──────────────────────────────────────────────────
-// Sparkline tipo área — dimensiones exactas de la columna derecha de la card
+// Sparkline tipo área: dimensiones exactas de la columna derecha de la card
 // isPositive y uid determinan la forma del sparkline para que cada card sea única
 function svgKpiSparklinePremium(w,h,uid,accentC,isDark,isPositive){
   // Variantes positivas: tendencias alcistas con perfiles distintos
@@ -3101,7 +3101,7 @@ function svgKpiSparklinePremium(w,h,uid,accentC,isDark,isPositive){
   </svg>`;
 }
 
-// Mini barras verticales — misma firma
+// Mini barras verticales: misma firma
 function svgKpiBarsPremium(w,h,uid,accentC,isDark,isPositive){
   // Variantes positivas: tendencia general alcista
   const barsPositive=[
@@ -3519,7 +3519,7 @@ function renderChart(type,w,h,uid){
 }
 
 // ═══════════════════════════════════════════
-// FIX: PATTERN OVERLAY — colores theme-aware
+// FIX: PATTERN OVERLAY: colores theme-aware
 // ═══════════════════════════════════════════
 let _lpk='';
 // ── PROPORCIONES DE ZONAS ───────────────────────────────────────────────────
@@ -3665,7 +3665,7 @@ function buildGestaltSVG(principle,L,sz){
     }
     // advertencia si inconsistente
     if(!consistent&&gaps.length>1){
-      s+=lbl(cx+cw/2,m.t+20,'⚠ Gaps inconsistentes — rompe la proximidad','#f97316','middle');
+      s+=lbl(cx+cw/2,m.t+20,'⚠ Gaps inconsistentes: rompe la proximidad','#f97316','middle');
     }
     s+=`<defs>
       <marker id="gArrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 Z" fill="${gapCol}"/></marker>
@@ -3704,7 +3704,7 @@ function buildGestaltSVG(principle,L,sz){
   }
 
   // ── 3. SEMEJANZA ─────────────────────────────────────────────────────────
-  // Colorea los grupos por tipo visual — muestra qué percibe el ojo como familia
+  // Colorea los grupos por tipo visual: muestra qué percibe el ojo como familia
   if(principle==='semejanza'){
     let s=open;
     const groups=[
@@ -3773,9 +3773,9 @@ function buildGestaltSVG(principle,L,sz){
   // Muestra qué zonas destacan (figura) y cuáles se funden con el fondo
   if(principle==='figura'){
     let s=open;
-    // el canvas entero se oscurece — los bloques de contenido se "recortan" como figura
+    // el canvas entero se oscurece: los bloques de contenido se "recortan" como figura
     s+=`<rect x="0" y="0" width="${sz.w}" height="${sz.h}" fill="rgba(0,0,0,0.35)"/>`;
-    // cada bloque aparece "iluminado" — simula el efecto figura-fondo
+    // cada bloque aparece "iluminado": simula el efecto figura-fondo
     const blockColors=[
       {b:B.hdr,  col:'#fff',op:.12,label:'Header · figura primaria'},
       {b:B.ftop, col:'#fff',op:.1, label:'Filtros · figura secundaria'},
@@ -3789,7 +3789,7 @@ function buildGestaltSVG(principle,L,sz){
       s+=`<text x="${b.x+12}" y="${b.y+12+tfs/2}" font-size="${tfs}" font-weight="700" fill="white" fill-opacity=".9" font-family="Segoe UI">${label}</text>`;
     });
     // fondo: etiqueta sobre áreas vacías
-    const fondoTxt='← Fondo — sin jerarquía visual';
+    const fondoTxt='← Fondo: sin jerarquía visual';
     s+=`<text x="${m.l/2}" y="${sz.h/2}" dominant-baseline="central" text-anchor="middle" font-size="${tfs-1}" fill="rgba(255,255,255,.4)" font-family="Segoe UI" transform="rotate(-90,${m.l/2},${sz.h/2})">${fondoTxt}</text>`;
     return s+'</svg>';
   }
@@ -3966,7 +3966,7 @@ function renderPreview(){
 
   if(L.fleft&&L.fsw){
     // El panel lateral empieza en el mismo nivel que los KPIs (o main si no hay KPIs),
-    // nunca cubre el header — comportamiento real de Power BI
+    // nunca cubre el header: comportamiento real de Power BI
     const fyStart=L.ys.kpi!==undefined?L.ys.kpi:L.ys.main;
     const fyH=m.t+L.uh-fyStart; // desde el inicio de datos hasta el final del canvas
     const fh=Math.max(24,Math.round(fyH*.092));const fs=Math.max(7,Math.min(9,L.fsw*.055));
@@ -4018,7 +4018,7 @@ function renderPreview(){
     const _hdrMode=(S.z.headerBg===true)?'card':(S.z.headerBg===false)?'none':(S.z.headerBg||'none');
     const hdrBg=_hdrMode==='custom'?(S.z.headerBgCustom||ccard):_hdrMode==='card'?ccard:'transparent';
     const hdrBord=_hdrMode!=='none'?cbord:'transparent';
-    // Cuando hay filtro lateral, el header ocupa todo el ancho (uw) — el sidebar
+    // Cuando hay filtro lateral, el header ocupa todo el ancho (uw): el sidebar
     // solo arranca a nivel de KPIs/datos, nunca cubre el header
     const hdrX=m.l, hdrW=L.uw;
     // Diseño libre: leer posición guardada si existe
@@ -4063,7 +4063,7 @@ function renderPreview(){
     html+=`<div style="position:absolute;left:${ftx}px;top:${fty}px;width:${ftw}px;height:${fth}px;background:${filterBg};border:.5px solid ${filterBord};border-radius:${br}px;overflow:hidden;box-sizing:border-box">${fti}</div>`;
   }
 
-  // ── KPI ROW — Power BI Native Card Layout ──
+  // ── KPI ROW: Power BI Native Card Layout ──
   // Layout: dos columnas horizontales dentro de la card
   //   LEFT  (~58%): label (uppercase pequeño) → valor principal → delta pill + comparativa
   //   RIGHT (~42%): sparkline a todo el alto disponible, sin padding, pegado a los bordes
@@ -4097,7 +4097,7 @@ function renderPreview(){
       const sparkColW  = hasSpark && kpiW > 80 ? Math.round(kpiW * .40) : 0;
       const textColW   = kpiW - sparkColW;
 
-      // Sparkline ocupa todo el alto de la card (inset 0) — sin padding vertical
+      // Sparkline ocupa todo el alto de la card (inset 0): sin padding vertical
       // Solo pequeño padding interno top/bottom para que no toque el borde del card
       const sparkPadV  = Math.max(10, Math.round(h * .12));
       const sparkPadH  = Math.max(6,  Math.round(sparkColW * .08));
@@ -4245,7 +4245,7 @@ function renderPreview(){
     }
   }
 
-  // ── TOOLTIP ZONE (redesigned) — solo desde S.z.tooltip ──
+  // ── TOOLTIP ZONE (redesigned): solo desde S.z.tooltip ──
   if(z.tooltip){
     const tw=Math.min(240,Math.round(sz.w*.22));
     const th=Math.min(190,Math.round(sz.h*.3));
@@ -4316,7 +4316,7 @@ function renderPreview(){
   dp.innerHTML=html;
   dp.querySelectorAll('.vsl').forEach(el=>{el.addEventListener('click',(e)=>{if(S.editMode)return;if(e.target.closest('[data-role="vtitle"],[data-role="vsubtitle"],[data-role="kpi-label"],[data-role="kpi-value"],[data-role="kpi-delta"]'))return;const k=el.dataset.k;if(!k||k==='hdr'||k.startsWith('kpi-'))return;if(e.shiftKey){const fb=k.startsWith('sec-')?parseInt(k.split('-')[1])+2:parseInt(k.split('-')[1]);S.vt[k]=(VTYPES.indexOf(gvt(k,fb))+1)%VTYPES.length;renderControls();renderPreview();return}focusVisualSlot(k)})});
 
-  // Títulos editables — doble clic activa input inline
+  // Títulos editables: doble clic activa input inline
   dp.querySelectorAll('[data-role="vtitle"]').forEach(titleEl=>{
     titleEl.addEventListener('dblclick',e=>{
       e.stopPropagation();
@@ -4334,7 +4334,7 @@ function renderPreview(){
     });
   });
 
-  // Subtítulos editables — mismo patrón
+  // Subtítulos editables: mismo patrón
   dp.querySelectorAll('[data-role="vsubtitle"]').forEach(subEl=>{
     subEl.addEventListener('dblclick',e=>{
       e.stopPropagation();
@@ -4433,7 +4433,7 @@ function updateGestaltTrigger(){
 }
 
 function renderPBar(){
-  // barra de principios eliminada — los principios se acceden desde el botón Gestalt
+  // barra de principios eliminada: los principios se acceden desde el botón Gestalt
 }
 
 function toggleBordActive(val){
@@ -4506,7 +4506,7 @@ function openSection(id){
     const hd=document.querySelector(`.cs-hd[aria-controls="${bodyId}"]`);
     if(hd)hd.setAttribute('aria-expanded','true');
   }
-  // scroll al sidebar section — sin scrollIntoView
+  // scroll al sidebar section: sin scrollIntoView
   if(body){
     setTimeout(()=>{
       const sbSc=document.getElementById('sb-sc');
@@ -4542,7 +4542,7 @@ function applyGestaltFix(type){
     case 'increaseBgContrast':
       S.st.cbgCustom='';
       S.st.cbg=Math.min((S.theme==='dark'?4:5),S.st.cbg+1);
-      toast('✓ Fondo canvas más oscuro — mayor contraste',true);
+      toast('✓ Fondo canvas más oscuro: mayor contraste',true);
       openSection('style');
       break;
     case 'lightenCards':
@@ -4603,8 +4603,8 @@ const GESTALT_META={
           val:`${gap}px`,
           status:consistent?'ok':'warn',
           desc:consistent
-            ?`Todos los gaps miden ${gap}px — el ojo agrupa correctamente cada zona.`
-            :`Los gaps entre zonas son distintos (${gaps.map(g=>g.px+'px').join(', ')}) — el ojo puede agrupar zonas equivocadas.`,
+            ?`Todos los gaps miden ${gap}px: el ojo agrupa correctamente cada zona.`
+            :`Los gaps entre zonas son distintos (${gaps.map(g=>g.px+'px').join(', ')}): el ojo puede agrupar zonas equivocadas.`,
           action:!consistent?{label:'Ajustar gap',fn:`openSection('layout')`}:null,
           threshold:'Rango óptimo: 8–20px, variación máx. ±2px'
         },
@@ -4613,9 +4613,9 @@ const GESTALT_META={
           val:`${gap}px`,
           status:tooSmall?'bad':tooBig?'warn':'ok',
           desc:tooSmall
-            ?`Gap de ${gap}px — demasiado pequeño. Las zonas se perciben como un bloque continuo sin separación.`
+            ?`Gap de ${gap}px: demasiado pequeño. Las zonas se perciben como un bloque continuo sin separación.`
             :tooBig
-            ?`Gap de ${gap}px — demasiado grande. Las zonas se perciben como elementos completamente independientes.`
+            ?`Gap de ${gap}px: demasiado grande. Las zonas se perciben como elementos completamente independientes.`
             :`Gap de ${gap}px dentro del rango óptimo.`,
           action:tooSmall||tooBig?{label:'Cambiar gap',fn:`openSection('layout')`}:null,
           threshold:'Óptimo: 8–20px · <8px = confuso · >28px = desconectado'
@@ -4625,8 +4625,8 @@ const GESTALT_META={
           val:`${m.t}/${m.b}/${m.l}/${m.r}px`,
           status:marginsSymm?'ok':'warn',
           desc:marginsSymm
-            ?`Márgenes simétricos (T=${m.t} B=${m.b} L=${m.l} R=${m.r}) — el canvas está equilibrado.`
-            :`Márgenes asimétricos — el canvas genera tensión visual involuntaria. Considera igualar T/B y L/R.`,
+            ?`Márgenes simétricos (T=${m.t} B=${m.b} L=${m.l} R=${m.r}): el canvas está equilibrado.`
+            :`Márgenes asimétricos: el canvas genera tensión visual involuntaria. Considera igualar T/B y L/R.`,
           action:!marginsSymm?{label:'Simetrizar márgenes',fn:`applyGestaltFix('symmetricMargins')`}:null,
           threshold:'T=B y L=R para equilibrio. Asimetría intencional solo en layouts F.'
         },
@@ -4634,14 +4634,14 @@ const GESTALT_META={
           name:`Gap: ${g.from} → ${g.to}`,
           val:`${g.px}px`,
           status:g.px<6?'bad':g.px>28?'warn':'ok',
-          desc:g.px<6?`${g.px}px — estas zonas están demasiado pegadas.`:g.px>28?`${g.px}px — separación excesiva, rompe la relación entre zonas.`:`${g.px}px — correcto.`,
+          desc:g.px<6?`${g.px}px, estas zonas están demasiado pegadas.`:g.px>28?`${g.px}px, separación excesiva, rompe la relación entre zonas.`:`${g.px}px: correcto.`,
           action:null,
           threshold:null
         }))
       ];
       const overallStatus=rules.some(r=>r.status==='bad')?'bad':rules.some(r=>r.status==='warn')?'warn':'ok';
       const title={ok:'Proximidad correcta',warn:'Proximidad mejorable',bad:'Proximidad problemática'}[overallStatus];
-      const desc={ok:`Gap uniforme de ${gap}px — las zonas se agrupan con claridad.`,warn:'Revisa la consistencia y tamaño de los gaps entre zonas.',bad:'Los gaps actuales crean agrupaciones visuales incorrectas.'}[overallStatus];
+      const desc={ok:`Gap uniforme de ${gap}px, las zonas se agrupan con claridad.`,warn:'Revisa la consistencia y tamaño de los gaps entre zonas.',bad:'Los gaps actuales crean agrupaciones visuales incorrectas.'}[overallStatus];
       return{status:overallStatus,title,desc,rules};
     }
   },
@@ -4668,10 +4668,10 @@ const GESTALT_META={
           val:secH?`${Math.round(mainH)}px vs ${Math.round(secH)}px`:'Sin Zona B',
           status:!secH?'ok':mainH>=secH?'ok':secH>mainH*1.1?'bad':'warn',
           desc:!secH
-            ?'Sin Zona B — toda la atención va a la Zona A. Jerarquía maximalista.'
+            ?'Sin Zona B: toda la atención va a la Zona A. Jerarquía maximalista.'
             :mainH>=secH
             ?`Zona A (${Math.round(mainH)}px) domina sobre Zona B (${Math.round(secH)}px). El ojo lee el mensaje principal primero.`
-            :`Zona B (${Math.round(secH)}px) supera a Zona A (${Math.round(mainH)}px) — jerarquía invertida. El detalle domina sobre el mensaje.`,
+            :`Zona B (${Math.round(secH)}px) supera a Zona A (${Math.round(mainH)}px): jerarquía invertida. El detalle domina sobre el mensaje.`,
           action:secH&&secH>mainH?{label:'Ajustar Zona A/B',fn:`openSection('layout')`}:null,
           threshold:'Zona A debe ser ≥85% de la altura de Zona B'
         },
@@ -4680,10 +4680,10 @@ const GESTALT_META={
           val:`${total} elemento${total!==1?'s':''}`,
           status:total<=7?'ok':total<=9?'warn':'bad',
           desc:total<=7
-            ?`${total} elementos — dentro del límite cognitivo óptimo (≤7).`
+            ?`${total} elementos: dentro del límite cognitivo óptimo (≤7).`
             :total<=9
-            ?`${total} elementos — en el límite de Miller (7±2). El usuario puede llegar al umbral de saturación.`
-            :`${total} elementos — supera el límite de Miller (9). El cerebro no puede procesar todos los elementos sin esfuerzo.`,
+            ?`${total} elementos: en el límite de Miller (7±2). El usuario puede llegar al umbral de saturación.`
+            :`${total} elementos: supera el límite de Miller (9). El cerebro no puede procesar todos los elementos sin esfuerzo.`,
           action:total>9?{label:'Reducir zonas',fn:`openSection('layout')`}:null,
           threshold:'Óptimo ≤7 · aceptable ≤9 · problemático >9'
         },
@@ -4704,10 +4704,10 @@ const GESTALT_META={
           desc:!kpiRatio
             ?'Sin KPIs configurados.'
             :kpiRatio<35
-            ?`Los KPIs ocupan el ${kpiRatio}% de la Zona A — proporción equilibrada.`
+            ?`Los KPIs ocupan el ${kpiRatio}% de la Zona A: proporción equilibrada.`
             :kpiRatio>60
-            ?`Los KPIs ocupan el ${kpiRatio}% de la Zona A — los KPIs dominan sobre los gráficos.`
-            :`Los KPIs ocupan el ${kpiRatio}% de la Zona A — revisa si la proporción es la deseada.`,
+            ?`Los KPIs ocupan el ${kpiRatio}% de la Zona A: los KPIs dominan sobre los gráficos.`
+            :`Los KPIs ocupan el ${kpiRatio}% de la Zona A: revisa si la proporción es la deseada.`,
           action:kpiRatio>60?{label:'Reducir KPIs',fn:`openSection('layout')`}:null,
           threshold:'KPIs óptimo: 20–35% de la altura total'
         }
@@ -4716,7 +4716,7 @@ const GESTALT_META={
       return{
         status:overallStatus,
         title:{ok:'Jerarquía correcta',warn:'Jerarquía mejorable',bad:'Jerarquía invertida'}[overallStatus],
-        desc:{ok:'El recorrido visual sigue el orden correcto: contexto → métricas → análisis.',warn:'Hay elementos de jerarquía que pueden optimizarse.',bad:'La jerarquía está invertida — el lector llega al detalle antes que al mensaje.'}[overallStatus],
+        desc:{ok:'El recorrido visual sigue el orden correcto: contexto → métricas → análisis.',warn:'Hay elementos de jerarquía que pueden optimizarse.',bad:'La jerarquía está invertida: el lector llega al detalle antes que al mensaje.'}[overallStatus],
         rules
       };
     }
@@ -4743,10 +4743,10 @@ const GESTALT_META={
           val:`${st.br}px`,
           status:st.br===0?'warn':brOk?'ok':'warn',
           desc:st.br===0
-            ?'Sin radio de borde — las tarjetas tienen aspecto de tabla de datos. Considera un radio de 4–8px para suavizar la percepción de grupo.'
+            ?'Sin radio de borde: las tarjetas tienen aspecto de tabla de datos. Considera un radio de 4–8px para suavizar la percepción de grupo.'
             :brOk
-            ?`Radio de ${st.br}px — uniforme en todas las tarjetas. La semejanza de forma crea grupos coherentes.`
-            :`Radio de ${st.br}px — muy grande. Las tarjetas pueden percibirse como elementos de UI, no de datos.`,
+            ?`Radio de ${st.br}px: uniforme en todas las tarjetas. La semejanza de forma crea grupos coherentes.`
+            :`Radio de ${st.br}px: muy grande. Las tarjetas pueden percibirse como elementos de UI, no de datos.`,
           action:st.br===0?{label:'Ajustar radio',fn:`openSection('style')`}:null,
           threshold:'Óptimo: 4–12px · 0px = tabla · >16px = UI genérica'
         },
@@ -4755,20 +4755,20 @@ const GESTALT_META={
           val:`${nMain} visual${nMain!==1?'es':''}`,
           status:densA?'warn':'ok',
           desc:densA
-            ?`${nMain} visuales en Zona A — más de 3 visuales dificultan que el ojo perciba la zona como una unidad de análisis.`
-            :`${nMain} visual${nMain!==1?'es':''} en Zona A — densidad óptima para semejanza de grupo.`,
+            ?`${nMain} visuales en Zona A: más de 3 visuales dificultan que el ojo perciba la zona como una unidad de análisis.`
+            :`${nMain} visual${nMain!==1?'es':''} en Zona A: densidad óptima para semejanza de grupo.`,
           action:densA?{label:'Reducir Zona A',fn:`openSection('layout')`}:null,
           threshold:'Máx. 3 visuales por zona para semejanza efectiva'
         },
         {
           name:'Densidad Zona B',
-          val:nSec?`${nSec} visual${nSec!==1?'es':''}`:'—',
+          val:nSec?`${nSec} visual${nSec!==1?'es':''}`:'–',
           status:!nSec?'ok':densB?'warn':'ok',
           desc:!nSec
             ?'Sin Zona B.'
             :densB
-            ?`${nSec} visuales en Zona B — considera reducir para mantener la semejanza de grupo.`
-            :`${nSec} visual${nSec!==1?'es':''} en Zona B — correcto.`,
+            ?`${nSec} visuales en Zona B: considera reducir para mantener la semejanza de grupo.`
+            :`${nSec} visual${nSec!==1?'es':''} en Zona B: correcto.`,
           action:densB?{label:'Reducir Zona B',fn:`openSection('layout')`}:null,
           threshold:'Máx. 3 visuales por zona'
         },
@@ -4779,8 +4779,8 @@ const GESTALT_META={
           desc:nKpi===0
             ?'Sin KPIs configurados.'
             :densK
-            ?`${nKpi} KPIs — más de 6 KPIs rompen la semejanza del grupo: el ojo ya no los procesa como una fila de métricas sino como una tabla.`
-            :`${nKpi} KPI${nKpi!==1?'s':''} — cantidad adecuada para que el grupo sea perceptible.`,
+            ?`${nKpi} KPIs, más de 6 KPIs rompen la semejanza del grupo: el ojo ya no los procesa como una fila de métricas sino como una tabla.`
+            :`${nKpi} KPI${nKpi!==1?'s':''}: cantidad adecuada para que el grupo sea perceptible.`,
           action:densK?{label:'Reducir KPIs',fn:`openSection('layout')`}:null,
           threshold:'Óptimo 3–4 KPIs · máx. 6 · >6 = tabla de datos'
         },
@@ -4789,8 +4789,8 @@ const GESTALT_META={
           val:hasContrast?'Diferenciado':'Sin contraste',
           status:hasContrast?'ok':'warn',
           desc:hasContrast
-            ?'El fondo de las tarjetas difiere del canvas — la semejanza de las tarjetas entre sí queda reforzada contra el fondo.'
-            :'El fondo de las tarjetas y el canvas son iguales — las tarjetas no forman un grupo visual distinguible.',
+            ?'El fondo de las tarjetas difiere del canvas: la semejanza de las tarjetas entre sí queda reforzada contra el fondo.'
+            :'El fondo de las tarjetas y el canvas son iguales: las tarjetas no forman un grupo visual distinguible.',
           action:!hasContrast?{label:'Cambiar estilo',fn:`openSection('style')`}:null,
           threshold:'Fondo canvas ≠ fondo tarjetas, o borde tarjetas activo'
         }
@@ -4799,7 +4799,7 @@ const GESTALT_META={
       return{
         status:overallStatus,
         title:{ok:'Semejanza correcta',warn:'Semejanza mejorable',bad:'Semejanza rota'}[overallStatus],
-        desc:{ok:'Los grupos visuales son coherentes — el ojo distingue KPIs, Zona A y Zona B como familias distintas.',warn:'Algunos elementos rompen la percepción de grupo. Revisa las reglas marcadas.',bad:'La semejanza visual está comprometida — el ojo no puede distinguir los grupos de elementos.'}[overallStatus],
+        desc:{ok:'Los grupos visuales son coherentes: el ojo distingue KPIs, Zona A y Zona B como familias distintas.',warn:'Algunos elementos rompen la percepción de grupo. Revisa las reglas marcadas.',bad:'La semejanza visual está comprometida: el ojo no puede distinguir los grupos de elementos.'}[overallStatus],
         rules
       };
     }
@@ -4809,7 +4809,7 @@ const GESTALT_META={
     subtitle:'El ojo completa formas y necesita espacio para respirar',
     color:'#F2C66D',
     icon:`<svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="8" height="8" rx="1.5" stroke="#F2C66D" stroke-width="2" fill="none"/><rect x="10" y="10" width="8" height="8" rx="1.5" stroke="#F2C66D" stroke-width="2" fill="none" stroke-dasharray="3,2"/><rect x="10" y="2" width="8" height="8" rx="1.5" fill="#F2C66D" opacity=".25"/></svg>`,
-    definition:'El cerebro tiende a completar formas incompletas y a percibir el espacio en blanco como delimitador de objetos. El espacio negativo no es vacío — es estructura.',
+    definition:'El cerebro tiende a completar formas incompletas y a percibir el espacio en blanco como delimitador de objetos. El espacio negativo no es vacío: es estructura.',
     dashboardImpact:'Los márgenes y gaps de tu dashboard son los que crean el <strong>espacio negativo</strong>. Si es escaso, el dashboard se percibe saturado aunque los datos sean pocos. Si es excesivo, parece incompleto.',
     illuGood:`<svg width="116" height="44" viewBox="0 0 116 44" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="6" width="42" height="14" rx="2" fill="#F2C66D" opacity=".7"/><rect x="8" y="24" width="42" height="14" rx="2" fill="#F2C66D" opacity=".7"/><rect x="2" y="2" width="54" height="40" rx="3" fill="none" stroke="#F2C66D" stroke-width="1" stroke-dasharray="3,2" opacity=".5"/><text x="62" y="16" font-size="7" fill="#3c8a37" font-family="Segoe UI" font-weight="600">Espacio 25%</text><text x="62" y="26" font-size="6" fill="#888" font-family="Segoe UI">Canvas respira</text></svg>`,
     illuBad:`<svg width="116" height="44" viewBox="0 0 116 44" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="54" height="19" rx="1" fill="#F2C66D" opacity=".8"/><rect x="2" y="23" width="54" height="19" rx="1" fill="#F2C66D" opacity=".8"/><text x="62" y="16" font-size="7" fill="#c13030" font-family="Segoe UI" font-weight="600">Espacio <10%</text><text x="62" y="26" font-size="6" fill="#888" font-family="Segoe UI">Saturado</text></svg>`,
@@ -4832,10 +4832,10 @@ const GESTALT_META={
           val:`${negPct}%`,
           status:negPct<15?'bad':negPct>45?'warn':'ok',
           desc:negPct<15
-            ?`Solo un ${negPct}% del canvas es espacio libre — el dashboard se percibe saturado y difícil de escanear. Objetivo: 20–40%.`
+            ?`Solo un ${negPct}% del canvas es espacio libre: el dashboard se percibe saturado y difícil de escanear. Objetivo: 20–40%.`
             :negPct>45
-            ?`Un ${negPct}% del canvas está vacío — el dashboard parece incompleto. Considera añadir contenido o reducir márgenes.`
-            :`Un ${negPct}% de espacio libre — dentro del rango óptimo (20–40%). El canvas respira correctamente.`,
+            ?`Un ${negPct}% del canvas está vacío: el dashboard parece incompleto. Considera añadir contenido o reducir márgenes.`
+            :`Un ${negPct}% de espacio libre: dentro del rango óptimo (20–40%). El canvas respira correctamente.`,
           action:negPct<15?{label:'Ampliar márgenes',fn:`applyGestaltFix('increaseMargins')`}:negPct>45?{label:'Reducir márgenes',fn:`applyGestaltFix('decreaseMargins')`}:null,
           threshold:'Óptimo: 20–40% · <15% = saturado · >45% = vacío'
         },
@@ -4845,7 +4845,7 @@ const GESTALT_META={
           status:m.t>=12&&m.b>=12?'ok':m.t<8||m.b<8?'bad':'warn',
           desc:m.t>=12&&m.b>=12
             ?`Márgenes verticales correctos (T=${m.t}px B=${m.b}px). El canvas tiene cierre visual arriba y abajo.`
-            :`Márgenes verticales cortos — el contenido se percibe sin límite claro. Mínimo recomendado: 16px.`,
+            :`Márgenes verticales cortos: el contenido se percibe sin límite claro. Mínimo recomendado: 16px.`,
           action:m.t<12||m.b<12?{label:'Ajustar márgenes',fn:`applyGestaltFix('increaseMargins')`}:null,
           threshold:'Mínimo: 12px · óptimo: 16–32px'
         },
@@ -4855,7 +4855,7 @@ const GESTALT_META={
           status:m.l>=12&&m.r>=12?'ok':m.l<8||m.r<8?'bad':'warn',
           desc:m.l>=12&&m.r>=12
             ?`Márgenes laterales correctos (L=${m.l}px R=${m.r}px). El canvas tiene cierre visual a izquierda y derecha.`
-            :`Márgenes laterales cortos — el contenido se percibe sin borde claro. Mínimo recomendado: 16px.`,
+            :`Márgenes laterales cortos: el contenido se percibe sin borde claro. Mínimo recomendado: 16px.`,
           action:m.l<12||m.r<12?{label:'Ajustar márgenes',fn:`applyGestaltFix('increaseMargins')`}:null,
           threshold:'Mínimo: 12px · óptimo: 16–32px'
         }
@@ -4864,7 +4864,7 @@ const GESTALT_META={
       return{
         status:overallStatus,
         title:{ok:'Cierre equilibrado',warn:'Cierre mejorable',bad:'Dashboard saturado'}[overallStatus],
-        desc:{ok:'El espacio negativo está bien calibrado — el dashboard respira.',warn:'El espacio negativo puede mejorarse para facilitar la lectura.',bad:'El espacio negativo es insuficiente — el dashboard se percibe saturado.'}[overallStatus],
+        desc:{ok:'El espacio negativo está bien calibrado: el dashboard respira.',warn:'El espacio negativo puede mejorarse para facilitar la lectura.',bad:'El espacio negativo es insuficiente: el dashboard se percibe saturado.'}[overallStatus],
         rules
       };
     }
@@ -4875,7 +4875,7 @@ const GESTALT_META={
     color:'#E27D73',
     icon:`<svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="1" y="1" width="18" height="18" rx="3" fill="#E27D73" opacity=".2"/><rect x="4" y="4" width="12" height="12" rx="2" fill="#E27D73" opacity=".8"/><circle cx="10" cy="10" r="3" fill="white" opacity=".6"/></svg>`,
     definition:'El cerebro separa automáticamente lo que percibe como objeto (figura) de lo que percibe como fondo. La figura tiene forma definida; el fondo es continuo e ilimitado.',
-    dashboardImpact:'Si las <strong>tarjetas de datos tienen el mismo fondo que el canvas</strong>, el cerebro no puede separar figura de fondo — los datos desaparecen visualmente. El contraste entre tarjeta y canvas es obligatorio.',
+    dashboardImpact:'Si las <strong>tarjetas de datos tienen el mismo fondo que el canvas</strong>, el cerebro no puede separar figura de fondo: los datos desaparecen visualmente. El contraste entre tarjeta y canvas es obligatorio.',
     illuGood:`<svg width="116" height="44" viewBox="0 0 116 44" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="54" height="40" rx="3" fill="#E27D73" opacity=".15"/><rect x="8" y="8" width="18" height="12" rx="2" fill="white"/><rect x="30" y="8" width="20" height="12" rx="2" fill="white"/><rect x="8" y="24" width="42" height="12" rx="2" fill="white"/><text x="62" y="16" font-size="7" fill="#3c8a37" font-family="Segoe UI" font-weight="600">Tarjeta ≠ Fondo</text><text x="62" y="26" font-size="6" fill="#888" font-family="Segoe UI">Figura emergente</text></svg>`,
     illuBad:`<svg width="116" height="44" viewBox="0 0 116 44" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="54" height="40" rx="3" fill="#E8E8F0"/><rect x="8" y="8" width="18" height="12" rx="2" fill="#E8E8F0" stroke="#ddd" stroke-width="0.5"/><rect x="30" y="8" width="20" height="12" rx="2" fill="#E8E8F0" stroke="#ddd" stroke-width="0.5"/><text x="62" y="16" font-size="7" fill="#c13030" font-family="Segoe UI" font-weight="600">Tarjeta = Fondo</text><text x="62" y="26" font-size="6" fill="#888" font-family="Segoe UI">Figura oculta</text></svg>`,
     diagnose(L){
@@ -4899,8 +4899,8 @@ const GESTALT_META={
           desc:contrastGood
             ?`Diferencia de luminancia de ${Math.round(delta)} puntos entre canvas (L=${lBg}) y tarjetas (L=${lCard}). El ojo separa figura y fondo sin esfuerzo.`
             :contrastOk
-            ?`Diferencia de ${Math.round(delta)} puntos — contraste moderado. El ojo distingue las tarjetas pero con cierto esfuerzo. Objetivo: Δ>40.`
-            :`Diferencia de solo ${Math.round(delta)} puntos — canvas y tarjetas son casi el mismo tono. Las tarjetas se funden con el fondo.`,
+            ?`Diferencia de ${Math.round(delta)} puntos: contraste moderado. El ojo distingue las tarjetas pero con cierto esfuerzo. Objetivo: Δ>40.`
+            :`Diferencia de solo ${Math.round(delta)} puntos: canvas y tarjetas son casi el mismo tono. Las tarjetas se funden con el fondo.`,
           action:!contrastOk?{label:'Oscurecer fondo canvas',fn:`applyGestaltFix('increaseBgContrast')`}:!contrastGood?{label:'Ajustar fondo tarjetas',fn:`applyGestaltFix('lightenCards')`}:null,
           threshold:'Δ>40 = óptimo · Δ20–40 = aceptable · Δ<20 = insuficiente'
         },
@@ -4916,7 +4916,7 @@ const GESTALT_META={
           val:`${cardArr[Math.min(ccardIdx,cardArr.length-1)]?.n||'Custom'} (L=${lCard})`,
           status:contrastGood?'ok':contrastOk?'warn':'bad',
           desc:contrastGood
-            ?`Las tarjetas tienen luminancia ${lCard}/100 — diferencia clara respecto al canvas.`
+            ?`Las tarjetas tienen luminancia ${lCard}/100: diferencia clara respecto al canvas.`
             :`Las tarjetas (L=${lCard}) están demasiado cerca del canvas (L=${lBg}). Elige un fondo de tarjeta con mayor diferencia de luminancia.`,
           action:!contrastOk?{label:'Cambiar fondo tarjetas',fn:`applyGestaltFix('lightenCards')`}:null,
           threshold:null
@@ -4926,10 +4926,10 @@ const GESTALT_META={
           val:bordActive?`Activo · ${bordArr[Math.min(cbordIdx,bordArr.length-1)]?.n||''}`:'Inactivo',
           status:bordActive?'ok':contrastOk?'warn':'bad',
           desc:bordActive
-            ?`Borde ${bordArr[Math.min(cbordIdx,bordArr.length-1)]?.n||''} activo — refuerza la separación figura-fondo y compensa contrastes moderados.`
+            ?`Borde ${bordArr[Math.min(cbordIdx,bordArr.length-1)]?.n||''} activo: refuerza la separación figura-fondo y compensa contrastes moderados.`
             :contrastOk
             ?`Sin borde activo. Aceptable porque el contraste de luminancia (Δ${Math.round(delta)}) es suficiente para separar las tarjetas.`
-            :`Sin borde y con contraste bajo (Δ${Math.round(delta)}) — las tarjetas son imperceptibles. Activa el borde o aumenta el contraste de fondo.`,
+            :`Sin borde y con contraste bajo (Δ${Math.round(delta)}): las tarjetas son imperceptibles. Activa el borde o aumenta el contraste de fondo.`,
           action:!bordActive&&!contrastOk?{label:'Activar borde',fn:`applyGestaltFix('activateBorder')`}:null,
           threshold:'Recomendado cuando Δ luminancia < 30'
         }
@@ -4939,9 +4939,9 @@ const GESTALT_META={
         status:overallStatus,
         title:{ok:'Figura-fondo correcto',warn:'Contraste mejorable',bad:'Figura invisible'}[overallStatus],
         desc:{
-          ok:'Las tarjetas emergen claramente sobre el fondo — el ojo separa figura y fondo sin esfuerzo.',
+          ok:'Las tarjetas emergen claramente sobre el fondo: el ojo separa figura y fondo sin esfuerzo.',
           warn:`Contraste de luminancia moderado (Δ${Math.round(delta)}). Considera aumentar la diferencia de fondo o activar el borde.`,
-          bad:`Contraste insuficiente (Δ${Math.round(delta)}) — las tarjetas se funden con el canvas. Cambia los fondos o activa el borde.`
+          bad:`Contraste insuficiente (Δ${Math.round(delta)}): las tarjetas se funden con el canvas. Cambia los fondos o activa el borde.`
         }[overallStatus],
         rules
       };
@@ -5172,7 +5172,7 @@ function toggleEditMode(){
   if(btn){ btn.classList.toggle('on', S.editMode); btn.setAttribute('aria-pressed', String(S.editMode)); }
   if(S.editMode){
     attachEMListeners();
-    toast('Diseño libre activado — Esc para salir', true);
+    toast('Diseño libre activado: Esc para salir', true);
   } else {
     detachEMListeners();
     clearEMSelection();
